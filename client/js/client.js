@@ -1,24 +1,75 @@
 Meteor.subscribe('Subjects');
 Meteor.subscribe('Games');
 
-//Create game template
-Template.createGame.events({
-	'click #create_game':function(){
-		Meteor.call('CreateGame');
-		Router.go(Router.path('game'));
-		//...
-	}
-
+// Login validation
+$.validator.setDefaults({
+    rules: {
+        email: {
+            required: true,
+            email: true
+        },
+        password: {
+            required: true,
+            minlength: 6
+        }
+    },
+    messages: {
+        email: {
+            required: "You must enter an email address.",
+            email: "You've entered an invalid email address."
+        },
+        password: {
+            required: "You must enter a password.",
+            minlength: "Your password must be at least {0} characters."
+        }
+    }
 });
 
-//Game template
-Template.game.helpers({
-	'messages':function(){
-		//return messages if any in Subjects db
-	}
+
+Template.register.onRendered(function(){
+    var validator = $('.register').validate({
+        submitHandler: function(event){
+            var email = $('[name=email]').val();
+            var password = $('[name=password]').val();
+            Accounts.createUser({
+                email: email,
+                password: password
+            }, function(error){
+                if(error){
+                    if(error.reason == "Email already exists."){
+                        validator.showErrors({
+                            email: "That email already belongs to a registered user."   
+                        });
+                    }
+                } else {
+                    Router.go("lobby");
+                }
+            });
+        }    
+    });
 });
 
-Template.game.events({
-
-
+Template.login.onRendered(function(){
+    var validator = $('.login').validate({
+        submitHandler: function(event){
+            var email = $('[name=email]').val();
+            var password = $('[name=password]').val();
+            Meteor.loginWithPassword(email, password, function(error){
+              if(error){
+                  if(error.reason == "User not found"){
+                      validator.showErrors({
+                        email: "That email doesn't belong to a registered user."   
+                      });
+                  }
+                  if(error.reason == "Incorrect password"){
+                      validator.showErrors({
+                        password: "You entered an incorrect password."    
+                      });
+                  }
+              } else {
+              	Router.go("lobby");
+              }
+            });
+        }
+    });
 });
