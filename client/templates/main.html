@@ -1,0 +1,17 @@
+<template name="main">
+	<nav class="navbar navbar-default navbar-fixed-top">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="{{pathFor route='home'}}">UG Prototype</a>
+	    </div>
+	    <div>
+	        {{> navigation}}
+	    </div>
+	  </div>
+	</nav>
+	<br><br><br><br>
+	<div>
+	    {{> yield}}
+    </div>
+    <hr />
+</template>

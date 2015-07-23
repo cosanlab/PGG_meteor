@@ -1,23 +1,34 @@
-//Configuring the iron router avoiding rendering all routes without control
+// Routing Info
 Router.configure({
-	autoRender: false
+  layoutTemplate: 'main',
+  loadingTemplate: 'loading'
 });
-
-//Mapping all routes
-Router.map(function(){
-	//Defining the root route listing all games and allowing users to create new ones
-	this.route('home', {
-		path: '/',		
-		data: { 
-			games: Games.find({started: false, ended: false}),
-			cgames: Games.find({started: true , ended: false})
-		}
-	});
-	//The game room route, gets the id as a parameter for the game to show
-	this.route('game', {
-		path: '/game/:_id',		
-		data: function() {
-			return Games.findOne({_id: this.params._id});
-		}
-	});
+Router.route('/', {
+  name: 'home',
+  template: 'home',
+  waitOn: function(){
+    return Meteor.subscribe('Players');
+  }
+});
+Router.route('/register');
+Router.route('/login');
+Router.route('/lobby/:_id', {
+    name: 'lobby',
+    template: 'lobby',
+    data: function(){
+        var currentUser = Meteor.userId();
+        return Players.findOne({ _id: currentUser});
+    },
+    onBeforeAction: function(){
+        var currentUser = Meteor.userId();
+        if(currentUser){
+            this.next();
+        } else {
+            this.render("login");
+        }
+    },
+    waitOn: function(){
+      var currentList = this.params._id;
+      return [Meteor.subscribe('lists'), Meteor.subscribe('todos', currentList)];
+    }
 });

@@ -7,6 +7,6 @@
 meteor-platform
 accounts-password
 accounts-ui
-bootstrap
 less
 iron:router
+twbs:bootstrap
