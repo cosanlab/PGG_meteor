@@ -10,3 +10,4 @@ accounts-ui
 less
 iron:router
 twbs:bootstrap
+d3
