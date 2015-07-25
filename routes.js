@@ -10,6 +10,7 @@ Router.route('/', {
     return Meteor.subscribe('Players');
   }
 });
+Router.route('/gameTree');
 Router.route('/register');
 Router.route('/login');
 Router.route('/lobby/:_id', {
