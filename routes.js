@@ -13,6 +13,8 @@ Router.route('/', {
 Router.route('/gameTree');
 Router.route('/register');
 Router.route('/login');
+Router.route('/lobby');
+/*
 Router.route('/lobby/:_id', {
     name: 'lobby',
     template: 'lobby',
@@ -33,3 +35,4 @@ Router.route('/lobby/:_id', {
       return [Meteor.subscribe('lists'), Meteor.subscribe('todos', currentList)];
     }
 });
+*/

@@ -1,4 +1,4 @@
-Meteor.subscribe('Subjects');
+Meteor.subscribe('Players');
 Meteor.subscribe('Games');
 
 // Login validation
@@ -73,3 +73,14 @@ Template.login.onRendered(function(){
         }
     });
 });
+
+Template.navigation.events({
+    'click .logout': function(event){
+        event.preventDefault();
+        Meteor.logout();
+        Router.go('login');
+    }
+});
+
+
+

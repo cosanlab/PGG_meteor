@@ -9,7 +9,7 @@ Meteor.publish('Games', function(){
 });
 
 Meteor.methods({
-	'addPlayer': function(playerId){
+	'addPlayer': function(){
 		var currentUser = Meteor.user();
 		var data = {
 			name: currentUser.username,
