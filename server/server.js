@@ -8,6 +8,17 @@ Meteor.publish('Games', function(){
 	return Games.find();
 });
 
+/*
+//Players Waiting - might be security issue to return all user info
+Meteor.publish('usersGroup', function(group) {
+  check(group, String);
+  var group = Players.findOne(status);
+  var selector = {_id: {$in: group.members}};
+  var options = {fields: {name: 1, enterTime: 1}};
+  return Meteor.Players.find(selector, options);
+});
+*/
+
 Meteor.methods({
 	'addPlayer': function(){
 		var currentUser = Meteor.userId();
@@ -31,5 +42,5 @@ Meteor.methods({
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
 		return Players.remove(data);
-	}		
+	}	
 });
