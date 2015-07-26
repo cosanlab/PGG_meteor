@@ -10,9 +10,10 @@ Meteor.publish('Games', function(){
 
 Meteor.methods({
 	'addPlayer': function(){
-		var currentUser = Meteor.user();
+		var currentUser = Meteor.userId();
 		var data = {
-			name: currentUser.username,
+			_id: currentUser,
+			name: currentUser,
 			enterTime: new Date(),
 			status: "waiting"
 		};
@@ -20,5 +21,15 @@ Meteor.methods({
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
 		return Players.insert(data);
-	}	
+	},
+	'removePlayer': function(playerId){
+		var currentUser = Meteor.userId();
+		var data = {
+			_id: currentUser,
+		};
+		if(!currentUser){
+			throw new Meteor.Error("not-logged-in", "You're not logged in.");
+		}
+		return Players.remove(data);
+	}		
 });
