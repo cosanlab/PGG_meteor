@@ -54,42 +54,42 @@ Template.gameTree.rendered = function () {
 		svg.append("text")	
 				.attr("x",300)
 				.attr("y",230)
-				.text("1")
+				.text("A gets: $1")
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
 		svg.append("text")	
 				.attr("x",300)
 				.attr("y",260)
-				.text("3")
+				.text("B gets: $3")
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
 		svg.append("text")	
 				.attr("x",400)
 				.attr("y",370)
-				.text("0")
+				.text("A gets: $0")
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
 		svg.append("text")	
 				.attr("x",400)
 				.attr("y",400)
-				.text("0")
+				.text("B gets: $0")
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
 		svg.append("text")	
 				.attr("x",600)
 				.attr("y",370)
-				.text("2")
+				.text("A gets: $2")
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
 		svg.append("text")	
 				.attr("x",600)
 				.attr("y",400)
-				.text("2")
+				.text("B gets: $2")
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
