@@ -1,4 +1,4 @@
-// draw decision tree
+/* // draw decision tree
 	var textA = new PointText (new Point(85,30));
 	textA.fillColor = 'black';
 	textA.content = 'A';
@@ -57,3 +57,4 @@ function onResize(event) {
     pathB1.position = view.center + [25,100];
     pathB2.position = view.center + [75,100];
 }
+*/
