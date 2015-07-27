@@ -8,9 +8,13 @@
 
 Template.lobby.helpers({
   players:function(){
-  	return Players.find({status:"waiting"},{sort:{enterTime:-1}});
+    return Players.find({status:"waiting"},{sort:{enterTime:-1}});
   },
-  countPlayers:function(){
+  countPlayers:function(){   
   	return Players.find({status:"waiting"},{}).count();
   }
+});
+
+Template.lobby.onRendered(function(){
+  Meteor.call('matchPlayers');
 });

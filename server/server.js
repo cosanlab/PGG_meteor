@@ -1,11 +1,11 @@
 //Subjects DB
 Meteor.publish('Players', function(){
-	return Players.find();
+	return Players.find({});
 });
 
 //Games DB
 Meteor.publish('Games', function(){
-	return Games.find();
+	return Games.find({});
 });
 
 /*
@@ -42,5 +42,17 @@ Meteor.methods({
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
 		return Players.remove(data);
-	}	
+	},
+	'matchPlayers': function(){
+		var numPlayers = Players.find({status:"waiting"},{}).count();
+		var currentUser = Meteor.userID();
+		var partner = Players.findOne({status:"waiting"},{sort:{enterTime:-1}});
+		if (numPlayers >= 2){
+			// change player status to matched
+			// create new game, add players to that row
+			// need to client side template for game
+			// route both players to new template
+		}
+		//return Players.find({status:"waiting"},{});
+	}
 });
