@@ -76,7 +76,6 @@ Meteor.methods({
 		var numPlayers = Players.find({status:"waiting"},{}).count();
 		var clientId = Meteor.userId();
 		// The way to extract just the id from the mongo query
-		// Current problem is that 
 		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:1},limit:1}).fetch()[0]._id;
 		if (numPlayers >= 2){
 			return Meteor.call('createGame', clientId, partnerId);
