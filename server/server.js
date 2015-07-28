@@ -51,22 +51,23 @@ Meteor.methods({
 	},
 	'createGame': function(clientId, partnerId){
 		// Randomize role
-		var isPlayerA = Math.random() > .5;
+		var isPlayerA = Math.random() > 0.5;
+		var data;
 		if(isPlayerA){
-			var data = {
+			data = {
 				playerA: clientId,
-				playerB: partnerId,
+				playerB: partnerId
 			};
 		} else {
-			var data = {
+			data = {
 				playerA: partnerId,
-				playerB: clientId,
+				playerB: clientId
 			};
 		}
 
 		// update each player's status
-		Meteor.call('updatePlayer', clientId, "playing")
-		Meteor.call('updatePlayer', partnerId, "playing")
+		//Meteor.call('updatePlayer', clientId, "playing");
+		//Meteor.call('updatePlayer', partnerId, "playing");
 
 		// Add Game to DB
 		return Games.insert(data);
@@ -74,16 +75,17 @@ Meteor.methods({
 	'matchPlayers': function(){
 		var numPlayers = Players.find({status:"waiting"},{}).count();
 		var clientId = Meteor.userId();
-		// var partnerId = Players.find({status:"waiting"},{fields: {'_id':1},{sort:{enterTime:1}}},{limit: 1});
-		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:-1},limit:1}).fetch();
+		// The way to extract just the id from the mongo query
+		// Current problem is that 
+		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:1},limit:1}).fetch()[0]._id;
 		if (numPlayers >= 2){
-			return Meteor.call('createGame', clientId, partnerId)
+			return Meteor.call('createGame', clientId, partnerId);
+		}
 
 			// change player status to matched
 			// create new game, add players to that row
 			// need to client side template for game
 			// route both players to new template
-		}
-		//return Players.find({status:"waiting"},{});
+		    //return Players.find({status:"waiting"},{});
 	}
 });
