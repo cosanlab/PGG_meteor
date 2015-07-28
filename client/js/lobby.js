@@ -1,16 +1,8 @@
-/*Template.lobby.onCreated(function() {
-	var self=this;
-	self.autorun(function(){
-		self.subscribe("Players")
-	});
-});
-*/
-
 Template.lobby.helpers({
   players:function(){
     return Players.find({status:"waiting"},{sort:{enterTime:-1}});
   },
-  countPlayers:function(){   
+  countPlayers:function(){ 
   	return Players.find({status:"waiting"},{}).count();
   }
 });
@@ -18,3 +10,4 @@ Template.lobby.helpers({
 Template.lobby.onRendered(function(){
   Meteor.call('matchPlayers');
 });
+

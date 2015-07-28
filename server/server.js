@@ -33,7 +33,7 @@ Meteor.methods({
 		}
 		return Players.insert(data);
 	},
-	'removePlayer': function(playerId){
+	'removePlayer': function(){
 		var currentUser = Meteor.userId();
 		var data = {
 			_id: currentUser,
@@ -43,11 +43,42 @@ Meteor.methods({
 		}
 		return Players.remove(data);
 	},
+	'updatePlayer': function(playerId, state){
+		var data = {
+			status: state
+		};
+		return Players.update(playerId, data);
+	},
+	'createGame': function(clientId, partnerId){
+		// Randomize role
+		var isPlayerA = Math.random() > .5;
+		if(isPlayerA){
+			var data = {
+				playerA: clientId,
+				playerB: partnerId,
+			};
+		} else {
+			var data = {
+				playerA: partnerId,
+				playerB: clientId,
+			};
+		}
+
+		// update each player's status
+		Meteor.call('updatePlayer', clientId, "playing")
+		Meteor.call('updatePlayer', partnerId, "playing")
+
+		// Add Game to DB
+		return Games.insert(data);
+	},
 	'matchPlayers': function(){
 		var numPlayers = Players.find({status:"waiting"},{}).count();
-		var currentUser = Meteor.userID();
-		var partner = Players.findOne({status:"waiting"},{sort:{enterTime:-1}});
+		var clientId = Meteor.userId();
+		// var partnerId = Players.find({status:"waiting"},{fields: {'_id':1},{sort:{enterTime:1}}},{limit: 1});
+		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:-1},limit:1}).fetch();
 		if (numPlayers >= 2){
+			return Meteor.call('createGame', clientId, partnerId)
+
 			// change player status to matched
 			// create new game, add players to that row
 			// need to client side template for game
