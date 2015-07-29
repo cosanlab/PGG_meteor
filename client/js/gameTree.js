@@ -93,4 +93,4 @@ Template.gameTree.rendered = function () {
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
-	};
+};
