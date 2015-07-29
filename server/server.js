@@ -44,6 +44,7 @@ Meteor.methods({
 		return Players.remove(data);
 	},
 	'updatePlayer': function(playerId, state){
+		check(state, String);
 		var data = {
 			status: state
 		};
@@ -65,10 +66,6 @@ Meteor.methods({
 			};
 		}
 
-		// update each player's status
-		//Meteor.call('updatePlayer', clientId, "playing");
-		//Meteor.call('updatePlayer', partnerId, "playing");
-
 		// Add Game to DB
 		return Games.insert(data);
 	},
@@ -78,6 +75,11 @@ Meteor.methods({
 		// The way to extract just the id from the mongo query
 		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:1},limit:1}).fetch()[0]._id;
 		if (numPlayers >= 2){
+			// update each player's status
+			Meteor.call('updatePlayer', clientId, "playing");
+			Meteor.call('updatePlayer', partnerId, "playing");
+
+			// Create a new game with each player
 			return Meteor.call('createGame', clientId, partnerId);
 		}
 
