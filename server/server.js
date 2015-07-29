@@ -26,7 +26,7 @@ Meteor.methods({
 			_id: currentUser,
 			name: currentUser,
 			enterTime: new Date(),
-			status: "waiting"
+			status: 'waiting'
 		};
 		if(!currentUser){
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
@@ -44,10 +44,7 @@ Meteor.methods({
 		return Players.remove(data);
 	},
 	'updatePlayer': function(playerId, state){
-		var data = {
-			status: state
-		};
-		return Players.update(playerId, data);
+		return Players.update(playerId, {$set: {status: state}});
 	},
 	'createGame': function(clientId, partnerId){
 		// Randomize role
@@ -66,14 +63,14 @@ Meteor.methods({
 		}
 
 		// update each player's status
-		//Meteor.call('updatePlayer', clientId, "playing");
-		//Meteor.call('updatePlayer', partnerId, "playing");
+		Meteor.call('updatePlayer', clientId, 'playing');
+		Meteor.call('updatePlayer', partnerId, 'playing');
 
 		// Add Game to DB
 		return Games.insert(data);
 	},
 	'matchPlayers': function(){
-		var numPlayers = Players.find({status:"waiting"},{}).count();
+		var numPlayers = Players.find({status:'waiting'},{}).count();
 		var clientId = Meteor.userId();
 		// The way to extract just the id from the mongo query
 		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:1},limit:1}).fetch()[0]._id;
