@@ -31,7 +31,8 @@ Meteor.methods({
 		if(!currentUser){
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
-		return Players.insert(data);
+		Players.insert(data);
+		Router.go('lobby');
 	},
 	'removePlayer': function(){
 		var currentUser = Meteor.userId();
@@ -70,23 +71,14 @@ Meteor.methods({
 		return Games.insert(data);
 	},
 	'matchPlayers': function(){
-		var numPlayers = Players.find({status:'waiting'},{}).count();
 		var clientId = Meteor.userId();
+		var numPlayers = Players.find({status:'waiting'},{}).count();
 		// The way to extract just the id from the mongo query
 		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:1},limit:1}).fetch()[0]._id;
 		if (numPlayers >= 2){
-			// update each player's status
-			Meteor.call('updatePlayer', clientId, "playing");
-			Meteor.call('updatePlayer', partnerId, "playing");
 
 			// Create a new game with each player
 			return Meteor.call('createGame', clientId, partnerId);
 		}
-
-			// change player status to matched
-			// create new game, add players to that row
-			// need to client side template for game
-			// route both players to new template
-		    //return Players.find({status:"waiting"},{});
 	}
 });

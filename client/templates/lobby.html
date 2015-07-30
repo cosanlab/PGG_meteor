@@ -1,12 +1,8 @@
 <template name="lobby">
-	{{#if status}}
-		<h2> Players waiting for game (n = {{countPlayers}}) </h2>
-		<ul> 
-		{{#each players}}
-			<li>{{name}}</li>
-		{{/each}}
-		</ul>
-	{{else}}
-		{{> gameTree}}
-	{{/if}}
+	<h2> Players waiting for game (n = {{countPlayers}}) </h2>
+	<ul> 
+	{{#each players}}
+		<li>{{name}}</li>
+	{{/each}}
+	</ul>
 </template>

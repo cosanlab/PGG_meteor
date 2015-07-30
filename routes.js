@@ -10,16 +10,12 @@ Router.route('/', {
     return Meteor.subscribe('Players');
   }
 });
+Router.route('/instructions');
 Router.route('/gameTree');
 Router.route('/register');
 Router.route('/login');
-Router.route('/lobby', function(){
-  this.render('lobby',{
-    data: function() {
-      return Players.find({"_id":this.params._id},{fields:{"status":1}});
-    }
-  });
-}); 
+
+Router.route('/lobby'); 
 
 /*
 Router.route('/lobby/:_id', {
