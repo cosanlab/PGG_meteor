@@ -42,8 +42,9 @@ Template.register.onRendered(function(){
                         });
                     }
                 } else {
-                    Meteor.call('addPlayer', {});
-                    Router.go("lobby");
+                     Meteor.call('addPlayer', {}, function(){
+                        Router.go('lobby');
+                });
                 }   
             });
         }
@@ -68,8 +69,9 @@ Template.login.onRendered(function(){
                       });
                   }
               } else {
-                Meteor.call('addPlayer', {});
-              	Router.go("lobby");
+                Meteor.call('addPlayer', {}, function(){
+                    Router.go('lobby');
+                });
               }
             });
         }
