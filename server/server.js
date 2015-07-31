@@ -1,13 +1,22 @@
 //Subjects DB
 Meteor.publish('Players', function(){
-	return Players.find({});
+	return Players.find({},{fields: {name:1, status:1}});
 });
 
 //Games DB
-Meteor.publish('Games', function(){
+Meteor.publish('Games', function(id){
+    /*// Security
     var currentUser = this.userId;	
 	return Games.find({playerA: currentUser,playerB: currentUser});
+	*/
+	return Games.find({});
 });
+
+/*
+Meteor.publish('gameAttendees', function(ids) {  
+  return Meteor.users.find({_id: {$in: ids}}, {fields: {'profile.pictureUrl': 1, username: 1}});
+});
+*/
 
 Meteor.methods({
 	'addPlayer': function(){
@@ -38,11 +47,12 @@ Meteor.methods({
 		return Players.update(playerId, {$set: {status: state}});
 	},
 	'createGame': function(clientId, partnerId){
-		// Security
+		/* Security
 		var currentUser = Meteor.userId();
 		if(!currentUser){
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
+		*/
 
 		// Randomize role
 		var isPlayerA = Math.random() > 0.5;
@@ -78,12 +88,7 @@ Meteor.methods({
 			return Meteor.call('createGame', clientId, partnerId);
 		}
 	},
-	'updateGame': function(gameId, state){
-		check(state,String);
-		var currentUser = Meteor.userId();
-		if(!currentUser){
-			throw new Meteor.Error("not-logged-in", "You're not logged in.");
-		}
-		return Games.update(gameId, {$set: {status: state}});
+	'updateGameState': function(gameId, state){
+		return Games.update(gameId, {$set: {status:state}});
 	}
 });
