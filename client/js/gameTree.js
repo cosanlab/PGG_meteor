@@ -3,38 +3,87 @@ Template.gameTree.rendered = function () {
 		var svg, width = 800, height = 800;
 
 		svg = d3.select('#tree').append('svg')
-		.attr('width', width)
-		.attr('height',height);
+			.attr('width', width)
+			.attr('height',height);
 
-		var tree1 = [ 
-		[{ x: 400,   y: 100},  { x: 500,  y: 200}],
-		[{ x: 400,   y: 100},  { x: 300,  y: 200}]];
-
-		var tree2 = [ 
-		[{ x: 500,   y: 240},  { x: 600,  y: 340}],
-		[{ x: 500,   y: 240},  { x: 400,  y: 340}]];
+		var playerALeftData = [[{ x: 400,   y: 100},  { x: 300,  y: 200}]];
+		var playerARightData = [[{ x: 400,   y: 100},  { x: 500,  y: 200}]];
+		var playerBLeftData = [[{ x: 500,   y: 240},  { x: 400,  y: 340}]];
+		var playerBRightData = [[{ x: 500,   y: 240},  { x: 600,  y: 340}]];
 
 		var line = d3.svg.line()
 		    .x(function(d) { return d.x; })
 		    .y(function(d) { return d.y; })
 		    .interpolate("linear");
 
-		svg.selectAll("line")
-				.data(tree1)
-				.enter()
-				.append("path")
-				.attr("d",line)
-				.attr("stroke-width",2)
-				.attr("stroke","black");
+		var playerA = svg.append("g");	
 
-		svg.selectAll("line")
-				.data(tree2)
-				.enter()
-				.append("path")
-				.attr("d",line)
-				.attr("stroke-width",2)
-				.attr("stroke","black");
-	
+		var playerALeft = playerA.selectAll("line")
+			.data(playerALeftData)
+			.enter()
+			.append("path")
+			.attr("d",line)
+			.attr("stroke-width",3)
+			.attr("stroke","black")
+			.on("mouseover", function(d) {
+  				d3.select(this).attr("stroke-width",5)
+					.attr("stroke", "red");
+			})
+			.on("mouseout", function(d) {
+				d3.select(this).attr("stroke-width",3)
+					.attr("stroke", "black");
+			});
+
+		var playerARight = playerA.selectAll("line")
+			.data(playerARightData)
+			.enter()
+			.append("path")
+			.attr("d",line)
+			.attr("stroke-width",3)
+			.attr("stroke","black")
+			.on("mouseover", function(d) {
+  				d3.select(this).attr("stroke-width",5)
+					.attr("stroke", "red");
+			})
+			.on("mouseout", function(d) {
+				d3.select(this).attr("stroke-width",3)
+					.attr("stroke", "black");
+			});
+
+		var playerB = svg.append("g");	
+
+		var playerBLeft = playerB.selectAll("line")
+			.data(playerBLeftData)
+			.enter()
+			.append("path")
+			.attr("d",line)
+			.attr("stroke-width",3)
+			.attr("stroke","black")
+			.on("mouseover", function(d) {
+  				d3.select(this).attr("stroke-width",5)
+					.attr("stroke", "red");
+			})
+			.on("mouseout", function(d) {
+				d3.select(this).attr("stroke-width",3)
+					.attr("stroke", "black");
+			});
+
+		var playerBRight = playerB.selectAll("line")
+			.data(playerBRightData)
+			.enter()
+			.append("path")
+			.attr("d",line)
+			.attr("stroke-width",3)
+			.attr("stroke","black")
+			.on("mouseover", function(d) {
+  				d3.select(this).attr("stroke-width",5)
+					.attr("stroke", "red");
+			})
+			.on("mouseout", function(d) {
+				d3.select(this).attr("stroke-width",3)
+					.attr("stroke", "black");
+			});
+
 		svg.append("text")	
 				.attr("x",400)
 				.attr("y",90)
