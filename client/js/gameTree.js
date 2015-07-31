@@ -16,9 +16,19 @@ Template.gameTree.rendered = function () {
 		    .y(function(d) { return d.y; })
 		    .interpolate("linear");
 
-		var playerA = svg.append("g");	
+		var playerA = svg.append("g");
+		
+		playerA.append("text")	
+				.attr("x",400)
+				.attr("y",90)
+				.text("A")
+				.attr("font-size",30)
+				.attr("text-anchor","middle")
+				.attr("font-weight" ,"bold");
 
-		var playerALeft = playerA.selectAll("line")
+		var playerALeft = playerA.append("g");
+
+		var playerALeftLine = playerALeft.selectAll("line")
 			.data(playerALeftData)
 			.enter()
 			.append("path")
@@ -26,15 +36,33 @@ Template.gameTree.rendered = function () {
 			.attr("stroke-width",3)
 			.attr("stroke","black")
 			.on("mouseover", function(d) {
-  				d3.select(this).attr("stroke-width",5)
+  				d3.select(this)
+  					.attr("stroke-width",5)
 					.attr("stroke", "red");
 			})
 			.on("mouseout", function(d) {
-				d3.select(this).attr("stroke-width",3)
+				d3.select(this)
+					.attr("stroke-width",3)
 					.attr("stroke", "black");
 			});
 
-		var playerARight = playerA.selectAll("line")
+		playerALeft.append("text")	
+				.attr("x",300)
+				.attr("y",230)
+				.text("A gets: $1")
+				.attr("font-size",28)
+				.attr("text-anchor","middle");
+
+		playerALeft.append("text")	
+				.attr("x",300)
+				.attr("y",260)
+				.text("B gets: $3")
+				.attr("font-size",28)
+				.attr("text-anchor","middle");
+
+		var playerARight = playerA.append("g");
+
+		var playerARightLine = playerA.selectAll("line")
 			.data(playerARightData)
 			.enter()
 			.append("path")
@@ -42,17 +70,29 @@ Template.gameTree.rendered = function () {
 			.attr("stroke-width",3)
 			.attr("stroke","black")
 			.on("mouseover", function(d) {
-  				d3.select(this).attr("stroke-width",5)
+  				d3.select(this)
+  					.attr("stroke-width",5)
 					.attr("stroke", "red");
 			})
 			.on("mouseout", function(d) {
-				d3.select(this).attr("stroke-width",3)
+				d3.select(this)
+					.attr("stroke-width",3)
 					.attr("stroke", "black");
 			});
 
-		var playerB = svg.append("g");	
+		var playerB = playerARight.append("g");	
 
-		var playerBLeft = playerB.selectAll("line")
+		playerB.append("text")	
+			.attr("x",500)
+			.attr("y",230)
+			.text("B")
+			.attr("font-size",30)
+			.attr("text-anchor","middle")
+			.attr("font-weight","bold");	
+
+		var playerBLeft = playerB.append("g");
+
+		var playerBLeftLine = playerBLeft.selectAll("line")
 			.data(playerBLeftData)
 			.enter()
 			.append("path")
@@ -60,15 +100,33 @@ Template.gameTree.rendered = function () {
 			.attr("stroke-width",3)
 			.attr("stroke","black")
 			.on("mouseover", function(d) {
-  				d3.select(this).attr("stroke-width",5)
+  				d3.select(this)
+  					.attr("stroke-width",5)
 					.attr("stroke", "red");
 			})
 			.on("mouseout", function(d) {
-				d3.select(this).attr("stroke-width",3)
+				d3.select(this)
+					.attr("stroke-width",3)
 					.attr("stroke", "black");
 			});
 
-		var playerBRight = playerB.selectAll("line")
+		playerBLeft.append("text")	
+				.attr("x",400)
+				.attr("y",370)
+				.text("A gets: $0")
+				.attr("font-size",28)
+				.attr("text-anchor","middle");
+
+		playerBLeft.append("text")	
+				.attr("x",400)
+				.attr("y",400)
+				.text("B gets: $0")
+				.attr("font-size",28)
+				.attr("text-anchor","middle");
+
+		var playerBRight = playerB.append("g");
+
+		var playerBRightLine = playerBRight.selectAll("line")
 			.data(playerBRightData)
 			.enter()
 			.append("path")
@@ -84,58 +142,14 @@ Template.gameTree.rendered = function () {
 					.attr("stroke", "black");
 			});
 
-		svg.append("text")	
-				.attr("x",400)
-				.attr("y",90)
-				.text("A")
-				.attr("font-size",30)
-				.attr("text-anchor","middle")
-				.attr("font-weight" ,"bold");
-
-		svg.append("text")	
-				.attr("x",500)
-				.attr("y",230)
-				.text("B")
-				.attr("font-size",30)
-				.attr("text-anchor","middle")
-				.attr("font-weight","bold");
-
-		svg.append("text")	
-				.attr("x",300)
-				.attr("y",230)
-				.text("A gets: $1")
-				.attr("font-size",28)
-				.attr("text-anchor","middle");
-
-		svg.append("text")	
-				.attr("x",300)
-				.attr("y",260)
-				.text("B gets: $3")
-				.attr("font-size",28)
-				.attr("text-anchor","middle");
-
-		svg.append("text")	
-				.attr("x",400)
-				.attr("y",370)
-				.text("A gets: $0")
-				.attr("font-size",28)
-				.attr("text-anchor","middle");
-
-		svg.append("text")	
-				.attr("x",400)
-				.attr("y",400)
-				.text("B gets: $0")
-				.attr("font-size",28)
-				.attr("text-anchor","middle");
-
-		svg.append("text")	
+		playerBRight.append("text")	
 				.attr("x",600)
 				.attr("y",370)
 				.text("A gets: $2")
 				.attr("font-size",28)
 				.attr("text-anchor","middle");
 
-		svg.append("text")	
+		playerBRight.append("text")	
 				.attr("x",600)
 				.attr("y",400)
 				.text("B gets: $2")
