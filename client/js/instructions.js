@@ -16,3 +16,9 @@ Template.instructions.helpers({
   	return Players.find({status:'waiting'},{}).count();
   } 
 });
+
+Template.instructions.events({
+  'click .ready-to-start': function(event){
+    Meteor.call('updateGame',Games.find().fetch()[0]._id, "playing")
+  }
+});
