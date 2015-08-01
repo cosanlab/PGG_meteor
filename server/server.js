@@ -4,12 +4,11 @@ Meteor.publish('Players', function(){
 });
 
 //Games DB
-Meteor.publish('Games', function(id){
-    /*// Security
-    var currentUser = this.userId;	
-	return Games.find({playerA: currentUser,playerB: currentUser});
-	*/
-	return Games.find({});
+Meteor.publish('Games', function(){
+    // Security
+    var currentUser = this.userId;		
+	return Games.find({"$or": [{"playerA":currentUser},{"playerB":currentUser}]});
+	// return Games.find( {} );
 });
 
 /*
@@ -61,7 +60,9 @@ Meteor.methods({
 			data = {
 				playerA: clientId,
 				playerB: partnerId,
-				state: "instructions"
+				state: "instructions",
+				playerAReady:false,
+				playerBReady:false
 			};
 		} else {
 			data = {
@@ -88,7 +89,27 @@ Meteor.methods({
 			return Meteor.call('createGame', clientId, partnerId);
 		}
 	},
-	'updateGameState': function(gameId, state){
+	'updateGameState': function(gameId, state) {
 		return Games.update(gameId, {$set: {status:state}});
+	},
+	'playerReady': function(gameId){
+		// update player status to ready for games matching gameId
+		var currentUser = Meteor.userId();
+		if(Games.find({_id:gameId}).fetch()[0].playerA == currentUser){
+			data = {
+				playerAReady:true
+			};
+		}
+		if (Games.find({_id:gameId}).fetch()[0].playerB == currentUser) {
+			data = {
+				playerBReady:true
+			};
+		}
+		return Games.update(gameId, {$set: data});
+
+		// Start Game (will only work if both players are ready)
+		if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady){
+			Meteor.call('updateGameState', gameId, "playing")
+		}
 	}
 });
