@@ -19,6 +19,7 @@ Template.instructions.helpers({
 
 Template.instructions.events({
   'click .ready-to-start': function(event){
-    Meteor.call('updateGameState',Games.find().fetch()[0]._id, 'ready')
+    var gameId = Games.find().fetch()[0]._id;
+    Meteor.call('playerReady',gameId)
   }
 });
