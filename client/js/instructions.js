@@ -18,11 +18,10 @@ Template.instructions.helpers({
 });
 
 Template.instructions.events({
-  '.btn': function(event){
-    var currentUser = Meteor.userId();
-      //Query and change state of players in games database
-      //Route both players when their states are both playing
-      Meteor.call('updatePlayers', currentUser, 'playing');
 
+  'click .ready-to-start': function(event){
+    var gameId = Games.find().fetch()[0]._id;
+    Meteor.call('playerReady',gameId);
   }
+
 });

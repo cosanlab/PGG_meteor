@@ -1,21 +1,19 @@
 //Subjects DB
 Meteor.publish('Players', function(){
-	return Players.find({});
+	return Players.find({},{fields: {name:1, status:1}});
 });
 
 //Games DB
 Meteor.publish('Games', function(){
-	return Games.find({});
+    // Security
+    var currentUser = this.userId;		
+	return Games.find({"$or": [{"playerA":currentUser},{"playerB":currentUser}]});
+	// return Games.find( {} );
 });
 
 /*
-//Players Waiting - might be security issue to return all user info
-Meteor.publish('usersGroup', function(group) {
-  check(group, String);
-  var group = Players.findOne(status);
-  var selector = {_id: {$in: group.members}};
-  var options = {fields: {name: 1, enterTime: 1}};
-  return Meteor.Players.find(selector, options);
+Meteor.publish('gameAttendees', function(ids) {  
+  return Meteor.users.find({_id: {$in: ids}}, {fields: {'profile.pictureUrl': 1, username: 1}});
 });
 */
 
@@ -31,7 +29,7 @@ Meteor.methods({
 		if(!currentUser){
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
-		return Players.insert(data);	
+		Players.insert(data);
 	},
 	'removePlayer': function(){
 		var currentUser = Meteor.userId();
@@ -44,21 +42,33 @@ Meteor.methods({
 		return Players.remove(data);
 	},
 	'updatePlayer': function(playerId, state){
+		check(state,String);
 		return Players.update(playerId, {$set: {status: state}});
 	},
 	'createGame': function(clientId, partnerId){
+		/* Security
+		var currentUser = Meteor.userId();
+		if(!currentUser){
+			throw new Meteor.Error("not-logged-in", "You're not logged in.");
+		}
+		*/
+
 		// Randomize role
 		var isPlayerA = Math.random() > 0.5;
 		var data;
 		if(isPlayerA){
 			data = {
 				playerA: clientId,
-				playerB: partnerId
+				playerB: partnerId,
+				state: "instructions",
+				playerAReady:false,
+				playerBReady:false
 			};
 		} else {
 			data = {
 				playerA: partnerId,
-				playerB: clientId
+				playerB: clientId,
+				state: "instructions"
 			};
 		}
 
@@ -75,9 +85,31 @@ Meteor.methods({
 		// The way to extract just the id from the mongo query
 		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:1},limit:1}).fetch()[0]._id;
 		if (numPlayers >= 2){
-
 			// Create a new game with each player
 			return Meteor.call('createGame', clientId, partnerId);
+		}
+	},
+	'updateGameState': function(gameId, state) {
+		return Games.update(gameId, {$set: {status:state}});
+	},
+	'playerReady': function(gameId){
+		// update player status to ready for games matching gameId
+		var currentUser = Meteor.userId();
+		if(Games.find({_id:gameId}).fetch()[0].playerA == currentUser){
+			data = {
+				playerAReady:true
+			};
+		}
+		if (Games.find({_id:gameId}).fetch()[0].playerB == currentUser) {
+			data = {
+				playerBReady:true
+			};
+		}
+		return Games.update(gameId, {$set: data});
+
+		// Start Game (will only work if both players are ready)
+		if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady){
+			Meteor.call('updateGameState', gameId, "playing")
 		}
 	}
 });
