@@ -31,8 +31,7 @@ Meteor.methods({
 		if(!currentUser){
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
-		Players.insert(data);
-		Router.go('lobby');
+		return Players.insert(data);	
 	},
 	'removePlayer': function(){
 		var currentUser = Meteor.userId();
@@ -64,8 +63,8 @@ Meteor.methods({
 		}
 
 		// update each player's status
-		Meteor.call('updatePlayer', clientId, 'playing');
-		Meteor.call('updatePlayer', partnerId, 'playing');
+		Meteor.call('updatePlayer', clientId, 'instructions');
+		Meteor.call('updatePlayer', partnerId, 'instructions');
 
 		// Add Game to DB
 		return Games.insert(data);
