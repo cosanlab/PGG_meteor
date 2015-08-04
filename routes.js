@@ -12,21 +12,16 @@ Router.route('/', {
   }
 });
 Router.route('/instructions',{
-  waitOn: function(){
-    Meteor.subscribe('Games');
-  },
   action: function(){
     if (this.ready){
       var gameState = Games.findOne().state;
       if(gameState== 'instructions'){
-        this.render();
+        this.render('instructions');
         console.log('Game not ready');
-        this.next();
       }
       else{
         console.log('Game ready');
         Router.go('gameTree');
-        this.next();
       }
     }
   }
