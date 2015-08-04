@@ -3,6 +3,7 @@ Router.configure({
   layoutTemplate: 'main',
   loadingTemplate: 'loading'
 });
+
 Router.route('/', {
   name: 'home',
   template: 'home',
@@ -10,12 +11,41 @@ Router.route('/', {
     return Meteor.subscribe('Players');
   }
 });
-Router.route('/instructions');
+Router.route('/instructions',{
+  waitOn: function(){
+    Meteor.subscribe('Games');
+  },
+  action: function(){
+    if (this.ready){
+      var gameState = Games.findOne().state;
+      if(gameState== 'instructions'){
+        this.render();
+        console.log('Game not ready');
+        this.next();
+      }
+      else{
+        console.log('Game ready');
+        Router.go('gameTree');
+        this.next();
+      }
+    }
+  }
+}); 
+//Router.route('/instructions');
 Router.route('/gameTree');
 Router.route('/register');
 Router.route('/login');
 
-Router.route('/lobby'); 
+Router.route('/lobby',{
+  waitOn: function(){
+    return Meteor.subscribe('Players');
+  },
+  action: function(){
+    if(this.ready){
+      this.render();
+    }
+  }
+}); 
 
 /*
 Router.route('/lobby/:_id', {

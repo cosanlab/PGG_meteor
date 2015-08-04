@@ -68,7 +68,9 @@ Meteor.methods({
 			data = {
 				playerA: partnerId,
 				playerB: clientId,
-				state: "instructions"
+				state: "instructions",
+				playerAReady:false,
+				playerBReady:false
 			};
 		}
 
@@ -90,7 +92,7 @@ Meteor.methods({
 		}
 	},
 	'updateGameState': function(gameId, state) {
-		return Games.update(gameId, {$set: {status:state}});
+		return Games.update(gameId, {$set: {'state':state}});
 	},
 	'playerReady': function(gameId){
 		// update player status to ready for games matching gameId
@@ -105,11 +107,10 @@ Meteor.methods({
 				playerBReady:true
 			};
 		}
-		return Games.update(gameId, {$set: data});
-
-		// Start Game (will only work if both players are ready)
+		Games.update(gameId, {$set: data});
+		//Update game status to playing if both player statuses are ready
 		if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady){
-			Meteor.call('updateGameState', gameId, "playing")
+			return Meteor.call('updateGameState',gameId, "playing");
 		}
 	}
 });
