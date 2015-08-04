@@ -110,7 +110,10 @@ Meteor.methods({
 		Games.update(gameId, {$set: data});
 		//Update game status to playing if both player statuses are ready
 		if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady){
-			Meteor.call('updateGameState',gameId, "playerADeciding");
+			Meteor.call('updateGameState',gameId, "playerBmessaging");
 		}
+	},
+	'addMessage':function(gameId, message){
+		Games.update(gameId, {$set:{'message':message}});
 	}
 });
