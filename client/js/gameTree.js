@@ -1,4 +1,4 @@
-// requires d3
+//D3 SVG element rendering
 Template.gameTree.rendered = function () {
 
 	var svg = d3.select('#tree')
@@ -140,6 +140,7 @@ Template.gameTree.rendered = function () {
 
 };
 
+//Click event handlers for game tree
 Template.gameTree.events({
 	'click .playerALeft': function(event){
 		event.preventDefault();
