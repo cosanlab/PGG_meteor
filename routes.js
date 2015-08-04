@@ -22,6 +22,7 @@ Router.route('/instructions',{
       else{
         console.log('Game ready');
         Router.go('gameTree');
+        //Each client updates their own status
         Meteor.call('updatePlayer', Meteor.userId(),'playing');
       }
     }
