@@ -1,4 +1,43 @@
 <template name="gameTree">
-	<div id="tree">
+
+{{#if equals gameState 'playerBmessaging'}}
+	<div class = "container-fluid">
+		<h3 class = "text-center"><u> Player B is composing message </u></h3>
+	</div>
+	{{#if isPlayerB}}
+		{{> messageForm}}
+	{{/if}}
+{{/if}}
+
+{{#if equals gameState 'playerAdeciding'}}
+	<div class = "container-fluid">
+		<h3 class = "text-center"><u> Player A is deciding </u></h3>
+	</div>
+	{{> messageDisplay}}
+{{/if}}
+
+<div id="tree"></div>
+</template>
+
+
+
+<template name="messageForm">
+	<div class="container-fluid">
+		<div class="row-fluid">	
+		  <div class="col-md-12">
+		    <div class="input-group">
+		      <span class="input-group-addon" id="basic-addon1">Message to Player A: </span>
+		        <input type="text" class="form-control" placeholder="Type a message and press Enter to send..." aria-describedby="basic-addon1">
+		    </div>
+		   </div>
+		 </div>
 	</div>
 </template>
+
+<template name="messageDisplay">
+	<div class= "container-fluid">
+		<p class="text-center"><b> Player B says: </b></p>
+	<p class= "text-info text-center" ><em>{{message}}</em></p>
+	</div>
+</template>
+

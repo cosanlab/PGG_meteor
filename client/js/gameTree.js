@@ -140,8 +140,50 @@ Template.gameTree.rendered = function () {
 
 };
 
-//Click event handlers for game tree
+//New Spacebars function that should work on all templates
+Template.registerHelper("equals", function(a,b){
+	return (a==b);
+});
+
+//Message display template helper
+Template.messageDisplay.helpers({
+	message: function(){
+		return Games.findOne().message;
+	}
+});
+
+Template.gameTree.helpers({
+	//Only show message input to player B
+	isPlayerB: function(){
+		var playerB = Games.findOne().playerB;
+		if(Meteor.userId() == playerB){
+			return true;
+		} else{
+			return false;
+		}
+	},	
+	gameState: function(){
+		return Games.findOne().state;
+	},
+	message: function(){
+		return Games.find({},{fields:{message:1}});
+	}
+
+});
+
+//Event handlers for game tree
 Template.gameTree.events({
+	'keydown input.form-control': function(event){
+		if(event.which===13){
+        var message = event.target.value;
+        var gameId = Games.find().fetch()[0]._id;
+        Meteor.call('addMessage',gameId, message);
+        Meteor.call('updateGameState',gameId, 'playerAdeciding');
+        event.target.value = "";
+    	}	
+
+	},
+
 	'click .playerALeft': function(event){
 		event.preventDefault();
 		console.log("Player A chose Left!");
