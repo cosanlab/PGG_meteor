@@ -1,10 +1,16 @@
 // requires d3
 Template.gameTree.rendered = function () {
-		var svg, width = 800, height = 800;
+		var svg
 
-		svg = d3.select('#tree').append('svg')
-			.attr('width', width)
-			.attr('height',height);
+		svg = d3.select('#tree')
+			.append("div")
+			.classed("svg-container", true) //container class to make it responsive
+			.append("svg")
+			//responsive SVG needs these 2 attributes and no width and height attr
+			.attr("preserveAspectRatio", "xMinYMin meet")
+			.attr("viewBox", "0 0 800 800")
+			//class to make it responsive
+			.classed("svg-content-responsive", true);    
 
 		var playerALeftData = [[{ x: 400,   y: 100},  { x: 300,  y: 200}]];
 		var playerARightData = [[{ x: 400,   y: 100},  { x: 500,  y: 200}]];
@@ -27,7 +33,7 @@ Template.gameTree.rendered = function () {
 				.attr("font-weight" ,"bold");
 
 		var playerALeft = playerA.append("g");
-
+			
 		var playerALeftLine = playerALeft.selectAll("line")
 			.data(playerALeftData)
 			.enter()
@@ -45,6 +51,7 @@ Template.gameTree.rendered = function () {
 					.attr("stroke-width",3)
 					.attr("stroke", "black");
 			});
+
 
 		playerALeft.append("text")	
 				.attr("x",300)
