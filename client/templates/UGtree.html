@@ -1,12 +1,10 @@
-<html>
-<head>
-<!-- Load the Paper.js library -->
-<script type="text/javascript" src="js/paper.js"></script>
+<template name="UGtree">
+<!-- No need to load paper.js libarary anymore. Added the meteor package instead -->
+
 <!-- Load external PaperScript and associate it with myCanvas -->
-<script type="text/paperscript" src="js/UGtree.js" canvas="myCanvas">
-</script>
-</head>
-<body>
-	<canvas id="myCanvas" resize></canvas>
-</body>
-</html>
+	<script type="text/paperscript" src="js/UGtree.js" canvas="myCanvas">
+	</script>
+	<div>
+		<canvas id="myCanvas" resize></canvas>
+	</div>
+</template>
