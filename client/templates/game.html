@@ -49,28 +49,29 @@
 	</div>
 </template>
 
-<!-- template for the game tree -->
+<!-- template for the game tree
+dynamically renders branches based on player choices -->
 
 <template name = "gameTree">
 	<div id="tree">
 		<div class = "svg-container">
 			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 800 800" class= "svg-content-responsive">
 				<text x = "400" y="90" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
-				<g class="playerAleft" stroke= "black" stroke-width= "3">
+				<g class="playerAleft" stroke= "{{colorAL}}" stroke-width= "{{widthAL}}" fill = "{{colorAL}}">
 					<path d= "M400, 100L300, 200"></path>
 					<text x="300" y="230" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
 					<text x="300" y="260" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
 				</g>
-				<g class ="playerAright" stroke= "black" stroke-width= "3">
+				<g class ="playerAright" stroke= "{{colorAR}}" stroke-width= "{{widthAR}}" fill = "{{colorAR}}">
 					<path d= "M400, 100L500, 200"></path>
 					<text x="500" y="230" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
 				</g>
-				<g class="playerBleft" stroke= "black" stroke-width= "3">
+				<g class="playerBleft" stroke= "{{colorBL}}" stroke-width= "{{widthBL}}" fill = "{{colorBL}}">
 					<path d= "M500, 240L400, 340"></path>
 					<text x="400" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
 					<text x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $0</text>
 				</g>
-				<g class="playerBright" stroke= "black" stroke-width= "3">
+				<g class="playerBright" stroke= "{{colorBR}}" stroke-width= "{{widthBR}}" fill = "{{colorBR}}">
 					<path d= "M500, 240L600, 340"></path>
 					<text x="600" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
 					<text x="600" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
