@@ -94,6 +94,15 @@ Meteor.methods({
 	'updateGameState': function(gameId, state) {
 		return Games.update(gameId, {$set: {'state':state}});
 	},
+	'updatePlayerChoice': function(gameId, choice) {
+		var gameState = Games.findOne().state;
+		if(gameState == 'playerAdeciding'){
+			return Games.update(gameId, {$set: {'PlayerAChoice':choice}});
+		}
+		if(gameState == 'playerBdeciding'){
+			return Games.update(gameId, {$set: {'PlayerBChoice':choice}});
+		}
+	},
 	'playerReady': function(gameId){
 		// update player status to ready for games matching gameId
 		var currentUser = Meteor.userId();

@@ -17,11 +17,25 @@ body{
     left: 0;
 }
 
+.hover{
+    stroke: red;
+    fill: red;
+    stroke-width: 6;
+}
+
+.choice{
+    stroke: green;
+    fill: green;
+    stroke-width: 6;
+}
+
+/*
 .playerALeft, .playerARight{
     stroke: #000000;
     fill: #000000;
     stroke-width: 3;
 }
+
 
 
 .playerBLeft, .playerBRight{
@@ -35,3 +49,4 @@ body{
     stroke-width: 6;
     fill: #0000FF;
 }
+*/

@@ -1,5 +1,5 @@
 //D3 SVG element rendering
-Template.gameTree.rendered = function () {
+/*Template.gameTree.rendered = function () {
 
 	var svg = d3.select('#tree')
 	.append("div")
@@ -36,7 +36,7 @@ Template.gameTree.rendered = function () {
 
 	//Left part of Player A's decision tree
 	var playerALeft = playerA.append("g");
-		playerALeft.attr("class","playerALeft");
+		playerALeft.attr("class","playerALeft static");
 
 	//Line aesthetic defaults in css file	
 	var playerALeftLine = playerALeft.selectAll("line")
@@ -64,7 +64,7 @@ Template.gameTree.rendered = function () {
 
 	//Right part of Player A's decision tree
 	var playerARight = playerA.append("g");
-		playerARight.attr("class","playerARight");
+		playerARight.attr("class","playerARight static");
 
 	var playerARightLine = playerARight.selectAll("line")
 		.data(playerARightData)
@@ -87,7 +87,7 @@ Template.gameTree.rendered = function () {
 
 	//Left part of Player B's decision tree
 	var playerBLeft = playerB.append("g");
-		playerBLeft.attr("class","playerBLeft");
+		playerBLeft.attr("class","playerBLeft static");
 
 	var playerBLeftLine = playerBLeft.selectAll("line")
 		.data(playerBLeftData)
@@ -114,7 +114,7 @@ Template.gameTree.rendered = function () {
 
 	//Right part of Player B's decision tree
 	var playerBRight = playerB.append("g");
-		playerBRight.attr("class","playerBRight");
+		playerBRight.attr("class","playerBRight static");
 
 	var playerBRightLine = playerBRight.selectAll("line")
 		.data(playerBRightData)
@@ -139,91 +139,4 @@ Template.gameTree.rendered = function () {
 		.attr("stroke-width",1);
 
 };
-
-Template.gameTree.helpers({
-	//Only show message input to player B
-	isPlayerB: function(){
-		var playerB = Games.findOne().playerB;
-		if(Meteor.userId() == playerB){
-			return true;
-		} else{
-			return false;
-		}
-	},	
-	gameState: function(){
-		return Games.findOne().state;
-	},
-	stroke: function(){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		switch (game.state){
-			case 'playerBmessaging':
-				return '#000000';
-			case 'playerAdeciding':
-				if(currentUser == game.playerA){
-
-				}
-		
-
-		}
-	}
-
-});
-
-//Event handlers for game tree
-Template.gameTree.events({
-	'mouseenter .playerALeft':function(event){
-		var game = Games.findOne();
-		if (game.state == 'playerBmessage'){
-			return;
-		}
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA && game.state=='playerAdeciding'){
-			$(".playerALeft").css("stroke", "#FF0000");
-			$(".playerALeft").css("stroke-width", "6");
-			$(".playerALeft").css("fill", "#FF0000");				
-		}
-
-	},
-	'mouseout .playerALeft':function(event){
-		$(".playerALeft").css("stroke", "#000000");
-		$(".playerALeft").css("stroke-width", "3");
-		$(".playerALeft").css("fill", "##000000");
-	},
-
-	'keydown input.form-control': function(event){
-		if(event.which===13){
-        var message = event.target.value;
-        var gameId = Games.find().fetch()[0]._id;
-        Meteor.call('addMessage',gameId, message);
-        Meteor.call('updateGameState',gameId, 'playerAdeciding');
-        event.target.value = "";
-    	}	
-
-	},
-
-	'click .playerALeft': function(event){
-		event.preventDefault();
-		console.log("Player A chose Left!");
-	},
-	'click .playerARight': function(event){
-		event.preventDefault();
-		console.log("Player A chose Right!");
-	},
-	'click .playerBLeft': function(event){
-		event.preventDefault();
-		console.log("Player B chose Left!");
-	},
-	'click .playerBRight': function(event){
-		event.preventDefault();
-		console.log("Player B chose Right!");
-	}
-});
-
-
-//Message display template helper
-Template.messageDisplay.helpers({
-	message: function(){
-		return Games.findOne().message;
-	}
-});
+ */
