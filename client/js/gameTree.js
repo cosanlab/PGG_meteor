@@ -140,18 +140,6 @@ Template.gameTree.rendered = function () {
 
 };
 
-//New Spacebars function that should work on all templates
-Template.registerHelper("equals", function(a,b){
-	return (a==b);
-});
-
-//Message display template helper
-Template.messageDisplay.helpers({
-	message: function(){
-		return Games.findOne().message;
-	}
-});
-
 Template.gameTree.helpers({
 	//Only show message input to player B
 	isPlayerB: function(){
@@ -165,14 +153,44 @@ Template.gameTree.helpers({
 	gameState: function(){
 		return Games.findOne().state;
 	},
-	message: function(){
-		return Games.find({},{fields:{message:1}});
+	stroke: function(){
+		var game = Games.findOne();
+		var currentUser = Meteor.userId();
+		switch (game.state){
+			case 'playerBmessaging':
+				return '#000000';
+			case 'playerAdeciding':
+				if(currentUser == game.playerA){
+
+				}
+		
+
+		}
 	}
 
 });
 
 //Event handlers for game tree
 Template.gameTree.events({
+	'mouseenter .playerALeft':function(event){
+		var game = Games.findOne();
+		if (game.state == 'playerBmessage'){
+			return;
+		}
+		var currentUser = Meteor.userId();
+		if(currentUser == game.playerA && game.state=='playerAdeciding'){
+			$(".playerALeft").css("stroke", "#FF0000");
+			$(".playerALeft").css("stroke-width", "6");
+			$(".playerALeft").css("fill", "#FF0000");				
+		}
+
+	},
+	'mouseout .playerALeft':function(event){
+		$(".playerALeft").css("stroke", "#000000");
+		$(".playerALeft").css("stroke-width", "3");
+		$(".playerALeft").css("fill", "##000000");
+	},
+
 	'keydown input.form-control': function(event){
 		if(event.which===13){
         var message = event.target.value;
@@ -199,5 +217,13 @@ Template.gameTree.events({
 	'click .playerBRight': function(event){
 		event.preventDefault();
 		console.log("Player B chose Right!");
+	}
+});
+
+
+//Message display template helper
+Template.messageDisplay.helpers({
+	message: function(){
+		return Games.findOne().message;
 	}
 });

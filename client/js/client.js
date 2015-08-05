@@ -1,6 +1,11 @@
 Meteor.subscribe('Players');
 Meteor.subscribe('Games');
 
+//New Spacebars function that should work on all templates
+Template.registerHelper("equals", function(a,b){
+    return (a==b);
+});
+
 // Login validation
 $.validator.setDefaults({
     rules: {
