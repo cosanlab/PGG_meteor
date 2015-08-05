@@ -10,6 +10,4 @@ accounts-ui
 less
 iron:router
 twbs:bootstrap
-d3
 themeteorchef:jquery-validation
-marcinn:paperjs

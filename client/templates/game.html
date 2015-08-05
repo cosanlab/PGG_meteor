@@ -1,0 +1,103 @@
+<template name="game">
+
+{{#if equals gameState 'playerBmessaging'}}
+	<div class = "container-fluid">
+		<h3 class = "text-center"><u> Player B is composing message </u></h3>
+	</div>
+	{{#if isPlayerB}}
+		{{> messageForm}}
+	{{/if}}
+{{/if}}
+
+{{#if equals gameState 'playerAdeciding'}}
+	<div class = "container-fluid">
+		<h3 class = "text-center"><u> Player A is deciding </u></h3>
+	</div>
+	{{> messageDisplay}}
+{{/if}}
+
+{{#if equals gameState 'playerBdeciding'}}
+	<div class = "container-fluid">
+		<h3 class = "text-center"><u> Player B is deciding </u></h3>
+	</div>
+{{/if}}
+
+{{> gameTree}}
+
+</template>
+
+
+<!-- template for the message input form -->
+<template name="messageForm">
+	<div class="container-fluid">
+		<div class="row-fluid">	
+		  <div class="col-md-12">
+		    <div class="input-group">
+		      <span class="input-group-addon" id="basic-addon1">Message to Player A: </span>
+		        <input type="text" class="form-control" placeholder="Type a message and press Enter to send..." aria-describedby="basic-addon1">
+		    </div>
+		   </div>
+		 </div>
+	</div>
+</template>
+
+<!-- template for message displaying -->
+<template name="messageDisplay">
+	<div class= "container-fluid">
+		<p class="text-center"><b> Player B says: </b></p>
+	<p class= "text-info text-center" ><em>{{message}}</em></p>
+	</div>
+</template>
+
+<!-- template for the game tree -->
+
+<template name = "gameTree">
+	<div id="tree">
+		<div class = "svg-container">
+			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 800 800" class= "svg-content-responsive">
+				<text x = "400" y="90" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
+				<g class="playerAleft" stroke= "black" stroke-width= "3">
+					<path d= "M400, 100L300, 200"></path>
+					<text x="300" y="230" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
+					<text x="300" y="260" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
+				</g>
+				<g class ="playerAright" stroke= "black" stroke-width= "3">
+					<path d= "M400, 100L500, 200"></path>
+					<text x="500" y="230" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
+				</g>
+				<g class="playerBleft" stroke= "black" stroke-width= "3">
+					<path d= "M500, 240L400, 340"></path>
+					<text x="400" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
+					<text x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $0</text>
+				</g>
+				<g class="playerBright" stroke= "black" stroke-width= "3">
+					<path d= "M500, 240L600, 340"></path>
+					<text x="600" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
+					<text x="600" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
+				</g>
+			</svg>
+		</div>
+	</div>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

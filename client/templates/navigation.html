@@ -1,7 +1,7 @@
 <template name="navigation">
     <ul class="nav navbar-nav">
         <li><a href="{{pathFor route='lobby'}}">Lobby</a></li>
-        <li><a href="{{pathFor route='gameTree'}}">Game Tree</a></li>
+        <li><a href="{{pathFor route='game'}}">Game</a></li>
         {{#if currentUser}}
 		    <li><a href="#" class="logout">Logout</a></li>
     	{{else}}
