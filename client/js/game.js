@@ -10,6 +10,13 @@ Template.game.helpers({
 	},	
 	gameState: function(){
 		return Games.findOne().state;
+	},
+	condition: function(){
+		var game = Games.findOne();
+		if(game.condition == 'noMessaging'){
+			Meteor.call('addMessage',game._id, '');
+		}
+		return game.condition;
 	}
 });
 
@@ -157,8 +164,8 @@ Template.gameTree.events({
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAleft").attr('class','playerAleft');
-			Meteor.call('updatePlayerChoice', game._id,'Left');
-			Meteor.call('updateGameState',game._id, 'payoffs');
+			Meteor.call('updatePlayerChoice', game._id,'A','Left');
+			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}	
 	},
 	'click .playerAright': function(event){
@@ -167,7 +174,7 @@ Template.gameTree.events({
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAright").attr('class','playerAright');
-			Meteor.call('updatePlayerChoice',game._id,'Right');
+			Meteor.call('updatePlayerChoice',game._id,'A','Right');
 			Meteor.call('updateGameState',game._id, 'playerBdeciding');
 		}	
 	},	
@@ -177,8 +184,8 @@ Template.gameTree.events({
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBleft").attr('class','playerBleft');
-			Meteor.call('updatePlayerChoice', game._id,'Left');
-			Meteor.call('updateGameState',game._id, 'payoffs');
+			Meteor.call('updatePlayerChoice', game._id,'B','Left');
+			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}
 	},
 	'click .playerBright': function(event){
@@ -187,8 +194,8 @@ Template.gameTree.events({
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBright").attr('class','playerBright');
-			Meteor.call('updatePlayerChoice', game._id, 'Right');
-			Meteor.call('updateGameState',game._id, 'payoffs');
+			Meteor.call('updatePlayerChoice', game._id,'B','Right');
+			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}
 	}	
 });

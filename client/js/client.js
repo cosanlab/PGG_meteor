@@ -30,7 +30,7 @@ $.validator.setDefaults({
     }
 });
 
-
+//Registration handler
 Template.register.onRendered(function(){
     var validator = $('.register').validate({
         submitHandler: function(event){
@@ -56,6 +56,7 @@ Template.register.onRendered(function(){
     });
 });
 
+//Login handler
 Template.login.onRendered(function(){
     var validator = $('.login').validate({
         submitHandler: function(event){
