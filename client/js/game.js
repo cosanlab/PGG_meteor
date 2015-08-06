@@ -73,12 +73,8 @@ Template.gameTree.helpers({
 	},
 	widthBR: function(){
 		var game= Games.findOne();
-		if(game.state == 'prePayoff'){
-			if(game.PlayerBChoice == 'Right'){
-				return 6;
-			} else{
-				return 3;
-			}
+		if(game.PlayerBChoice == 'Right'){
+			return 6;
 		} else{
 			return 3;
 		}
@@ -162,8 +158,7 @@ Template.gameTree.events({
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAleft").attr('class','playerAleft');
 			Meteor.call('updatePlayerChoice', game._id,'Left');
-			Meteor.call('updateGameState',game._id, 'prePayoff');
-			//Router.go('payoffs');
+			Meteor.call('updateGameState',game._id, 'payoffs');
 		}	
 	},
 	'click .playerAright': function(event){
@@ -183,8 +178,7 @@ Template.gameTree.events({
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBleft").attr('class','playerBleft');
 			Meteor.call('updatePlayerChoice', game._id,'Left');
-			Meteor.call('updateGameState',game._id, 'prePayoff');
-			//Router.route('payoffs');
+			Meteor.call('updateGameState',game._id, 'payoffs');
 		}
 	},
 	'click .playerBright': function(event){
@@ -194,8 +188,7 @@ Template.gameTree.events({
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBright").attr('class','playerBright');
 			Meteor.call('updatePlayerChoice', game._id, 'Right');
-			Meteor.call('updateGameState',game._id, 'prePayoff');
-			//Router.route('payoffs');
+			Meteor.call('updateGameState',game._id, 'payoffs');
 		}
 	}	
 });
