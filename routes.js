@@ -28,8 +28,22 @@ Router.route('/instructions',{
     }
   }
 }); 
-//Router.route('/instructions');
-Router.route('/game');
+Router.route('/game',{
+  action: function(){
+    if (this.ready){
+      var gameState = Games.findOne().state;
+      if(gameState== 'playerBmessaging'){
+        this.render('game');
+      }
+      else if(gameState == 'payoffs'){
+        setTimeout(function(){Router.go('payoffs');},3000);
+        //Each client updates their own status
+        Meteor.call('updatePlayer', Meteor.userId(),'finished');
+      }
+    }
+  }
+});
+Router.route('/payoffs');
 Router.route('/register');
 Router.route('/login');
 
