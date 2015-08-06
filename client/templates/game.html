@@ -1,11 +1,13 @@
 <template name="game">
 
-{{#if equals gameState 'playerBmessaging'}}
-	<div class = "container-fluid">
-		<h3 class = "text-center"><u> Player B is composing message </u></h3>
-	</div>
-	{{#if isPlayerB}}
-		{{> messageForm}}
+{{#if equals condition 'withMessaging'}}
+	{{#if equals gameState 'playerBmessaging'}}
+		<div class = "container-fluid">
+			<h3 class = "text-center"><u> Player B is composing message </u></h3>
+		</div>
+		{{#if isPlayerB}}
+			{{> messageForm}}
+		{{/if}}
 	{{/if}}
 {{/if}}
 
@@ -13,12 +15,20 @@
 	<div class = "container-fluid">
 		<h3 class = "text-center"><u> Player A is deciding </u></h3>
 	</div>
-	{{> messageDisplay}}
+	{{#if equals condition 'withMessaging'}}
+		{{> messageDisplay}}
+	{{/if}}
 {{/if}}
 
 {{#if equals gameState 'playerBdeciding'}}
 	<div class = "container-fluid">
 		<h3 class = "text-center"><u> Player B is deciding </u></h3>
+	</div>
+{{/if}}
+
+{{#if equals gameState 'finalChoices'}}
+	<div class = "container-fluid">
+		<h3 class = "text-center"><u> Final decisions: </u></h3>
 	</div>
 {{/if}}
 

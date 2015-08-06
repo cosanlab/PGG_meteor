@@ -4,16 +4,32 @@ Router.configure({
   loadingTemplate: 'loading'
 });
 
+Router.route('/register');
+Router.route('/login');
+
+//Home template, no data requires
 Router.route('/', {
   name: 'home',
   template: 'home',
+});
+
+//Lobby template, make sure we see the players db for matching
+Router.route('/lobby',{
   waitOn: function(){
     return Meteor.subscribe('Players');
-  }
-});
-Router.route('/instructions',{
+  },
   action: function(){
-    if (this.ready){
+    this.render('lobby');
+  }
+}); 
+
+//Instructions template, make sure we can see the games db for routing forward
+//to the game
+Router.route('/instructions',{
+  waitOn: function(){
+    return Meteor.subscribe('Games');
+  },
+  action: function(){
       var gameState = Games.findOne().state;
       if(gameState== 'instructions'){
         this.render('instructions');
@@ -25,35 +41,41 @@ Router.route('/instructions',{
         //Each client updates their own status
         Meteor.call('updatePlayer', Meteor.userId(),'playing');
       }
-    }
   }
 }); 
+
+//Games template, make sure we can see the games db for properly rendering
+//the game tree and forward routing to payoffs
 Router.route('/game',{
+  waitOn: function(){
+    return Meteor.subscribe('Games');
+  },
+
   action: function(){
-    if (this.ready){
-      var gameState = Games.findOne().state;
-      if(gameState== 'playerBmessaging'){
+    var game = Games.findOne();
+    if (game.state== 'finalChoices'){
+        setTimeout(function(){
+          Router.go('payoffs');
+          //Update all client statuses
+          Meteor.call('playerFinished', game._id); 
+        },
+        5000);
+                
+      }
+      else{
         this.render('game');
       }
-      else if(gameState == 'payoffs'){
-        setTimeout(function(){Router.go('payoffs');},3000);
-        //Each client updates their own status
-        Meteor.call('updatePlayer', Meteor.userId(),'finished');
-      }
-    }
   }
 });
-Router.route('/payoffs');
-Router.route('/register');
-Router.route('/login');
 
-Router.route('/lobby',{
+//Payoffs template, make sure we can see the games db for rendering amounts
+Router.route('/payoffs',{
   waitOn: function(){
-    return Meteor.subscribe('Players');
+    return Meteor.subscribe('Games');
   },
   action: function(){
-    if(this.ready){
-      this.render();
-    }
+    this.render('payoffs');
   }
-}); 
+});
+
+

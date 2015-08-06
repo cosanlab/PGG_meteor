@@ -18,6 +18,8 @@ Meteor.publish('gameAttendees', function(ids) {
 */
 
 Meteor.methods({
+	
+	//PLAYERS DB METHODS
 	'addPlayer': function(){
 		var currentUser = Meteor.userId();
 		var data = {
@@ -45,42 +47,6 @@ Meteor.methods({
 		check(state,String);
 		return Players.update(playerId, {$set: {status: state}});
 	},
-	'createGame': function(clientId, partnerId){
-		/* Security
-		var currentUser = Meteor.userId();
-		if(!currentUser){
-			throw new Meteor.Error("not-logged-in", "You're not logged in.");
-		}
-		*/
-
-		// Randomize role
-		var isPlayerA = Math.random() > 0.5;
-		var data;
-		if(isPlayerA){
-			data = {
-				playerA: clientId,
-				playerB: partnerId,
-				state: "instructions",
-				playerAReady:false,
-				playerBReady:false
-			};
-		} else {
-			data = {
-				playerA: partnerId,
-				playerB: clientId,
-				state: "instructions",
-				playerAReady:false,
-				playerBReady:false
-			};
-		}
-
-		// update each player's status
-		Meteor.call('updatePlayer', clientId, 'instructions');
-		Meteor.call('updatePlayer', partnerId, 'instructions');
-
-		// Add Game to DB
-		return Games.insert(data);
-	},
 	'matchPlayers': function(){
 		var clientId = Meteor.userId();
 		var numPlayers = Players.find({status:'waiting'},{}).count();
@@ -91,16 +57,74 @@ Meteor.methods({
 			return Meteor.call('createGame', clientId, partnerId);
 		}
 	},
+	'playerFinished': function(gameId){
+		//Update the clients's status in the Players DB
+		//then check both players status in the Players DB based on player ids 
+		//in the game they were playing. If both are finished, change the game
+		//status to ended
+		var currentUser = Meteor.userId();
+		Meteor.call('updatePlayer', currentUser,'finished');
+		var game = Games.findOne({_id:gameId});
+		var playerAstatus = Players.findOne({_id:game.playerA}).status;
+		var playerBstatus = Players.findOne({_id:game.playerB}).status;
+		
+		if(playerAstatus == 'finished' && playerBstatus == 'finished'){
+			Meteor.call('updateGameState',game._id,'ended');
+		}		
+	},	
+
+	//GAMES DB METHODS
+	'createGame': function(clientId, partnerId){
+		//Randomize condition; with or without messaging enabled
+		var messageCond = Math.random() > 0.5;
+		var cond;
+		if(messageCond){
+			cond = 'withMessaging';
+		} else {
+			cond = 'noMessaging';
+		}
+		// Randomize role
+		var isPlayerA = Math.random() > 0.5;
+		var data;
+		if(isPlayerA){
+			data = {
+				playerA: clientId,
+				playerB: partnerId,
+				state: "instructions",
+				playerAReady:false,
+				playerBReady:false,
+				condition: cond
+			};
+		} else {
+			data = {
+				playerA: partnerId,
+				playerB: clientId,
+				state: "instructions",
+				playerAReady:false,
+				playerBReady:false,
+				condition: cond
+			};
+		}
+
+		// update each player's status
+		Meteor.call('updatePlayer', clientId, 'instructions');
+		Meteor.call('updatePlayer', partnerId, 'instructions');
+
+		// Add Game to DB
+		return Games.insert(data);
+	},
+
 	'updateGameState': function(gameId, state) {
 		return Games.update(gameId, {$set: {'state':state}});
 	},
-	'updatePlayerChoice': function(gameId, choice) {
-		var gameState = Games.findOne().state;
-		if(gameState == 'playerAdeciding'){
+	'updatePlayerChoice': function(gameId, player, choice) {
+		var gameState = Games.findOne({_id:gameId}).state;
+		if(player == 'A'){
 			return Games.update(gameId, {$set: {'PlayerAChoice':choice}});
-		}
-		if(gameState == 'playerBdeciding'){
+		} else if(player == 'B'){
 			return Games.update(gameId, {$set: {'PlayerBChoice':choice}});
+		} else {
+			throw new Meteor.error ('playerError','Unrecognized player. Games not updated with player deciision!');
 		}
 	},
 	'playerReady': function(gameId){
@@ -118,11 +142,14 @@ Meteor.methods({
 		}
 		Games.update(gameId, {$set: data});
 		//Update game status to playing if both player statuses are ready
-		if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady){
+		//Make sure we take game condition into account
+		if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady && Games.find({_id:gameId}).fetch()[0].condition == 'withMessaging'){
 			Meteor.call('updateGameState',gameId, "playerBmessaging");
+		} else if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady && Games.find({_id:gameId}).fetch()[0].condition == 'noMessaging'){
+			Meteor.call('updateGameState',gameId, "playerAdeciding");
 		}
 	},
 	'addMessage':function(gameId, message){
 		Games.update(gameId, {$set:{'message':message}});
-	}
+	},
 });
