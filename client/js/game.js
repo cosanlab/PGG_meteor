@@ -8,6 +8,14 @@ Template.game.helpers({
 			return false;
 		}
 	},	
+	isPlayerA: function(){
+		var playerA = Games.findOne().playerA;
+		if(Meteor.userId() == playerA){
+			return true;
+		} else{
+			return false;
+		}
+	},
 	gameState: function(){
 		return Games.findOne().state;
 	},

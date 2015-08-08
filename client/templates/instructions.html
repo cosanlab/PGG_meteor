@@ -1,8 +1,45 @@
 <template name="instructions">
 <br> <br>
-	<p> Here's how to play: </p>
+	<div class = "container">
+		<h3> Here's how to play: </h3>
+		<blockquote>
+				For this experiment you will be making a decision between two different monetary outcomes for yourself and another player. When you begin you will see a graphic of a tree with branches corresponding to the different monetary amounts you can choose from. When it is your turn turn to decide you, simply click on the tree corresponding to your decision.  
+		</blockquote>
+		{{#if equals game.player 'Player A'}}
+			<blockquote>
+				You have been assigned the role of <strong>{{game.player}}</strong>.
+			{{#if equals game.condition 'withMessaging'}} 
+				The game will begin with Player B having the opportunity to send you a message. When they have done so, you will be able to read the message they sent and have and opportunity to make your decision by clicking on the tree.  
+			{{/if}}
 
-	<button type="button" class="btn btn-default ready-to-start" aria-label="Left Align">
-		Ready?
-	</button>	
+			{{#if equals game.condition 'noMessaging'}} 
+				The game will begin with you having the opportunity to make your decision by clicking on the tree.  
+			{{/if}}
+			</blockquote>
+			<blockquote>
+				Outcome details here.
+			</blockquote>
+		{{/if}}
+		{{#if equals game.player 'Player B'}}
+			<blockquote>
+				You have been assigned the role of <strong>{{game.player}}</strong>.
+			{{#if equals game.condition 'withMessaging'}} 
+				The game will begin with you having the opportunity to send a message to Player A and influence their decision.When you have done so, Player A will then be able to choose an option after reading your message. 
+			{{/if}}
+
+			{{#if equals game.condition 'noMessaging'}} 
+					The game will begin with Player A choosing between two options. You will be able to see the choice they make highlighted on the tree in green.  
+			{{/if}}
+			</blockquote>
+			<blockquote>
+				Outcome details here.
+			</blockquote>
+		{{/if}}
+		<br>
+		<p> 
+		Click the button below to indicate you understand the instructions and are ready to begin. You may have to wait a moment for the other player to also indicate they are ready to begin.
+		</p>
+	</div>
+	<br>
+	<button type="button" class="btn btn-danger btn-lg ready-to-start" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>I'm Not Ready</button>	
 </template>

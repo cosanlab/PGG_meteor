@@ -4,16 +4,21 @@
 	{{#if equals gameState 'playerBmessaging'}}
 		<div class = "container-fluid">
 			<h3 class = "text-center"><u> Player B is composing message </u></h3>
+			{{#if isPlayerB}}
+				<p class= "text-center"> (Your turn) </p>
+			{{/if}}
 		</div>
-		{{#if isPlayerB}}
-			{{> messageForm}}
-		{{/if}}
+		<br>
+		{{> messageForm}}
 	{{/if}}
 {{/if}}
 
 {{#if equals gameState 'playerAdeciding'}}
 	<div class = "container-fluid">
 		<h3 class = "text-center"><u> Player A is deciding </u></h3>
+		{{#if isPlayerA}}
+			<p class = "text-center"> (Your turn) </p>
+		{{/if}}
 	</div>
 	{{#if equals condition 'withMessaging'}}
 		{{> messageDisplay}}
@@ -23,6 +28,9 @@
 {{#if equals gameState 'playerBdeciding'}}
 	<div class = "container-fluid">
 		<h3 class = "text-center"><u> Player B is deciding </u></h3>
+		{{#if isPlayerB}}
+			<p class = "text-center"> (Your turn) </p>
+		{{/if}}
 	</div>
 {{/if}}
 
@@ -65,7 +73,7 @@ dynamically renders branches based on player choices -->
 <template name = "gameTree">
 	<div id="tree">
 		<div class = "svg-container">
-			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 800 800" class= "svg-content-responsive">
+			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 1000 450" class= "svg-content-responsive">
 				<text x = "400" y="90" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
 				<g class="playerAleft" stroke= "{{colorAL}}" stroke-width= "{{widthAL}}" fill = "{{colorAL}}">
 					<path d= "M400, 100L300, 200"></path>
