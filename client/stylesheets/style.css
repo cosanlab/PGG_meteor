@@ -1,7 +1,14 @@
 body{
     padding: 40px 0 0 0 ;
 }
-
+img {
+    width: auto;
+    height: 100%;
+}
+.navbar-brand { 
+    margin-top: 0; 
+    padding: 0; 
+}
 .svg-container {
     display: inline-block;
     position: relative;
@@ -13,8 +20,8 @@ body{
 .svg-content-responsive {
     display: inline-block;
     position: absolute;
-    top: 10px;
-    left: 0;
+    top: -5%;
+    left: 10%;
 }
 
 .hover{
@@ -28,25 +35,3 @@ body{
     fill: green;
     stroke-width: 6;
 }
-
-/*
-.playerALeft, .playerARight{
-    stroke: #000000;
-    fill: #000000;
-    stroke-width: 3;
-}
-
-
-
-.playerBLeft, .playerBRight{
-    stroke: #000000;
-    fill: #000000;
-    stroke-width: 3;
-}
-
-.playerBLeft:hover, .playerBRight:hover{
-    stroke: #0000FF;
-    stroke-width: 6;
-    fill: #0000FF;
-}
-*/
