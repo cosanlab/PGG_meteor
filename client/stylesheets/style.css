@@ -1,21 +1,39 @@
 body{
-    padding: 40px 0 0 0 ;
+    padding: 80px 0 0 0 ;
 }
 img {
     width: auto;
     height: 100%;
 }
-.navbar-brand { 
-    margin-top: 0; 
+
+.navbar-fixed-top {
+    height: 80px;
+    margin: 0;
     padding: 0;
-    background: 000033;
-}
-  .navbar-default {
     color: #CCFFFF;
     background-color: #000033 !important;
     border-color: transparent;
 }
-.navbar .container-fluid { height: 3em; }
+
+
+.navbar-header {
+    height: 80px;
+    width: 80px;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-brand {
+    height: 80px;
+    padding: 2px;
+}
+
+.navbar-nav > li > a{
+    height: 80px;
+    padding: 30px 0 30px 30px;
+    margin: 0;
+}
+
 
 /* link */
 .navbar-default .navbar-nav > li > a {
