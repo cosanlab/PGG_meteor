@@ -1,8 +1,8 @@
 <template name="main">
-	<nav class="navbar navbar-default navbar-fixed-top">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand" href="{{pathFor route='home'}}"><img src= "/Logo.png"></a>
+	      <a class="navbar-brand" href="{{pathFor route='home'}}"><img src= "/cosanlab_logo_web_small_trans.png"></a>
 	    </div>
 	    <div>
 	        {{> navigation}}
@@ -11,6 +11,7 @@
 	</nav>
 	<br><br>
 	<div>
+		{{> progress}}
 	    {{> yield}}
     </div>
     <hr />
