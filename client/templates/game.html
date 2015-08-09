@@ -6,37 +6,38 @@
 			<!-- <h3 class = "text-center"><u> Player B is composing message </u></h3> -->
 			{{#if isPlayerB}}
 				<p class= "text-center"> (Your turn) </p>
+				{{> messageForm}}
 			{{/if}}
 		</div>
 		<br>
-		{{> messageForm}}
 	{{/if}}
 {{/if}}
 
 {{#if equals gameState 'playerAdeciding'}}
 	<div class = "container-fluid">
 		<!-- <h3 class = "text-center"><u> Player A is deciding </u></h3> -->
+		{{#if equals condition 'withMessaging'}}
+			{{> messageDisplay}}
+		{{/if}}
 		{{#if isPlayerA}}
-			<p class = "text-center"> (Your turn) </p>
+			<p class = "text-center"><b>Player A:</b> What do you want to do? </p>
 		{{/if}}
 	</div>
-	{{#if equals condition 'withMessaging'}}
-		{{> messageDisplay}}
-	{{/if}}
+
 {{/if}}
 
 {{#if equals gameState 'playerBdeciding'}}
 	<div class = "container-fluid">
 		<!-- <h3 class = "text-center"><u> Player B is deciding </u></h3> -->
 		{{#if isPlayerB}}
-			<p class = "text-center"> (Your turn) </p>
+			<p class = "text-center"><b>Player B:</b> What do you want to do? </p>
 		{{/if}}
 	</div>
 {{/if}}
 
 {{#if equals gameState 'finalChoices'}}
 	<div class = "container-fluid">
-		<h3 class = "text-center"><u> Final decisions: </u></h3>
+		<!-- <h3 class = "text-center"><u> Final decisions: </u></h3> -->
 	</div>
 {{/if}}
 
@@ -59,13 +60,6 @@
 	</div>
 </template>
 
-<!-- template for message displaying -->
-<template name="messageDisplay">
-	<div class= "container-fluid">
-		<p class="text-center"><b> Player B says: </b></p>
-	<p class= "text-info text-center" ><em>{{message}}</em></p>
-	</div>
-</template>
 
 <!-- template for the game tree
 dynamically renders branches based on player choices -->
