@@ -3,7 +3,7 @@
 {{#if equals condition 'withMessaging'}}
 	{{#if equals gameState 'playerBmessaging'}}
 		<div class = "container-fluid">
-			<h3 class = "text-center"><u> Player B is composing message </u></h3>
+			<!-- <h3 class = "text-center"><u> Player B is composing message </u></h3> -->
 			{{#if isPlayerB}}
 				<p class= "text-center"> (Your turn) </p>
 			{{/if}}
@@ -15,7 +15,7 @@
 
 {{#if equals gameState 'playerAdeciding'}}
 	<div class = "container-fluid">
-		<h3 class = "text-center"><u> Player A is deciding </u></h3>
+		<!-- <h3 class = "text-center"><u> Player A is deciding </u></h3> -->
 		{{#if isPlayerA}}
 			<p class = "text-center"> (Your turn) </p>
 		{{/if}}
@@ -27,7 +27,7 @@
 
 {{#if equals gameState 'playerBdeciding'}}
 	<div class = "container-fluid">
-		<h3 class = "text-center"><u> Player B is deciding </u></h3>
+		<!-- <h3 class = "text-center"><u> Player B is deciding </u></h3> -->
 		{{#if isPlayerB}}
 			<p class = "text-center"> (Your turn) </p>
 		{{/if}}

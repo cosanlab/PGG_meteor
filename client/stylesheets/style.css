@@ -7,8 +7,38 @@ img {
 }
 .navbar-brand { 
     margin-top: 0; 
-    padding: 0; 
+    padding: 0;
+    background: 000033;
 }
+  .navbar-default {
+    color: #CCFFFF;
+    background-color: #000033 !important;
+    border-color: transparent;
+}
+.navbar .container-fluid { height: 3em; }
+
+/* link */
+.navbar-default .navbar-nav > li > a {
+    color: #FFFFFF;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #CCFFFF;
+}
+.navbar-default .navbar-nav > .active > a, 
+.navbar-default .navbar-nav > .active > a:hover, 
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: #E7E7E7;
+}
+.navbar-default .navbar-nav > .open > a, 
+.navbar-default .navbar-nav > .open > a:hover, 
+.navbar-default .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #D5D5D5;
+}
+
+.navbar {min-height:40px !important;}
 .svg-container {
     display: inline-block;
     position: relative;
@@ -25,14 +55,16 @@ img {
 }
 
 .hover{
-    stroke: red;
-    fill: red;
+    /*stroke: red;*/
+    /*fill: red;*/
+    stroke: #33CCFF;
+    fill: #33CCFF;
     stroke-width: 6;
 }
 
 .choice{
-    stroke: green;
-    fill: green;
+    stroke: #33CCFF;
+    fill: #33CCFF;
     stroke-width: 6;
 }
 
@@ -82,7 +114,7 @@ ul.nav-wizard li {
   line-height: 46px;
 }
 ul.nav-wizard li a {
-  color: #468847;
+  color: #000033;
   padding: 0;
 }
 ul.nav-wizard li a:hover {
@@ -139,7 +171,7 @@ ul.nav-wizard .active ~ li a:focus {
   background: #ededed;
 }
 ul.nav-wizard.nav-wizard-backnav li:hover {
-  color: #468847;
+  color: #000033;
   background: #f6fbfd;
 }
 ul.nav-wizard.nav-wizard-backnav li:hover:after {
@@ -149,7 +181,7 @@ ul.nav-wizard.nav-wizard-backnav li:hover a,
 ul.nav-wizard.nav-wizard-backnav li:hover a:active,
 ul.nav-wizard.nav-wizard-backnav li:hover a:visited,
 ul.nav-wizard.nav-wizard-backnav li:hover a:focus {
-  color: #468847;
+  color: #000033;
   background: #f6fbfd;
 }
 ul.nav-wizard.nav-wizard-backnav .active ~ li {
