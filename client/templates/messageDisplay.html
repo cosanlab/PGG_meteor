@@ -1,0 +1,10 @@
+<!-- template for message displaying -->
+<template name="messageDisplay">
+	<div class= "container-fluid">
+		{{#if isPlayerA}}
+			<p class="text-center"><b> Player B says: </b><em>"{{message}}"</em></p>
+		{{/if}}
+		{{#if isPlayerB}}
+			<p class="text-center"><b> You said: </b><em>"{{message}}"</em></p>
+		{{/if}}	</div>
+</template>
