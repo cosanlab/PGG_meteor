@@ -3,40 +3,45 @@
 {{#if equals condition 'withMessaging'}}
 	{{#if equals gameState 'playerBmessaging'}}
 		<div class = "container-fluid">
-			<h3 class = "text-center"><u> Player B is composing message </u></h3>
+			<!-- <h3 class = "text-center"><u> Player B is composing message </u></h3> -->
 			{{#if isPlayerB}}
 				<p class= "text-center"> (Your turn) </p>
+				{{> messageForm}}
 			{{/if}}
 		</div>
 		<br>
+<<<<<<< HEAD
 		{{> messageChoice}}
+=======
+>>>>>>> e5d4153d727c256b192bcc15dc44f8939f9886f9
 	{{/if}}
 {{/if}}
 
 {{#if equals gameState 'playerAdeciding'}}
 	<div class = "container-fluid">
-		<h3 class = "text-center"><u> Player A is deciding </u></h3>
+		<!-- <h3 class = "text-center"><u> Player A is deciding </u></h3> -->
+		{{#if equals condition 'withMessaging'}}
+			{{> messageDisplay}}
+		{{/if}}
 		{{#if isPlayerA}}
-			<p class = "text-center"> (Your turn) </p>
+			<p class = "text-center"><b>Player A:</b> What do you want to do? </p>
 		{{/if}}
 	</div>
-	{{#if equals condition 'withMessaging'}}
-		{{> messageDisplay}}
-	{{/if}}
+
 {{/if}}
 
 {{#if equals gameState 'playerBdeciding'}}
 	<div class = "container-fluid">
-		<h3 class = "text-center"><u> Player B is deciding </u></h3>
+		<!-- <h3 class = "text-center"><u> Player B is deciding </u></h3> -->
 		{{#if isPlayerB}}
-			<p class = "text-center"> (Your turn) </p>
+			<p class = "text-center"><b>Player B:</b> What do you want to do? </p>
 		{{/if}}
 	</div>
 {{/if}}
 
 {{#if equals gameState 'finalChoices'}}
 	<div class = "container-fluid">
-		<h3 class = "text-center"><u> Final decisions: </u></h3>
+		<!-- <h3 class = "text-center"><u> Final decisions: </u></h3> -->
 	</div>
 {{/if}}
 

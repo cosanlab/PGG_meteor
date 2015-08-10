@@ -33,7 +33,7 @@ Template.gameTree.helpers({
 	colorAL: function(){
 		var game = Games.findOne();
 		if(game.PlayerAChoice == 'Left'){
-			return "green";
+			return "#33CCFF";
 		} else{
 			return "black";
 		}
@@ -49,7 +49,7 @@ Template.gameTree.helpers({
 	colorAR: function(){
 		var game = Games.findOne();
 		if(game.PlayerAChoice == 'Right'){
-			return "green";
+			return "#33CCFF";
 		} else{
 			return "black";
 		}
@@ -65,7 +65,7 @@ Template.gameTree.helpers({
 	colorBL: function(){
 		var game = Games.findOne();
 		if(game.PlayerBChoice == 'Left'){
-			return "green";
+			return "#33CCFF";
 		} else{
 			return "black";
 		}
@@ -81,7 +81,7 @@ Template.gameTree.helpers({
 	colorBR: function(){
 		var game = Games.findOne();
 		if(game.PlayerBChoice == 'Right'){
-			return "green";
+			return "#33CCFF";
 		} else{
 			return "black";
 		}

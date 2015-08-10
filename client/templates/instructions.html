@@ -1,9 +1,15 @@
 <template name="instructions">
 <br> <br>
 	<div class = "container">
+		<blockquote>
+			You have been successfully matched with another player and are now ready to play the game. 
+		</blockquote>
+
 		<h3> Here's how to play: </h3>
 		<blockquote>
-				For this experiment you will be making a decision between two different monetary outcomes for yourself and another player. When you begin you will see a graphic of a tree with branches corresponding to the different monetary amounts you can choose from. When it is your turn turn to decide you, simply click on the tree corresponding to your decision.  
+			In this game you will be randomly selected to play the role of either 'Player A' or 'Player B'.  Player A will first choose how they would like to split $4.  One option is to keep $1 and give $3 to Player B.  The other option is split the money evenly so that Player A and Player B will each receive $2.  However, Player B has the opportunity to veto this outcome in which case neither player will receive any money.  In some cases, 'Player B' will be allowed to send a message to Player A at the beginning of the game so that they can attempt to influence his/her decision.
+			<br><br>
+			<em>Decisions will affect payoffs</em>.  Each player will be paid 10% of the final payoff in addition to their reward for completing this HIT.
 		</blockquote>
 		{{#if equals game.player 'Player A'}}
 			<blockquote>
@@ -16,15 +22,12 @@
 				The game will begin with you having the opportunity to make your decision by clicking on the tree.  
 			{{/if}}
 			</blockquote>
-			<blockquote>
-				Outcome details here.
-			</blockquote>
 		{{/if}}
 		{{#if equals game.player 'Player B'}}
 			<blockquote>
 				You have been assigned the role of <strong>{{game.player}}</strong>.
 			{{#if equals game.condition 'withMessaging'}} 
-				The game will begin with you having the opportunity to send a message to Player A and influence their decision.When you have done so, Player A will then be able to choose an option after reading your message. 
+				The game will begin with you having the opportunity to send a personal message to Player A and influence their decision.  Player A will then choose an option after reading your message. 
 			{{/if}}
 
 			{{#if equals game.condition 'noMessaging'}} 
@@ -32,13 +35,13 @@
 			{{/if}}
 			</blockquote>
 			<blockquote>
-				Outcome details here.
+				When it is your turn turn to decide, simply click on the tree corresponding to the option you would like to select.  
 			</blockquote>
 		{{/if}}
 		<br>
-		<p> 
-		Click the button below to indicate you understand the instructions and are ready to begin. You may have to wait a moment for the other player to also indicate they are ready to begin.
-		</p>
+		<blockquote>
+			Click the button below to indicate you understand the instructions and are ready to begin. The game will automatically begin when both players are ready.
+		</blockquote>
 	</div>
 	<br>
 	<button type="button" class="btn btn-danger btn-lg ready-to-start" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>I'm Not Ready</button>	
