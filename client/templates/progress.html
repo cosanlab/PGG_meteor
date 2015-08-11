@@ -1,104 +1,17 @@
 <!-- uses code from http://leaddyno.github.io/bootstrap-nav-wizard.  We should be able to wrap in loop -->
 <template name="progress">
+	{{#if game}}
 	<div>
 		<ul class="nav nav-pills nav-wizard">
+			<li class="{{game.instr}}"><a>Instructions</a></li>
 			{{#if equals game.condition 'withMessaging'}} 
-				{{#if equals game.state 'instructions'}} 
-					<li class='active'><a>Instructions</a></li>
-					<li><a>Message</a></li>
-					<li><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'playerBmessaging'}} 
-					<li><a>Instructions</a></li>
-					<li class='active'><a>Message</a></li>
-					<li><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'playerAdeciding'}} 
-					<li><a>Instructions</a></li>
-					<li><a>Message</a></li>
-					<li class='active'><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'playerBdeciding'}} 
-					<li><a>Instructions</a></li>
-					<li><a>Message</a></li>
-					<li><a>Player A Decides</a></li>
-					<li class='active'><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'finalChoices'}} 
-					<li><a>Instructions</a></li>
-					<li><a>Message</a></li>
-					<li><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li class='active'><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'ended'}} 
-					<li><a>Instructions</a></li>
-					<li><a>Message</a></li>
-					<li><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li class='active'><a>Summary</a></li>
-				{{/if}}
+				<li class = "{{game.mess}}"><a>Message</a></li>
 			{{/if}}
-
-			{{#if equals game.condition 'noMessaging'}} 
-				{{#if equals game.state 'instructions'}} 
-					<li class='active'><a>Instructions</a></li>
-					<li><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'playerAdeciding'}} 
-					<li><a>Instructions</a></li>
-					<li class='active'><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'playerBdeciding'}} 
-					<li><a>Instructions</a></li>
-					<li><a>Player A Decides</a></li>
-					<li class='active'><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'finalChoices'}} 
-					<li><a>Instructions</a></li>
-					<li><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li class='active'><a>Game Over</a></li>
-					<li><a>Summary</a></li>
-				{{/if}}
-
-				{{#if equals game.state 'ended'}} 
-					<li><a>Instructions</a></li>
-					<li><a>Player A Decides</a></li>
-					<li><a>Player B Decides</a></li>
-					<li><a>Game Over</a></li>
-					<li class='active'><a>Summary</a></li>
-				{{/if}}
-			{{/if}}
+			<li class = '{{game.pA}}'><a>Player A Decides</a></li>
+			<li class = '{{game.pB}}'><a>Player B Decides</a></li>
+			<li class = '{{game.over}}'><a>Game Over</a></li>
+			<li class = '{{game.summ}}'><a>Summary</a></li>
     	</ul>
 	</div>
-</template>
+	{{/if}}
+</template> 
