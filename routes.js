@@ -19,7 +19,12 @@ Router.route('/lobby',{
     return Meteor.subscribe('Players');
   },
   action: function(){
-    this.render('lobby');
+    var currentUser = Meteor.userId();
+    if(Players.findOne({_id:currentUser}).status == 'instructions'){
+      Router.go('instructions');
+    } else{
+      this.render('lobby');
+    }
   }
 }); 
 
