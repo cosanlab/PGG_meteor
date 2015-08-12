@@ -1,6 +1,6 @@
 //Subjects DB
 Meteor.publish('Players', function(){
-	return Players.find({},{fields: {name:1, status:1}});
+	return Players.find({},{fields: {name:1, enterTime:1, status:1}});
 });
 
 //Games DB
@@ -50,11 +50,14 @@ Meteor.methods({
 	'matchPlayers': function(){
 		var clientId = Meteor.userId();
 		var numPlayers = Players.find({status:'waiting'},{}).count();
-		// The way to extract just the id from the mongo query
-		var partnerId = Players.find({}, {fields: {'_id':1}, sort:{enterTime:1},limit:1}).fetch()[0]._id;
 		if (numPlayers >= 2){
-			// Create a new game with each player
-			return Meteor.call('createGame', clientId, partnerId);
+			// Grab the earliest waiting player
+			var partnerId = Players.findOne({},{sort:{enterTime:1}})._id;
+			// update each player's status
+			Meteor.call('updatePlayer', clientId, 'instructions');
+			Meteor.call('updatePlayer', partnerId, 'instructions');
+			// Create a game
+			Meteor.call('createGame', clientId, partnerId);
 		}
 	},
 	'playerFinished': function(gameId){
@@ -105,10 +108,6 @@ Meteor.methods({
 				condition: cond
 			};
 		}
-
-		// update each player's status
-		Meteor.call('updatePlayer', clientId, 'instructions');
-		Meteor.call('updatePlayer', partnerId, 'instructions');
 
 		// Add Game to DB
 		return Games.insert(data);
