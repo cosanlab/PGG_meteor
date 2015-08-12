@@ -3,35 +3,46 @@
 {{#if equals condition 'withMessaging'}}
 	{{#if equals gameState 'playerBmessaging'}}
 		<div class = "container-fluid">
-			<!-- <h3 class = "text-center"><u> Player B is composing message </u></h3> -->
-			{{#if isPlayerB}}
-				<p class= "text-center"> (Your turn) </p>
-				{{> messageForm}}
-			{{/if}}
+			<div class= "col-sm-6 col-sm-offset-3 " >
+					<!-- <h3 class = "text-center"><u> Player B is composing message </u></h3> -->
+					{{#if isPlayerB}}
+						<!-- (Your turn) -->
+						{{> messageForm}}
+					{{/if}}
+			</div>
 		</div>
 	{{/if}}
 {{/if}}
 
 {{#if equals gameState 'playerAdeciding'}}
 	<div class = "container-fluid">
+		<div class= "col-sm-4 col-sm-offset-4 " >
 		<!-- <h3 class = "text-center"><u> Player A is deciding </u></h3> -->
-		{{#if equals condition 'withMessaging'}}
-			{{> messageDisplay}}
-		{{/if}}
-		{{#if isPlayerA}}
-			<p class = "text-center"><b>Player A:</b> What do you want to do? </p>
-		{{/if}}
+			{{#if equals condition 'withMessaging'}}
+				{{> messageDisplay}}
+			{{/if}}
+			{{#if isPlayerA}}
+				<div class="well well-sm">
+					<b>Player A:</b> What do you want to do?
+				</div>
+			{{/if}}
+		</div>
 	</div>
 
 {{/if}}
 
 {{#if equals gameState 'playerBdeciding'}}
 	<div class = "container-fluid">
+		<div class= "col-sm-4 col-sm-offset-4 " >
 		<!-- <h3 class = "text-center"><u> Player B is deciding </u></h3> -->
-		{{#if isPlayerB}}
-			<p class = "text-center"><b>Player B:</b> What do you want to do? </p>
-		{{/if}}
+			{{#if isPlayerB}}
+				<div class="well well-sm">
+					<b>Player B:</b> What do you want to do?
+				</div>
+			{{/if}}
+		</div>
 	</div>
+
 {{/if}}
 
 {{#if equals gameState 'finalChoices'}}
@@ -94,20 +105,24 @@ dynamically renders branches based on player choices -->
 					<path d= "M400, 100L300, 200"></path>
 					<text x="300" y="230" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
 					<text x="300" y="260" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
+					<text x="310" y="150" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
 				</g>
 				<g class ="playerAright" stroke= "{{colorAR}}" stroke-width= "{{widthAR}}" fill = "{{colorAR}}">
 					<path d= "M400, 100L500, 200"></path>
 					<text x="500" y="230" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
+					<text x="495" y="150" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
 				</g>
 				<g class="playerBleft" stroke= "{{colorBL}}" stroke-width= "{{widthBL}}" fill = "{{colorBL}}">
 					<path d= "M500, 240L400, 340"></path>
 					<text x="400" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
-					<text x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $0</text>
+					<text x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
+					<text x="405" y="300" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
 				</g>
 				<g class="playerBright" stroke= "{{colorBR}}" stroke-width= "{{widthBR}}" fill = "{{colorBR}}">
 					<path d= "M500, 240L600, 340"></path>
 					<text x="600" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
 					<text x="600" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
+					<text x="605" y="300" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
 				</g>
 			</svg>
 		</div>
