@@ -1,52 +1,125 @@
 <template name="instructionsInteractive">
-{{> gameTree}}
+{{> gameTreeinstr}}
 {{> tutorial options}}
 </template>
 
 <template name="step1">
-	<h3> You have been successfully matched with another player! </h3>
+	<h3 align="center"> You have been successfully matched with another player! </h3>
+	<p> For the best experience please make this window as large as possible.</p>
 	<p> Click next to learn how to play the game </p>
 </template>
 
 <template name="step2">
-	<p>In this game you will be randomly selected to play the role of either 'Player A' or 'Player B' and see a game tree like thise</p>
+	<p>In this game you will be randomly selected to play the role of either 'Player A' or 'Player B' and see a game tree like this.</p>
 </template>
 
 <template name="step3">
-<p>Player A will first choose how they would like to split $4. </p> 
+<p>Player A will first decide how they would like to split $4 by selecting from two possible options. </p> 
 </template>
 
 <template name="step4">
-<p>One option is to keep $1 and give $3 to Player B.</p>
+<p>If Player A selects the 'Left' option, they will keep $1 for themselves and give $3 to Player B.</p>
 </template>
 
 <template name="step5">
-<p>The other option is split the money evenly so that Player A and Player B will each receive $2.</p>
+<p>If Player A select the 'Right' option, the money will be split evenly so that both Player A and Player B receive $2.</p>
+</template>
+
+<template name="step6">
+<p>However, Player B will have the opportunity to veto this decision.</p>
+</template>
+
+<template name="step7">
+<p>If Player B chooses to veto this decision by selecting 'Left,' Player A will receive $0 and Player B will receive $1.</p>
+</template>
+
+<template name="step8">
+<p>If Player B chooses to accept this decision by selecting 'Right,' both Player A and Player B will receive $2.</p>
+</template>
+
+<template name="step9">
+{{#if equals game.player 'Player A'}}
+	<h3 align="center">You have been assigned the role of <strong>{{game.player}}</strong>. </h3>
+	<blockquote>
+	{{#if equals game.condition 'withMessaging'}} 
+		The game will begin with Player B having the opportunity to send you a personal message. When they have done so, you will be able to read the message they sent and choose an option. You and Player B will be able to see your choice highlighted on the tree in blue.
+	{{/if}}
+
+	{{#if equals game.condition 'noMessaging'}} 
+		The game will begin with you having the opportunity to choose an option. You and Player B will be able to see your choice highlighted on the tree in blue.
+	{{/if}}
+	</blockquote>
+	<blockquote>
+		Simply click on the tree corresponding to the option you would like to choose.  
+	</blockquote>
+{{/if}}
+
+{{#if equals game.player 'Player B'}}
+	<h3 align="center">You have been assigned the role of <strong>{{game.player}}</strong>.</h3>
+	<blockquote>
+	{{#if equals game.condition 'withMessaging'}} 
+		The game will begin with you having the opportunity to send a personal message to Player A and influence their decision. There will be a chat box above the game tree when the game begins. Simply type your message into that box and press Enter. Player A will then choose an option after reading your message. You will be able to see the choice they make highlighted on the tree in blue.
+	{{/if}}
+
+	{{#if equals game.condition 'noMessaging'}} 
+		The game will begin with Player A choosing between the two options. You will be able to see the choice they make highlighted on the tree in blue.  
+	{{/if}}
+	</blockquote>
+	<blockquote>
+		When it is your turn to decide, simply click on the tree corresponding to the option you would like to choose.  
+	</blockquote>
+
+{{/if}}
+<p> Click Finish if you understand the instructions and are ready to begin. Otherwise press back to cyle through the instructions again. The game will only start when both you and the other player have pressed Finish. </p>
 </template>
 
 <template name = "gameTreeinstr">
 	<div id="tree">
 		<div class = "svg-container">
 			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 1000 450" class= "svg-content-responsive">
-				<text x = "400" y="90" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
-				<g class="playerAleft" stroke= "black" stroke-width= "3" fill = "black">
-					<path d= "M400, 100L300, 200"></path>
-					<text x="300" y="230" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
-					<text x="300" y="260" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
+				
+				<text x = "400" y="90" class= "playerAleft playerAright" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
+				
+				<g stroke= "black" stroke-width= "3" fill = "black">
+					
+					<path id = "playerAleft" d= "M400, 100L300, 200"></path>
+					
+					<text class = "playerAleft" x="300" y="230" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
+					
+					<text class = "playerAleft" x="300" y="260" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
+
+					<text class = "playerAleft" x="310" y="150" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
+				
 				</g>
-				<g class ="playerAright" stroke= "black" stroke-width= "3" fill = "black">
-					<path d= "M400, 100L500, 200"></path>
-					<text x="500" y="230" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
+				
+				<g stroke= "black" stroke-width= "3" fill = "black">
+					
+					<path id = "playerAright" d= "M400, 100L500, 200"></path>
+					
+					<text class = "playerAright playerBleft playerBright" x="500" y="230" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
+
+					<text class = "playerAright" x="495" y="150" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
 				</g>
-				<g class="playerBleft" stroke= "black" stroke-width= "3" fill = "black">
-					<path d= "M500, 240L400, 340"></path>
-					<text x="400" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
-					<text x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
+				<g stroke= "black" stroke-width= "3" fill = "black">
+					
+					<path id= "playerBleft" d= "M500, 240L400, 340"></path>
+					
+					<text class = "playerBleft" x="400" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
+					
+					<text class = "playerBleft" x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
+
+					<text class = "playerBleft" x="405" y="300" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
 				</g>
-				<g class="playerBright" stroke= "black" stroke-width= "3" fill = "black">
-					<path d= "M500, 240L600, 340"></path>
-					<text x="600" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
-					<text x="600" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
+				
+				<g stroke= "black" stroke-width= "3" fill = "black">
+					
+					<path id = "playerBright" d= "M500, 240L600, 340"></path>
+					
+					<text class = "playerBright" x="600" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
+					
+					<text class = "playerBright" x="600" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
+
+					<text class = "playerBright" x="605" y="300" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
 				</g>
 			</svg>
 		</div>
