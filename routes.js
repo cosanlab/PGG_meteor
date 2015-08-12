@@ -30,6 +30,7 @@ Router.route('/lobby',{
 
 //Instructions template, make sure we can see the games db for routing forward
 //to the game
+
 Router.route('/instructions',{
   waitOn: function(){
     return Meteor.subscribe('Games');
@@ -49,6 +50,28 @@ Router.route('/instructions',{
   }
 }); 
 
+//Instructions template, make sure we can see the games db for routing forward
+//to the game
+/*
+Router.route('/instructionsInteractive',{
+  waitOn: function(){
+    return Meteor.subscribe('Games');
+  },
+  action: function(){
+      var gameState = Games.findOne().state;
+      if(gameState== 'instructions'){
+        this.render('instructions');
+        console.log('Game not ready');
+      }
+      else{
+        console.log('Game ready');
+        Router.go('game');
+        //Each client updates their own status
+        Meteor.call('updatePlayer', Meteor.userId(),'playing');
+      }
+  }
+}); */
+
 //Games template, make sure we can see the games db for properly rendering
 //the game tree and forward routing to payoffs
 Router.route('/game',{
@@ -65,6 +88,7 @@ Router.route('/game',{
           Meteor.call('playerFinished', game._id); 
         },
         5000);
+        this.next();
                 
       }
       else{
