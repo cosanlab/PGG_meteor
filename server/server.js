@@ -52,7 +52,7 @@ Meteor.methods({
 		var numPlayers = Players.find({status:'waiting'},{}).count();
 		if (numPlayers >= 2){
 			// Grab the earliest waiting player
-			var partnerId = Players.findOne({},{sort:{enterTime:1}})._id;
+			var partnerId = Players.findOne({status:'waiting'},{sort:{enterTime:1}})._id;
 			// update each player's status
 			Meteor.call('updatePlayer', clientId, 'instructions');
 			Meteor.call('updatePlayer', partnerId, 'instructions');
