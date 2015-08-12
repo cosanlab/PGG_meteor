@@ -1,12 +1,10 @@
 <template name="game">
 
-{{#if equals condition 'withMessaging'}}
-	{{#if equals gameState 'playerBmessaging'}}
+{{#if equals game.condition 'withMessaging'}}
+	{{#if equals game.state 'playerBmessaging'}}
 		<div class = "container-fluid">
 			<div class= "col-sm-6 col-sm-offset-3 " >
-					<!-- <h3 class = "text-center"><u> Player B is composing message </u></h3> -->
-					{{#if isPlayerB}}
-						<!-- (Your turn) -->
+					{{#if game.isPlayerB}}
 						{{> messageForm}}
 					{{/if}}
 			</div>
@@ -14,14 +12,13 @@
 	{{/if}}
 {{/if}}
 
-{{#if equals gameState 'playerAdeciding'}}
+{{#if equals game.state 'playerAdeciding'}}
 	<div class = "container-fluid">
 		<div class= "col-sm-4 col-sm-offset-4 " >
-		<!-- <h3 class = "text-center"><u> Player A is deciding </u></h3> -->
-			{{#if equals condition 'withMessaging'}}
+			{{#if equals game.condition 'withMessaging'}}
 				{{> messageDisplay}}
 			{{/if}}
-			{{#if isPlayerA}}
+			{{#if game.isPlayerA}}
 				<div class="well well-sm">
 					<b>Player A:</b> What do you want to do?
 				</div>
@@ -31,11 +28,10 @@
 
 {{/if}}
 
-{{#if equals gameState 'playerBdeciding'}}
+{{#if equals game.state 'playerBdeciding'}}
 	<div class = "container-fluid">
 		<div class= "col-sm-4 col-sm-offset-4 " >
-		<!-- <h3 class = "text-center"><u> Player B is deciding </u></h3> -->
-			{{#if isPlayerB}}
+			{{#if game.isPlayerB}}
 				<div class="well well-sm">
 					<b>Player B:</b> What do you want to do?
 				</div>
@@ -45,9 +41,8 @@
 
 {{/if}}
 
-{{#if equals gameState 'finalChoices'}}
+{{#if equals game.state 'finalChoices'}}
 	<div class = "container-fluid">
-		<!-- <h3 class = "text-center"><u> Final decisions: </u></h3> -->
 	</div>
 {{/if}}
 
@@ -94,24 +89,24 @@ dynamically renders branches based on player choices -->
 		<div class = "svg-container">
 			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 1000 450" class= "svg-content-responsive">
 				<text x = "400" y="90" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
-				<g class="playerAleft" stroke= "{{colorAL}}" stroke-width= "{{widthAL}}" fill = "{{colorAL}}">
+				<g class="playerAleft" stroke= "{{branch.colorAL}}" stroke-width= "{{branch.widthAL}}" fill = "{{branch.colorAL}}">
 					<path d= "M400, 100L300, 200"></path>
 					<text x="300" y="230" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
 					<text x="300" y="260" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
 					<text x="310" y="150" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
 				</g>
-				<g class ="playerAright" stroke= "{{colorAR}}" stroke-width= "{{widthAR}}" fill = "{{colorAR}}">
+				<g class ="playerAright" stroke= "{{branch.colorAR}}" stroke-width= "{{branch.widthAR}}" fill = "{{branch.colorAR}}">
 					<path d= "M400, 100L500, 200"></path>
 					<text x="500" y="230" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
 					<text x="495" y="150" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
 				</g>
-				<g class="playerBleft" stroke= "{{colorBL}}" stroke-width= "{{widthBL}}" fill = "{{colorBL}}">
+				<g class="playerBleft" stroke= "{{branch.colorBL}}" stroke-width= "{{branch.widthBL}}" fill = "{{branch.colorBL}}">
 					<path d= "M500, 240L400, 340"></path>
 					<text x="400" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
 					<text x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
 					<text x="405" y="300" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
 				</g>
-				<g class="playerBright" stroke= "{{colorBR}}" stroke-width= "{{widthBR}}" fill = "{{colorBR}}">
+				<g class="playerBright" stroke= "{{branch.colorBR}}" stroke-width= "{{branch.widthBR}}" fill = "{{branch.colorBR}}">
 					<path d= "M500, 240L600, 340"></path>
 					<text x="600" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
 					<text x="600" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
