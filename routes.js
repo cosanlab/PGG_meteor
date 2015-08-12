@@ -39,10 +39,8 @@ Router.route('/instructions',{
       var gameState = Games.findOne().state;
       if(gameState== 'instructions'){
         this.render('instructions');
-        console.log('Game not ready');
       }
       else{
-        console.log('Game ready');
         Router.go('game');
         //Each client updates their own status
         Meteor.call('updatePlayer', Meteor.userId(),'playing');
