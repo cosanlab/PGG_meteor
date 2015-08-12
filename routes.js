@@ -21,7 +21,7 @@ Router.route('/lobby',{
   action: function(){
     var currentUser = Meteor.userId();
     if(Players.findOne({_id:currentUser}).status == 'instructions'){
-      Router.go('instructions');
+      Router.go('instructionsInteractive');
     } else{
       this.render('lobby');
     }
@@ -30,7 +30,7 @@ Router.route('/lobby',{
 
 //Instructions template, make sure we can see the games db for routing forward
 //to the game
-
+/*
 Router.route('/instructions',{
   waitOn: function(){
     return Meteor.subscribe('Games');
@@ -46,11 +46,11 @@ Router.route('/instructions',{
         Meteor.call('updatePlayer', Meteor.userId(),'playing');
       }
   }
-}); 
+}); */
 
 //Instructions template, make sure we can see the games db for routing forward
 //to the game
-/*
+
 Router.route('/instructionsInteractive',{
   waitOn: function(){
     return Meteor.subscribe('Games');
@@ -58,7 +58,7 @@ Router.route('/instructionsInteractive',{
   action: function(){
       var gameState = Games.findOne().state;
       if(gameState== 'instructions'){
-        this.render('instructions');
+        this.render('instructionsInteractive');
         console.log('Game not ready');
       }
       else{
@@ -68,7 +68,7 @@ Router.route('/instructionsInteractive',{
         Meteor.call('updatePlayer', Meteor.userId(),'playing');
       }
   }
-}); */
+}); 
 
 //Games template, make sure we can see the games db for properly rendering
 //the game tree and forward routing to payoffs
