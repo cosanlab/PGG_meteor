@@ -1,100 +1,61 @@
 Template.game.helpers({
-	//Only show message input to player B
-	isPlayerB: function(){
-		var playerB = Games.findOne().playerB;
-		if(Meteor.userId() == playerB){
-			return true;
-		} else{
-			return false;
-		}
-	},	
-	isPlayerA: function(){
-		var playerA = Games.findOne().playerA;
-		if(Meteor.userId() == playerA){
-			return true;
-		} else{
-			return false;
-		}
-	},
-	gameState: function(){
-		return Games.findOne().state;
-	},
-	condition: function(){
+	game: function(){
 		var game = Games.findOne();
-		if(game.condition == 'noMessaging'){
+		var isPlayerA = false; 
+		var isPlayerB = false;
+		if(Meteor.userId() == game.playerA){
+			isPlayerA = true;
+		} else if(Meteor.userId() == game.playerB){
+			isPlayerB = true;
+		}
+		var state = game.state;
+		var condition = game.condition;
+		if(condition == 'noMessaging'){
 			Meteor.call('addMessage',game._id, '');
 		}
-		return game.condition;
+		return {
+			condition: condition,
+			isPlayerA: isPlayerA,
+			isPlayerB: isPlayerB,
+			state: state
+		};
 	}
 });
 
+
 //Set the game tree colors dynamically based on player choices
 Template.gameTree.helpers({
-	colorAL: function(){
+	branch: function(){
 		var game = Games.findOne();
+		var colorAL = "black"; var widthAL = "3"; 
+		var colorAR = "black"; var widthAR = "3";
+		var colorBL = "black"; var widthBL = "3";
+	    var colorBR = "black"; var widthBR = "3";
 		if(game.PlayerAChoice == 'Left'){
-			return "#33CCFF";
-		} else{
-			return "black";
-		}
-	},
-	widthAL: function(){
-		var game= Games.findOne();
-		if(game.PlayerAChoice == 'Left'){
-			return 6;
-		} else{
-			return 3;
-		}
-	},
-	colorAR: function(){
-		var game = Games.findOne();
-		if(game.PlayerAChoice == 'Right'){
-			return "#33CCFF";
-		} else{
-			return "black";
-		}
-	},
-	widthAR: function(){
-		var game= Games.findOne();
-		if(game.PlayerAChoice == 'Right'){
-			return 6;
-		} else{
-			return 3;
-		}
-	},
-	colorBL: function(){
-		var game = Games.findOne();
+			 colorAL = "#33CCFF";
+			 widthAL = "6";
+		} else if(game.PlayerAChoice == 'Right'){
+			colorAR = "#33CCFF";
+			widthAR = "6";
+		} 
 		if(game.PlayerBChoice == 'Left'){
-			return "#33CCFF";
-		} else{
-			return "black";
+			 colorBL = "#33CCFF";
+			 widthBL = "6";
+		} else if(game.PlayerBChoice == 'Right'){
+			colorBR = "#33CCFF";
+			widthBR = "6";
 		}
-	},
-	widthBL: function(){
-		var game= Games.findOne();
-		if(game.PlayerBChoice == 'Left'){
-			return 6;
-		} else{
-			return 3;
-		}
-	},
-	colorBR: function(){
-		var game = Games.findOne();
-		if(game.PlayerBChoice == 'Right'){
-			return "#33CCFF";
-		} else{
-			return "black";
-		}
-	},
-	widthBR: function(){
-		var game= Games.findOne();
-		if(game.PlayerBChoice == 'Right'){
-			return 6;
-		} else{
-			return 3;
-		}
+		return{
+			colorAL: colorAL,
+			widthAL: widthAL,
+			colorAR: colorAR,
+			widthAR: widthAR,
+			colorBL: colorBL,
+			widthBL: widthBL,
+			colorBR: colorBR,
+			widthBR: widthBR
+		};
 	}
-
 });
 
 //Event handlers for game 
