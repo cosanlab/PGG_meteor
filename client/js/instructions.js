@@ -1,4 +1,4 @@
-Template.instructions.helpers({
+/*Template.instructions.helpers({
 	game: function(){
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
@@ -25,4 +25,4 @@ Template.instructions.events({
 
   }
 
-});
+}); */
