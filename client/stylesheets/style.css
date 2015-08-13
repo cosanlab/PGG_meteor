@@ -18,9 +18,13 @@ img {
 
 .navbar-header {
     height: 80px;
-    width: 80px;
+    width: auto;
     padding: 0;
     margin: 0;
+}
+
+.icon-bar {
+    background-color: white !important;
 }
 
 .navbar-brand {

@@ -3,6 +3,5 @@ Template.navigation.events({
         event.preventDefault();
         Meteor.call('removePlayer',{});
         Meteor.logout();
-        Router.go('login');
     }
 });
