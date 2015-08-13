@@ -1,11 +1,27 @@
 <template name="navigation">
-    <ul class="nav navbar-nav">
-        <li><a href="{{pathFor route='lobby'}}">Lobby (debugging)</a></li>
-        {{#if currentUser}}
-		    <li><a href="#" class="logout">Logout</a></li>
-    	{{else}}
-	        <li><a href="{{pathFor route='register'}}">Register</a></li>
-	        <li><a href="{{pathFor route='login'}}">Login</a></li>
-	    {{/if}}
-    </ul>
+	<nav class="navbar navbar-default navbar-fixed-top">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	    	<button type="button" data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+           </button>
+	      <a class="navbar-brand" href="{{pathFor route='home'}}"><img src= "/cosanlab_logo_web_small_trans.png"></a>
+	    </div>
+	    
+	    <div class ="navbar-collapse collapse">
+	     	<ul class="nav navbar-nav">
+		        <li><a href="{{pathFor route='lobby'}}">Lobby (debugging)</a></li>
+		        {{#if currentUser}}
+				    <li><a href="{{pathFor route='home'}}" class="logout">Logout</a></li>
+		    	{{else}}
+			        <li><a href="{{pathFor route='register'}}">Register</a></li>
+			        <li><a href="{{pathFor route='login'}}">Login</a></li>
+			    {{/if}}
+    		</ul>
+	    </div>
+	  </div>
+	</nav>
 </template>
