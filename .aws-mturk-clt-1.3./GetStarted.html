@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>Get Started With the Amazon Mechanical Turk Command Line Tools v1.3.1</title><!--
+These style should be copied directly from the common CSS.
+We include them in the document to make distributing files
+easier.
+-->
+
+
+<style type="text/css">
+/* --------------------------------------------- */
+/*  AWS Developer Content Styles                 */
+/* --------------------------------------------- */
+
+body, div, p, td, th {
+    font-family : helvetica,sans-serif, arial;
+    font-size : 12px;
+    color : #000000;
+}
+
+a {color:#006699;}
+
+div.faq h2 a {
+    color:#CC6600;
+  }
+
+.aws-h1, h1{
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+}
+.aws-h2, h2{
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 14px;
+  color: #c60;
+}
+.aws-h3, h3{
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333333;
+}
+
+/*table ID selector styles*/
+#aws-table {
+  border-top: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+  width:95%;
+}
+
+#aws-table td{
+  font-size: 12px;
+  padding: 5px 5px 5px 5px;
+  border-bottom: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  vertical-align:top;
+}
+
+#aws-table th {
+  font-size: 12px;
+  padding: 5px 5px 5px 5px;
+  border-bottom: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  vertical-align:top;
+  background-color: #eeeeee;
+  color: #333333;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: left;
+}
+
+/*code, note, and example styles*/
+.programlisting{
+  font-family: "Courier New", Courier, mono;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #000066;
+  padding: 5px;
+  background-color: #eff7ff;
+  border: 1px dashed #333;
+  width:75%;
+  display:block;
+}
+.aws-code-inline {
+  font-family: "Courier New", Courier, mono;
+  font-size: 11px;
+}
+.aws-note {
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-top-style: solid;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+  border-top-color: #CCCCCC;
+  border-right-color: #CCCCCC;
+  border-bottom-color: #CCCCCC;
+  border-left-color: #CCCCCC;
+  padding: 10px;
+  width:95%;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+</style>
+
+<script>
+  function toggle(obj) {
+    var el = document.getElementById(obj);
+    el.style.display = (el.style.display != 'none' ? 'none' : '' );
+  }
+
+  function getElementsByClass(searchClass,node,tag) {
+    var classElements = new Array();
+    if ( node == null )
+      node = document;
+    if ( tag == null )
+      tag = '*';
+    var els = node.getElementsByTagName(tag);
+    var elsLen = els.length;
+    var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+    for (i = 0, j = 0; i < elsLen; i++) {
+      if ( pattern.test(els[i].className) ) {
+        classElements[j] = els[i];
+        j++;
+      }
+    }
+    return classElements;
+}
+  function toggleElementsByClass(className, action) {
+    var els = getElementsByClass(className);
+    for (i=0;i<els.length;i++) {
+      if (action == "hide") {
+        els[i].style.display = 'none';
+      } else {
+        els[i].style.display = '';
+      }
+    }
+  }
+</script>
+
+</head><body>
+<h1>Get Started With the Amazon Mechanical Turk Command Line Tools v1.3.1</h1>
+<p>
+<div class="faq">
+
+<h2><a href="#" onclick="toggle('answer0'); return false;">What Are the Amazon Mechanical Turk Command Line Tools?</a></h2>
+<div id="answer0" style="display:none;" class="answer">
+ The Amazon Mechanical Turk Command Line Tools are a set of command line interfaces allowing you to easily build solutions leveraging Amazon Mechanical Turk without writing a line of code.  The goals of the Command Line Tools are to:
+
+  <ul>
+    <li>abstract you from the "muck" of using web services</li>
+    <li>allow you to create solutions without writing a single line of code</li>
+    <li>allow you to focus more on solving the business problem and less on managing technical details</li>
+  </ul>
+
+</div>
+<h2><a href="#" onclick="toggle('answer1'); return false;">How Do I Get Started as a Windows User?</a></h2>
+<div id="answer1" style="display:none;" class="answer">
+The installation of the Command Line Tools and loading your first HIT is simple and requires minimal configuration.<p/>
+The instructions below assume that the downloaded file was uncompressed in a directory that you specified.  When the instructions refer to [Command Line Tools Installation Directory], it assumes the following directory structure:<br/>
+<span class="programlisting">[Command Line Tools Installation Directory] = [The directory that the downloaded file was uncompressed into]\aws-mturk-clt-1.3.1</span>
+<p/>
+If you downloaded and ran the mech-turk-setup.exe file, you have installed and configured the Command Line Tools. Your [Command Line Tools Installation Directory] is <span class="programlisting">[Command Line Tools Installation Directory] = mech-turk-tools-1.3.1</span>
+<p/>To verify that your installation is correct, run the command to get your account balance, described in the <a href="#checkbalance">next section</a>.
+<p>
+  If you downloaded a different file, follow the instructions below to install and configure the Command Line Tools.
+</p>
+<ol>
+  <li>Sign up for an Amazon Web Services (AWS) account at the <a href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html" target="_blank">AWS web site</a>.</li>
+  <li>Sign up for an Amazon Mechanical Turk Requester account at the <a href="http://requester.mturk.com" target="_blank">Requester web site</a>.</li>
+  <li>Ensure that you are using the latest version of the Command Line Tools by checking the <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=694&categoryID=25" target="_blank">Command Line Tools</a> page on the Amazon Web Services Resource Center.</li>
+  <li>Configure the Command Line Tools to use your <a href="http://s3.amazonaws.com/mturk/tools/pages/aws-access-identifiers/aws-identifier.html" target="_blank">AWS access identifiers</a> information.<p/>
+  &nbsp;&nbsp;&nbsp;a. Open a Windows command prompt by clicking on the Start Menu -> Programs -> Accessories -> Command Prompt<br/>
+  &nbsp;&nbsp;&nbsp;b. Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\bin</span>
+  &nbsp;&nbsp;&nbsp;c. Then run the following command:<br/>
+  <span class="programlisting">
+    notepad mturk.properties
+  </span>
+  &nbsp;&nbsp;&nbsp;d. Set the following properties to reflect your <a href="http://s3.amazonaws.com/mturk/tools/pages/aws-access-identifiers/aws-identifier.html" target="_blank">AWS access identifiers</a>:<p/>
+<span class="programlisting">
+  access_key=[Your AWS Access Key]<br/>
+  secret_key=[Your Secret Key]
+</span>
+  &nbsp;&nbsp;&nbsp;e. Save and close the file.</li>
+  </ol>
+  <p>
+    Your Command Line Tools are now configured. Verify this by checking your account balance.</p>
+ 
+
+Note: If you did not download a version of the Command Line Tools that contains the Java Standard Edition Runtime Environment (Only available for Windows distribution), you must have the Java JRE 1.5.0 (JRE 5) or later installed.  The Command Line Tools are not compatible with JRE 6.  You can download the JRE at the following website: <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp" target="_blank">http://java.sun.com/javase/downloads/index_jdk5.jsp</a>.
+
+<a name="checkbalance"></a>
+<h3>Get your account balance</h3>
+
+	To get your current balance, </p>
+
+<ol>
+	<li>Open a Windows command prompt by clicking on the Start Menu -> Programs -> Accessories -> Command Prompt<br/></li>
+	<li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\bin</span></li>
+    <li>Then run the following command:<br/>
+  <span class="programlisting">getBalance</span>
+     
+  You should see the following output:<br/>
+  <span class="programlisting">
+  Your account balance: $0.00</span>
+  If you have prepaid funds in your account, you should see the correct balance. </li>
+</ol>
+  If you did not receive the above output and encountered an error, check the following items.
+  </p>
+<ol>
+	<li>Did you successfully create an <a href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html" target="_blank">Amazon Web Services account</a>?<br/></li>
+    <li>Did you successfully create an <a href="http://requester.mturk.com" target="_blank">Amazon Mechanical Turk Requester account</a>?<br/></li>
+    <li>  Did you correctly copy and paste your <a href="http://s3.amazonaws.com/mturk/tools/pages/aws-access-identifiers/aws-identifier.html" target="_blank">AWS access identifiers</a> into the setup application or the mturk.properties file?<br/></li>
+</ol>
+  </ul>
+  
+<h3>Run the sample applications</h3>
+      
+ Amazon Mechanical Turk provides several sample applications that you can run to create HITs. You can then revise the samples to create your own HITs. For complete instructions on how to run the samples see the <a href="UserGuide.html#overviewsamples" target="_blank">Overview of the Sample Applications</a> section in the <a href="UserGuide.html" target="_blank">User Guide for the Amazon Mechanical Turk Command Line Tools v1.3.1</a>.<br/>
+    <p>  
+      To find the sample applications, navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples</span></p>
+
+
+
+<h3>View the Command Line Tools tutorials</h3>
+	
+  Amazon Mechanical Turk provides video tutorials to help you get started creating HITs. For more information, see 
+  <a href="http://requester.mturk.com/mturk/tutorials" target="_blank">Command Line Tools Tutorial</a>.
+  
+  
+  <h3>Additional Resources</h3>
+  For more information about the Command Line Tools see the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/CLTArticle.html" target="_blank">Command Line Tools Reference</a> section in the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/" target="_blank">Amazon Mechanical Turk Developer Guide</a>.
+   </div>
+
+
+<h2><a href="#" onclick="toggle('answer2'); return false;">How Do I Get Started as a Unix User?</a></h2>
+<div id="answer2" style="display:none;" class="answer">
+The installation of the Command Line Tools and loading your first HIT is simple and requires minimal configuration.<p/>
+The instructions below assume that the downloaded file was uncompressed in a directory that you specified.  When the instructions refer to [Command Line Tools Installation Directory], it assumes the following directory structure:<br/>
+<span class="programlisting">[Command Line Tools Installation Directory] = [The directory that the downloaded file was uncompressed into]/aws-mturk-clt-1.3.1</span>
+<p/>
+
+<ol>
+  <li>Sign up for an Amazon Web Services (AWS) account at the <a href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html" target="_blank">AWS web site</a>.</li>
+  <li>Sign up for an Amazon Mechanical Turk Requester account at the <a href="http://requester.mturk.com" target="_blank">Requester web site</a>.</li>
+  <li>Ensure that you are using the latest version of the Command Line Tools by checking the <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=694&categoryID=25" target="_blank">Command Line Tools</a> page on the Amazon Web Services Resource Center.</li>
+  <li>Configure the Command Line Tools to use your <a href="#" target="_blank">AWS identifier</a> information.<p/>
+  &nbsp;&nbsp;&nbsp;a. Open the following file:
+  <span class="programlisting">
+    [Command Line Tools Installation Directory]/bin/mturk.properties
+  </span>
+  &nbsp;&nbsp;&nbsp;b. Set the following properties to reflect your <a href="#" target="_blank">AWS identifiers</a>:<p/>
+<span class="programlisting">
+  access_key=[Your AWS Access Key]<br/>
+  secret_key=[Your Secret Key]
+</span>
+  &nbsp;&nbsp;&nbsp;c. Save and close the file.</li>
+  <li>Set the MTURK_CMD_HOME environment variable to point to your Command Line Tools installation location.</li>
+  <li>Set the JAVA_HOME environment variable to point to your Java Standard Edition Runtime Environment (JRE) installation location.</li>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]/bin</span></li>
+  
+</ol>
+ <p>
+    Your Command Line Tools are now configured. Verify this by checking your account balance.</p>
+    <a name="checkbalanceunix"></a>
+<h3>Get your account balance</h3>
+
+	To get your current balance, </p>
+
+<ol>
+	<li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]/bin</span></li>
+    <li>Then run the following command:<br/>
+  <span class="programlisting">./getBalance.sh</span>
+     
+  You should see the following output:<br/>
+  <span class="programlisting">
+  Your account balance: $0.00</span>
+  If you have prepaid funds in your account, you should see the correct balance. </li>
+</ol>
+  If you did not receive the above output and encountered an error, check the following items.
+  </p>
+<ol>
+	<li>Did you successfully create an <a href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html" target="_blank">Amazon Web Services account</a>?<br/></li>
+    <li>Did you successfully create an <a href="http://requester.mturk.com" target="_blank">Amazon Mechanical Turk Requester account</a>?<br/></li>
+    <li>  Did you correctly copy and paste your <a href="http://s3.amazonaws.com/mturk/tools/pages/aws-access-identifiers/aws-identifier.html" target="_blank">AWS access identifiers</a> into the setup application or the mturk.properites file?<br/></li>
+</ol>
+  </ul>
+  
+<h3>Run the sample applications</h3>
+      
+ Amazon Mechanical Turk provides several sample applications that you can run to create HITs. You can then revise the samples to create your own HITs. For complete instructions on how to run the samples see the <a href="UserGuide.html#overviewsamples" target="_blank">Overview of the Sample Applications</a> section in the <a href="UserGuide.html" target="_blank">User Guide for the Amazon Mechanical Turk Command Line Tools v1.3.1</a>.<br/>
+    <p>  
+      To find the sample applications, navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]/samples</span></p>
+
+
+
+<h3>View the Command Line Tools tutorials</h3>
+	
+  Amazon Mechanical Turk provides video tutorials to help you get started creating HITs. For more information, see 
+  <a href="http://requester.mturk.com/mturk/tutorials" target="_blank">Command Line Tools Tutorial</a>.
+  
+  
+  <h3>Additional Resources</h3>
+  For more information about the Command Line Tools see the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/CLTArticle.html" target="_blank">Command Line Tools Reference</a> section in the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/" target="_blank">Amazon Mechanical Turk Developer Guide</a>.
+
+
+</div>
+
+<h2><a href="#" onclick="toggle('answer3'); return false;">How Do I Learn More About Using the Command Line Tools?</a></h2>
+<div id="answer3" style="display:none;" class="answer">
+Check out the <a href="UserGuide.html" target="_blank">User Guide for the Amazon Mechanical Turk Command Line Tools v1.3.1</a> for more details on the various features of the Command Line Tools. You can also see the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/CLTArticle.html" target="_blank">Command Line Tools Reference</a> section in the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/" target="_blank">Amazon Mechanical Turk Developer Guide</a>.
+<p/>
+Amazon Mechanical Turk provides video tutorials to help you get started creating HITs. For more information, see 
+  <a href="http://requester.mturk.com/mturk/tutorials" target="_blank">Command Line Tools Tutorial</a>.
+
+</div>
+
+<h2><a href="#" onclick="toggle('answer4'); return false;">How Do I Learn More About the Concepts of Amazon Mechanical Turk?</a></h2>
+<div id="answer4" style="display:none;" class="answer">
+For a conceptual overview of Amazon Mechanical Turk, see the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/ConceptsArticle.html" target="_blank">Mechanical Turk Concepts</a> section in the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/" target="_blank"> Amazon Mechanical Turk Developer Guide</a>.
+</div>
+
+
+<h2><a href="#" onclick="toggle('answer5'); return false;">What Environments Are Supported?</a></h2>
+<div id="answer5" style="display:none;" class="answer">
+The Command Line Tools can be run on the following environments:
+<ul>
+  <li>Microsoft Windows</li>
+  <li>Unix based system (i.e. Mac OSX, Linux, etc.)</li>
+</ul>
+</div>
+<h2><a href="#" onclick="toggle('answer6'); return false;">What If I Have Comments, Questions or Feedback?</a></h2>
+<div id="answer6" style="display:none;" class="answer">
+If you have any comments, questions or feedback on the Amazon Mechanical Turk Command Line Tools or the service in general, please visit the <a href="http://developer.amazonwebservices.com/connect/forum.jspa?forumID=11" target="_blank">Amazon Mechanical Turk discussion forums</a>.<p/>
+Alternatively, you can visit the open source project <a href="http://sourceforge.net/projects/mturkclt" target="_blank">home page</a>.
+</div>
+
+</body></html>

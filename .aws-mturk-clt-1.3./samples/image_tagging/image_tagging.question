@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<QuestionForm xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd">
+    <Overview>
+        <Title>Tag this Image</Title>
+
+        <!-- Here are the guidelines. Recommend keeping these short and crisp. -->
+        <Text>Guidelines:</Text>
+        <List>
+            <ListItem>You must provide at least 3 tags for this image.</ListItem>
+            <ListItem>Each tag must be a single word</ListItem>
+            <ListItem>No tag can be longer than 25 characters</ListItem>
+            <ListItem>The tags must describe the image, the contents of the image, or some relevant context.</ListItem>
+        </List>
+
+        <!-- Here's the image file to be tagged -->
+        <Text>Image:</Text>
+        <Binary>
+          <MimeType>
+            <Type>image</Type>
+            <SubType>jpg</SubType>
+          </MimeType>
+          <DataURL>${image_url}</DataURL>
+          <AltText>Image to tag</AltText>
+        </Binary>
+    </Overview>
+
+    <!-- The code below will create 5 inputs for tags. It will force the first 3 to be mandatory. -->
+    #set( $minimumNumberOfTags = 3 )
+    #foreach( $tagNum in [1..5] )
+        <Question>
+            <QuestionIdentifier>tag${tagNum}</QuestionIdentifier>
+            #if( $tagNum <= $minimumNumberOfTags)
+                <IsRequired>true</IsRequired>
+            #else
+                <IsRequired>false</IsRequired>
+            #end
+            <QuestionContent><Text>Tag ${tagNum}:</Text></QuestionContent>
+            <AnswerSpecification>
+                <FreeTextAnswer>
+                    <Constraints>
+                        <Length maxLength="25" />
+			<AnswerFormatRegex regex="^[^ ]*$" errorText="Each tag must be a single word (and cannot contain spaces)."/>
+                    </Constraints>
+                    <NumberOfLinesSuggestion>1</NumberOfLinesSuggestion>
+                </FreeTextAnswer>
+            </AnswerSpecification>
+        </Question>
+    #end
+
+</QuestionForm>
+

@@ -1,0 +1,3174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>User Guide for the Amazon Mechanical Turk Command Line Tools v1.3.1</title><!--
+These style should be copied directly from the common CSS.
+We include them in the document to make distributing files
+easier.
+-->
+
+
+<style type="text/css">
+/* --------------------------------------------- */
+/*  AWS Developer Content Styles                 */
+/* --------------------------------------------- */
+
+body, div, p, td, th {
+    font-family : helvetica,sans-serif, arial;
+    font-size : 12px;
+    color : #000000;
+}
+
+.aws-h1, h1{
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+}
+.aws-h2, h2{
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 14px;
+  color: #c60;
+}
+.aws-h3, h3{
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333333;
+}
+
+/*table ID selector styles*/
+#aws-table {
+  border-top: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+  width:95%;
+}
+
+#aws-table td{
+  font-size: 12px;
+  padding: 5px 5px 5px 5px;
+  border-bottom: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  vertical-align:top;
+}
+
+#aws-table th {
+  font-size: 12px;
+  padding: 5px 5px 5px 5px;
+  border-bottom: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  vertical-align:top;
+  background-color: #eeeeee;
+  color: #333333;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: left;
+}
+
+/*code, note, and example styles*/
+.programlisting{
+  font-family: "Courier New", Courier, mono;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #000066;
+  padding: 5px;
+  background-color: #eff7ff;
+  border: 1px dashed #333;
+  width:75%;
+  display:block;
+}
+.aws-code-inline {
+  font-family: "Courier New", Courier, mono;
+  font-size: 11px;
+}
+.aws-note {
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-top-style: solid;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: none;
+  border-top-color: #CCCCCC;
+  border-right-color: #CCCCCC;
+  border-bottom-color: #CCCCCC;
+  border-left-color: #CCCCCC;
+  padding: 10px;
+  width:95%;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+</style></head><body>
+<h1>User Guide for the Amazon Mechanical Turk Command Line Tools v1.3.1</h1>
+<p>
+  The Amazon Mechanical Turk Command Line Tools are a set of command line interfaces that allow you to easily build solutions leveraging Amazon Mechanical Turk without writing a line of code.  The goals of the Command Line Tools are to:
+  <ul>
+    <li>To abstract you from the "muck" of using web services</li>
+    <li>To allow you to create solutions without writing a single line of code</li>
+    <li>To allow you to focus more on solving the business problem and less on managing technical details</li>
+  </ul>
+</p>
+
+The Command Line Tools can be run on the following environments:
+<ul>
+  <li>Microsoft Windows</li>
+  <li>Unix based system (i.e. Mac OSX, Linux, etc.)</li>
+</ul>
+<a name="whatsnew"/>
+<h2>What's New in Amazon Mechanical Turk Command Line Tools v1.3.1</h2>
+We have added the following new features to this version of the Command Line Tools:<p/>
+<ul>
+	<li>A new operation <a href="#maketemplate">Make Template</a> copies a Command Line Tools sample application. You can then modify the files and create your own application.</li>
+	<li>A new operation <a href="#reviewResults">Review Results</a> allows you to approve and reject multiple assignments with one operation.</li>
+	<li>We have made some changes to the <a href="#getresults">Get Results</a> operation. Each HIT in the output file now has a link to your <strong>Manage HITs</strong> page in the <a href="http://requester.mturk.com" target="_blank">Requester web site</a>. Use these links if you want to manually reject assignments, pay bonuses, or send emails to Workers. We have also added some new information to the output on the screen.</li>
+	<li>The <a href="#imagecategory">Image Categorization Sample Application</a> and the <a href="#sitefilter">Running the Web Site Filtering Sample Application</a> provide a command to generate a summary report of the HIT results.</li>
+	
+</ul>
+<h2>Amazon Mechanical Turk Concepts and Additional Information</h2>
+Before getting started, you should first familiarize yourself with the key concepts of Amazon Mechanical Turk by reading the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/ConceptsArticle.html" target="_blank">Mechanical Turk Concepts</a> section in the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/" target="_blank">Amazon Mechanical Turk Developer Guide</a>.<p/>
+For additional information, check out these resources:
+<ul>
+	
+</ul>
+<li>The <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2008-02-14/" target="_blank">Amazon Mechanical Turk Developer Guide</a> provides full details on all functionality available on Amazon Mechanical Turk.</li>
+<li>The <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkGettingStartedGuide/2008-02-14/" target="_blank">Amazon Mechanical Turk Getting Started Guide</a> provides information about how to get started using Amazon Mechanical Turk. It includes step-by-step information about how to create a HIT using the Command Line Tools.</li>
+<li>The <a href="http://requester.mturk.com/mturk/tutorials" target="_blank">Command Line Tools Tutorial</a> provides video instructions to help you get started creating HITs.</li>
+  </ul>
+</div>
+
+<a name="tableofcontents"/>
+<h2>Table of Contents</h2>
+<ol>
+  <li><a href="#features">Features and Benefits</a></li>
+  <li><a href="#installation">Installing the Command Line Tools</a></li>
+  <li><a href="#sandbox">Using the Amazon Mechanical Turk Developer Sandbox for Testing</a></li>
+  <li><a href="#overviewsamples">Overview of the Sample Applications</a></li>
+  <li><a href="#helloworld">Running the Hello World Sample Application</a></li>
+  <li><a href="#simplesurvey">Running the Simple Survey Sample Application</a></li>
+  <li><a href="#bestimage">Running the Best Image Sample Application</a></li>
+  <li><a href="#imagecategory">Running the Image Categorization Sample Application</a></li>
+  <li><a href="#imagetag">Running the Image Tagging Sample Application</a></li>
+  <li><a href="#externalhit">Running the External HIT Sample Application</a></li>
+  <li><a href="#sitefilter">Running the Web Site Filtering Sample Application</a></li>
+  <li><a href="#sitefilterqual">Running the Web Site Filtering Qualification Sample Application</a></li>
+  <li><a href="#assignqual">Running the Assign Qualification Sample Application</a></li>
+  <li><a href="#quizqual">Running the Quiz Qualification Sample Application</a></li>
+  <li><a href="#javaqual">Running the Java Qualification Sample Application</a></li>
+  <li><a href="#filedescriptions">Description of Files Used by the Command Line Tools</a></li>
+  <li><a href="#overviewofoperations">Overview of Command Line Tool Operations</a></li>
+  <li><a href="#getbalance">Running the Get Balance Operation</a></li>
+  <li><a href="#loadhits">Running the Load HITs Operation</a></li>
+  <li><a href="#getresults">Running the Get Results Operation</a></li>
+  <li><a href="#approvework">Running the Approve Work Operation</a></li>
+  <li><a href="#rejectwork">Running the Reject Work Operation</a></li>
+  <li><a href="#reviewresults">Running the Review Results Operation</a></li>
+  <li><a href="#deletehits">Running the Delete HITs Operation</a></li>
+  <li><a href="#updatehits">Running the Update HITs Operation</a></li>
+  <li><a href="#extendhits">Running the Extend HITs Operation</a></li>
+  <li><a href="#grantbonus">Running the Grant Bonus Operation</a></li>
+  <li><a href="#blockworker">Running the Block Worker Operation</a></li>
+  <li><a href="#unblockworker">Running the Unblock Worker Operation</a></li>
+  <li><a href="#createqual">Running the Create Qualification Type Operation</a></li>
+  <li><a href="#updatequal">Running the Update Qualification Operation</a></li>
+  <li><a href="#assignqualop">Running the Assign Qualification Operation</a></li>
+  <li><a href="#getqualrequests">Running the Get Qualification Requests Operation</a></li>
+  <li><a href="#approvequalrequests">Running the Approve Qualification Requests Operation</a></li>
+  <li><a href="#rejectqualrequests">Running the Reject Qualification Requests Operation</a></li>
+  <li><a href="#evaluatequalrequests">Running the Evaluate Qualification Requests Operation</a></li>
+  <li><a href="#updatequalscore">Running the Update Qualification Score Operation</a></li>
+  <li><a href="#revokequal">Running the Revoke Qualification Operation</a></li>
+  <li><a href="#resetaccount">Running the Reset Account Operation</a></li>
+  <li><a href="#maketemplate">Running the Make Template Operation</a></li>
+  <li><a href="#logging">Logging and Debugging</a></li>
+  <li><a href="#portability">Portability of Convenience Files</a></li>
+  <li><a href="#comments">Comments, Questions, or Feedback</a></li>
+</ol>
+
+<a name="features"/>
+<h2>Features and Benefits</h2>
+The Amazon Mechanical Turk Command Line Tools offers you the following features and benefits:<p/>
+
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th>Feature</th>
+      <th>Benefit</th>
+    </tr>
+    <tr>
+      <td>Bulk load HITs via a Question Template File, an Input File, and a HIT Properties File.</td>
+      <td>No coding necessary.  Only simple text file manipulation, using Microsoft Excel to manage your input and simple XML editing.</td>
+    </tr>
+    <tr>
+      <td>Retrieve submitted results as a file.</td>
+      <td>Results can be easily viewed in a text editor or Excel and can be easily parsed for integration to your backend system or into another HIT workflow.</td>
+    </tr>
+    <tr>
+      <td>Bulk approve/reject assignments</td>
+      <td>Results can be easily approved/rejected using files.</td>
+    </tr>
+    <tr>
+      <td>Change properties for HITs that are live</td>
+      <td>Change properties (i.e. reward) for HITs that are already in production.</td>
+    </tr>
+    <tr>
+      <td>Preview your HIT as an HTML file.</td>
+      <td>Designing your HITs takes less time since you can preview the look and feel without loading into Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td>Manage your Workers</td>
+      <td>Create and maintain your qualifications to manage your Workers.  Prevent undesirable Workers from completing your HITs by using the Block Worker command.</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="installation"/>
+<h2>Installing the Command Line Tools</h2>
+The installation of the Command Line Tools and other required components is simple and requires minimal configuration.<p/>
+<p/>
+If you downloaded and ran the mech-turk-setup.exe file, you have installed and configured the Command Line Tools. When this documentation refers to [Command Line Tools Installation Directory], it assumes the following directory structure:<br/> Directory] is <span class="programlisting">[Command Line Tools Installation Directory] = mech-turk-tools-1.3.1</span>
+<p/>
+  If you downloaded a different file, use the following instructions to install and configure the Command Line Tools.
+</p>
+The instructions below assume that the downloaded file was uncompressed in a directory that you specified.  When the instructions refer to [Command Line Tools Installation Directory], it assumes the following directory structure:<br/>
+<span class="programlisting">[Command Line Tools Installation Directory] = [The directory that the downloaded file was uncompressed into]\aws-mturk-clt-1.3.1</span>
+
+
+<ol>
+  <li>Sign up for an Amazon Web Services (AWS) account at the <a href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html" target="_blank">AWS web site</a>.</li>
+  <li>Sign up for an Amazon Mechanical Turk Requester account at the <a href="http://requester.mturk.com" target="_blank">Requester web site</a>.</li>
+  <li>Configure the Command Line Tools to use your <a href="http://s3.amazonaws.com/mturk/tools/pages/aws-access-identifiers/aws-identifier.html" target="_blank">AWS access identifiers</a> information.<p/>
+  &nbsp;&nbsp;&nbsp;a. Open the following file:
+  <span class="programlisting">
+    [Command Line Tools Installation Directory]\bin\mturk.properties
+  </span>
+  &nbsp;&nbsp;&nbsp;b. Set the following properties to reflect your <a href="http://s3.amazonaws.com/mturk/tools/pages/aws-access-identifiers/aws-identifier.html" target="_blank">AWS access identifiers</a>:<p/>
+<span class="programlisting">
+  access_key=[Your AWS Access Key]<br/>
+  secret_key=[Your Secret Key]
+</span>
+  &nbsp;&nbsp;&nbsp;c. Save and close the file.</li>
+  <li>If you downloaded the Unix distribution, you must set the MTURK_CMD_HOME environment variable to point to your Command Line Tools installation location.</li>
+  <li>If you downloaded the Unix distribution, you must set the JAVA_HOME environment variable to point to your Java Standard Edition Runtime Environment (JRE) installation location.</li>
+</ol>
+
+
+For advanced users, you can optionally set the MTURK_CMD_HOME environment variable to point to your Command Line Tools installation location so that they can be run from any directory.<p/>
+Note: If you did not download a version of the Command Line Tools that contains the Java Standard Edition Runtime Environment (Only available for Windows distribution), you must have the Java JRE 1.5.X (JRE 5).  The Command Line Tools are not 100% compatible with JRE 6.  You can download the JRE at the following website: <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp" target="_blank">http://java.sun.com/javase/downloads/index_jdk5.jsp</a>.<p/>
+
+If you have installed the JRE and elect not to use the included JRE (Windows distribution only), you should set the JAVA_HOME environment variable to point to your JRE installation.
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="sandbox"/>
+<h2>Using the Amazon Mechanical Turk Developer Sandbox for Testing</h2>
+
+By default, the Command Line Tools are configured to work against the production site (<a href="http://www.mturk.com" target="_blank">http://www.mturk.com</a>).  When creating HITs on the Production site, you will need to have a funded Amazon Mechanical Turk account. Visit the following link to fund your account: <a href=" http://requester.mturk.com/mturk/youraccount" target="_blank"> http://requester.mturk.com/mturk/youraccount</a>.<p/>
+
+Optionally, you can configure the Command Line tools to work against the Developer Sandbox environment.  The Developer Sandbox is a simulated environment that allows developers to test their Amazon Mechanical Turk solutions for free.  To view HITs created in the sandbox, go to the Developer Sandbox worker site (<a href="http://workersandbox.mturk.com" target="_blank"> http://workersandbox.mturk.com</a>).<p/>
+
+To configure the Command Line Tools to work against the Developer Sandbox:
+<ol>
+  <li>Open the following file in a text editor:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\bin\mturk.properties</span></li>
+  <li>Comment out the Production site service_url with a "#":<br/>
+    <span class="programlisting">#service_url=http://mechanicalturk.amazonaws.com/?Service=AWSMechanicalTurkRequester</span></li>
+  <li>Uncomment the Developer Sandbox service_url by removing the "#":<br/>
+    <span class="programlisting">service_url=http://mechanicalturk.sandbox.amazonaws.com/?Service=AWSMechanicalTurkRequester</span></li>
+  <li>Save and close the file.</li>
+</ol>
+
+You can also temporarily override your configuration in your mturk.properties file and work against the Developer Sandbox by using the -sandbox parameter with any of the commands.  For example: <p/>
+
+<span class="programlisting"> loadHITs -sandbox [other options] </span>
+
+This will execute the loadHITs command against the Developer Sandbox environment even if you have configured your command line tools to run against production in your mturk.properties file. <p/>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="overviewsamples"/>
+<h2>Overview of the Sample Applications</h2>
+The Command Line Tools include a set of sample applications that demonstrate various use cases of Amazon Mechanical Turk.<p/>
+There are 4 create HIT sample applications and 7 Qualification related sample applications.<p/>
+Each create HIT sample application is defined by 3 files:
+<ul>
+  <li>Input File - A file containing the variable data to be placed in the HIT.  This is a tab-delimited text file.</li>
+  <li>Question Template File - A file containing the template of the question that contains placeholders for the fields defined in the input file.  This is an XML file that conforms to the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html" target="_blank">QuestionForm</a> schema.</li>
+  <li>HIT Properties File - A file containing the desired properties for the HIT (i.e. title, description, etc.)</li>
+</ul>
+
+Each create HIT sample described in subsequent sections consist of the following steps:
+<ol>
+  <li>For each row in the Input File, the fields will be inserted into the placeholders of the Question Template File and the HIT will be created in the <a href="http://www.mturk.com" target="_blank">production site</a> with the properties defined in the HIT Properties File.  The # of rows in the Input File will determine how many HITs will be created.</li>
+  <li>A Success File is generated containing identifiers to the HITs that were created.</li>
+  <li>The HITs are accepted, worked on and submitted on the <a href="http://workersandbox.mturk.com" target="_blank">Worker sandbox site</a>.</li>
+  <li>The Success File is used to retrieve the results of the HITs which are then written to a Results File.</li>
+  <li>The Success File is then used to automatically approve all the HITs and then properly dispose of them.</li>
+</ol>
+
+
+
+Details on the Qualification related sample applications can be found in their respective section.<p/>
+For more details on the above files, see section <a href="#filedescriptions">Description of Files Used by the Command Line Tools</a>.<p/>
+
+
+The following samples have been provided:<p/>
+
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th>Sample Name</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><a href="#helloworld">Hello World</a></td>
+      <td>Create HITs that ask a few simple questions such as "What is the weather like right now in Seattle, WA?"</td>
+    </tr>
+    <tr>
+      <td><a href="#simplesurvey">Simple Survey</a></td>
+      <td>Create a HIT that conducts a quick survey on a worker's political party preferences.</td>
+    </tr>
+    <tr>
+      <td><a href="#bestimage">Best Image</a></td>
+      <td>Create a HIT that asks a worker to choose the best image of three given a set of criteria. Before loading the HIT into 
+      Amazon Mechanical Turk, this sample will also demonstrate how to preview the HIT before loading.</td>
+    </tr>
+    <tr>
+      <td><a href="#imagecategory">Image Categorization</a></td>
+      <td>Create HITs asking workers to categorize images.</td>
+    </tr>
+    <tr>
+      <td><a href="#imagetag">Image Tagging</a></td>
+      <td>Create HITs asking workers to create tags for various images.</td>
+    </tr>
+    <tr>
+      <td><a href="#externalhit">External HIT</a></td>
+      <td>Create HITs that uses content served on a third party website as the question answer form to ask workers to categorize websites.</td>
+    </tr>
+    <tr>
+      <td><a href="#sitefilter">Web Site Filtering</a></td>
+      <td>Create HITs asking workers to filter out inappropriate websites.</td>
+    </tr>
+    <tr>
+      <td><a href="#assignqual">Assign Qualification</a></td>
+      <td>Create a simple qualification that does not require a test and assign this qualification to a worker.</td>
+    </tr>
+    <tr>
+      <td><a href="#quizqual">Quiz Qualification</a></td>
+      <td>Create a qualification with a test that is automatically graded by Amazon Mechanical Turk with an answer key.</td>
+    </tr>
+    <tr>
+      <td><a href="#javaqual">Java Qualification</a></td>
+      <td>Create a qualification that tests a worker's knowledge of Java where the answers will be scored by you instead of 
+       AmazonMechanical Turk. You will retrieve qualification requests from workers and score their tests using an answer key 
+       that you define.</td>
+    </tr>
+    <tr>
+      <td><a href="#sitefilterqual">Web Site Filtering Qualification</a></td>
+      <td>Create a qualification that tests a worker's ability to filter out inappropriate websites.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="helloworld"/>
+<h2>Running the "Hello World" Sample Application</h2>
+With this sample application, you create a few HIT that ask a few simple questions, such as "What is the weather like right now in Seattle, WA?"<p/>
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\helloworld</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+  <pre>
+--[Initializing]----------
+ Input: ..\samples\helloworld\helloworld.input
+ Properties: ..\samples\helloworld\helloworld.properties
+ Question File: ..\samples\helloworld\helloworld.question
+ Preview mode disabled
+--[Loading HITs]----------
+  Start time: Wed Aug 22 11:18:43 PDT 2007
+Created HIT 1: HITId=HXVZ28HXQXQ6VBNA6ZS0
+Created HIT 2: HITId=0XBEXK5AN0TZW0GP7VC0
+Created HIT 3: HITId=2GCM1PYFZJAPHWYDHZQZ
+Created HIT 4: HITId=CAYZVKHRRZRCWMC5XBEZ
+Created HIT 5: HITId=EA1ZQ300GK06TQG70VDZYou may see your HIT(s) with HITTypeId 'VWCZXMY21ARZ0KZHYXN0' here:
+
+<strong>http://www.mturk.com/mturk/preview?groupId=VWCZXMY21ARZ0KZHYXN0</strong>
+
+  End time: Wed Aug 22 11:18:44 PDT 2007
+--[Done Loading HITs]----------
+  Total load time: 1 seconds.
+  Successfully loaded 5 HITs.
+  </pre>
+  </span>
+  </li>
+</ol>
+
+  Your HIT has been successfully loaded.  You can visit the Amazon Mechanical Turk site with the URL provided in the output to view the HIT.<p/>
+
+To retrieve the results after workers have submitted answers:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\helloworld</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the file called <strong>helloworld.results</strong> to view the results.  The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.  The submitted results can be found at the last columns in the file.</li>
+</ol>
+
+To approve and delete the results:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\helloworld</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveAndDeleteResults<br/>
+  For Unix: ./approveAndDeleteResults.sh
+  </span></li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">
+    You are about to delete 5 HITs.<br/>
+To confirm this operation, please press ENTER (or press Ctrl+C to abort):
+    </span></li>
+  <li>Press enter.</li>
+  <li>You should see the following output:<br/>
+      <span class="programlisting">
+      <pre>
+[0XBEXK5AN0TZW0GP7VC0] Successfully deleted HIT (1/5)
+[HXVZ28HXQXQ6VBNA6ZS0] Successfully deleted HIT (2/5)
+[2GCM1PYFZJAPHWYDHZQZ] Successfully deleted HIT (3/5)
+[CAYZVKHRRZRCWMC5XBEZ] Successfully deleted HIT (4/5)
+[EA1ZQ300GK06TQG70VDZ] Successfully deleted HIT (5/5)
+--- Finished to delete HITs ---
+      </pre>
+      </span></li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, you have successfully loaded your first HITs into Amazon Mechanical Turk using the Command Line Tools.<p/>
+
+The questions are defined in the Input File:<br/>
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\helloworld</span></li>
+  <li>Open the file called <strong>helloworld.input</strong> in a text editor and you should see the following text:
+  <span class="programlisting">question<br/>
+  <pre>
+What is the weather like right now in Seattle, WA?
+What company makes the Windows operating system?
+How many glasses of water do you drink per day?
+What's the one thing you've bought that you're happiest with?
+What are you thinking right now?
+  </pre>
+  </span></li>
+</ol>
+
+The HIT layout is defined in the Question Template File:<br/>
+<ol>
+  <li>Open the file called <strong>helloworld.question</strong> in a text editor.</li>
+  <li>Note the following section of the XML file containing <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html"  target="_blank">QuestionForm</a> content:
+  <span class="programlisting">    &lt;QuestionContent&gt;<br/>
+      &lt;Text&gt;${question}&lt;/Text&gt;<br/>
+    &lt;/QuestionContent&gt;<br/>
+  </span></li>
+  <li>The <strong>${question}</strong> line of text represents the variable defined in the Input File.</li>
+</ol>
+
+The HIT properties are defined in the HIT Properties File:<br/>
+<ol>
+  <li>Open the file called <strong>helloworld.properties</strong> in a text editor.</li>
+  <li>Note the properties defined in this file which correspond to the properties of the HIT that was created.</li>
+</ol>
+
+After successfully loading the HITs, a record of the operation is stored in the Success File:<br/>
+<ol>
+  <li>Open the file called <strong>helloworld.input.success</strong> in a text editor and you should see something like the following text:<br/>
+  <span class="programlisting">
+  <pre>
+ hitid	hittypeid
+HXVZ28HXQXQ6VBNA6ZS0	1APZGQSEFW5ZHPDA3YW0
+0XBEXK5AN0TZW0GP7VC0	1APZGQSEFW5ZHPDA3YW0
+2GCM1PYFZJAPHWYDHZQZ	1APZGQSEFW5ZHPDA3YW0
+CAYZVKHRRZRCWMC5XBEZ	1APZGQSEFW5ZHPDA3YW0
+EA1ZQ300GK06TQG70VDZ	1APZGQSEFW5ZHPDA3YW0
+  </pre>
+  </span></li>
+  <li>This file contains the HIT IDs and HIT Type ID that can be used to retrieve your results.</li>
+</ol>
+
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="simplesurvey"/>
+<h2>Running the "Simple Survey" Sample Application</h2>
+With this sample application, you create a HIT that conducts a quick survey on a worker's political party preferences.<p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\simple_survey</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span>
+    You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+  <pre>
+--[Initializing]----------
+ Input: ..\samples\simple_survey\simple_survey.input
+ Properties: ..\samples\simple_survey\simple_survey.properties
+ Question File: ..\samples\simple_survey\simple_survey.question
+ Preview mode disabled
+--[Loading HITs]----------
+  Start time: Wed Aug 22 11:30:19 PDT 2007
+Created HIT 1: HITId=ZVRZHDYPHWDZXV01YXBZ
+You may see your HIT(s) with HITTypeId 'XSVZVC432ZXZVFCCDKGZ' here:
+
+ <strong>http://www.mturk.com/mturk/preview?groupId=XSVZVC432ZXZVFCCDKGZ</strong>
+
+  End time: Wed Aug 22 11:30:20 PDT 2007
+--[Done Loading HITs]----------
+  Total load time: 1 seconds.
+  </pre>
+  </span>
+</li>
+</ol>
+
+Your HIT has been successfully loaded.  You can visit the Amazon Mechanical Turk site with the URL provided in the output to view the HIT.<p/>
+
+To retrieve the results after workers have submitted their answers:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\simple_survey</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the file called <strong>simple_survey.results</strong> to view the results.  The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.  The submitted results can be found at the last columns in the file.</li>
+</ol>
+
+To approve and delete the results:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\simple_survey</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveAndDeleteResults<br/>
+  For Unix: ./approveAndDeleteResults.sh
+  </span></li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">You are about to delete 1 HITs.<br/>
+To confirm this operation, please press ENTER (or press Ctrl+C to abort):
+    </span></li>
+  <li>Press enter.</li>
+  <li>You should see the following output:<br/>
+      <span class="programlisting">[1] Success Deleting HIT (ZVRZHDYPHWDZXV01YXBZ)</span></li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, a <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QualificationRequirementDataStructureArticle.html" target="_blank">locale qualification</a> (What is a <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/Concepts_QualificationsArticle.html" target="_blank">qualification?</a>) was used:
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\simple_survey</span></li>
+  <li>Open the file called <strong>simple_survey.properties</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  qualification.1:00000000000000000071<br/>
+  qualification.comparator.1:EqualTo<br/>
+  qualification.locale.1:US<br/>
+  qualification.private.1:false<br/>
+  </span></li>
+  <li>The Qualification Requirement above specifies that the worker must be located in the US and that the HIT can be previewed by workers who do not meet this Qualification Requirement.</li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="bestimage"/>
+<h2>Running the "Best Image" Sample Application</h2>
+With this sample application, you create a HIT that asks a worker to choose the best image of three given a set of criteria.  Before loading the HIT into Amazon Mechanical Turk, this sample will also demonstrate how to preview the HIT before loading.<p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\best_image</span></li>
+  <li>Then run the following command to preview the HIT:
+  <span class="programlisting">For Microsoft Windows: run -preview -previewfile ..\samples\best_image\preview.html<br/>
+  For Unix: ./run.sh -preview -previewfile ../samples/best_image/preview.html<br/>
+  </span><p/>
+
+    You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+    <span class="programlisting"><pre>
+--[Initializing]----------
+ Input: ..\samples\best_image\best_image.input
+ Properties: ..\samples\best_image\best_image.properties
+ Question File: ..\samples\best_image\best_image.question
+ Preview mode enabled
+Preview file: ..\samples\best_image\preview.html
+--[Previewing HITs]----------
+    </pre>
+    </span>
+    </li>
+  <li>Open the preview.html file in a browser.  You will be presented with a preview of what the HIT will look like when posted on Amazon Mechanical Turk.</li>
+</ol>
+To actually load this HIT:
+<ol>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh<br/>
+  </span>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting"><pre>
+--[Initializing]----------
+ Input: ..\samples\best_image\best_image.input
+ Properties: ..\samples\best_image\best_image.properties
+ Question File: ..\samples\best_image\best_image.question
+ Preview mode disabled
+--[Loading HITs]----------
+  Start time: Mon Jun 01 14:00:00 PDT 2007
+Created HIT 1: HITId=NWQMG5ZCBYQZW6CV4W10
+You may see your HIT(s) with HITTypeId 'JXTJ6DXRVYE4VEY3CX60' here:
+
+<strong>http://www.mturk.com/mturk/preview?groupId=JXTJ6DXRVYE4VEY3CX60</strong>
+
+  End time: Mon Jun 01 14:00:02 PDT 2007
+--[Done Loading HITs]----------
+  Total load time: 2 seconds.</span>
+  </li>
+  </ol>
+
+Your HIT has been successfully loaded.  You can visit the Amazon Mechanical Turk site with the URL provided in the output to view the HIT.<p/>
+
+To retrieve the results after workers have submitted answers:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\best_image</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the file called <strong>best_image.results</strong> to view the results.  The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.  The submitted results can be found at the last columns in the file.</li>
+</ol>
+
+To approve and delete the results:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\best_image</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveAndDeleteResults<br/>
+  For Unix: ./approveAndDeleteResults.sh
+  </span></li>
+    <li>You should see the following output:<br/>
+      <span class="programlisting">You are about to delete 1 HITs.<br/>
+  To confirm this operation, please press ENTER (or press Ctrl+C to abort):
+      </span></li>
+    <li>Press enter.</li>
+    <li>You should see the following output:<br/>
+        <span class="programlisting">[1] Success Deleting HIT (NYXZHZ062WAZQAHG2A4Z)</span></li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_FormattedContentXHTMLArticle.html" target="_blank">&lt;FormattedContent&gt;</a> functionality in the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html"  target="_blank">QuestionForm</a> was used:
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\best_image</span></li>
+  <li>Open the file called <strong>best_image.question</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  &lt;FormattedContent&gt;&lt;![CDATA[<br/>
+    ... some HTML that conforms to the XHTML specification<br/>
+    ]]&gt;&lt;/FormattedContent&gt;<br/>
+  </span></li>
+  <li>A subset of HTML tags are allowed to be placed within the FormattedContent tags.  Click <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_FormattedContentXHTMLArticle.html" target="_blank">here</a> for a list of what is allowed.</li>
+</ol>
+
+Additionally, a <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QualificationRequirementDataStructureArticle.html" target="_blank">system qualification</a> (What is a <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/Concepts_QualificationsArticle.html" target="_blank">qualification?</a>) was used:
+<ol>
+  <li>Open the file called <strong>best_image.properties</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  qualification.1:000000000000000000L0<br/>
+  qualification.comparator.1:greaterthan<br/>
+  qualification.value.1:25<br/>
+  qualification.private.1:false<br/>
+</span></li>
+  <li>The Qualification Requirement above specifies that the worker must have an approval rate of 25% or greater and that the HIT can be previewed by workers who do not meet this Qualification Requirement.</li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="externalhit"/>
+<h2>Running the "External HIT" Sample Application</h2>
+With this sample application, you create HITs asking workers to categorize websites using a HIT hosted on an external website.<p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\external_hit</span></li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+<span class="programlisting"><pre>
+--[Initializing]----------
+ Input: ..\samples\external_hit\external_hit.input
+ Properties: ..\samples\external_hit\external_hit.properties
+ Question File: ..\samples\external_hit\external_hit.question
+ Preview mode disabled
+--[Loading HITs]----------
+  Start time: Mon Jun 01 14:00:00 PDT 2007
+Created HIT 1: HITId=DS3JHQHKTYZGHRZQ13YZ
+Created HIT 2: HITId=GWTZYPZEHXWAZRZVMYN0
+Created HIT 3: HITId=5GD8YRY52T5ZZDYKRSC0
+Created HIT 4: HITId=FSG80S1FYZSZV0ZE4JNZ
+Created HIT 5: HITId=Q8QM70ZNR3DZRC43CZZZ
+You may see your HIT(s) with HITTypeId 'Y0ZAWKWKRYCZNMRE7W2Z' here:
+
+<strong>http://www.mturk.com/mturk/preview?groupId=Y0ZAWKWKRYCZNMRE7W2Z</strong>
+
+  End time: Mon Jun 01 14:00:03 PDT 2007
+--[Done Loading HITs]----------
+  Total load time: 3 seconds.
+  Successfully loaded 5 HITs.
+  </pre></span>
+  </li>
+  </ol>
+
+Your HITs have been successfully loaded.  You can visit the Amazon Mechanical Turk site with the URL provided in the output to view the HITs.<p/>
+
+To retrieve the results after workers have submitted their answers:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\external_hit</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the file called <strong>external_hit.results</strong> to view the results.  The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.  The submitted results can be found at the last columns in the file.</li>
+</ol>
+
+To approve and delete the results:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\external_hit</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveAndDeleteResults<br/>
+  For Unix: ./approveAndDeleteResults.sh
+  </span></li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">You are about to delete 5 HITs.<br/>
+To confirm this operation, please press ENTER (or press Ctrl+C to abort):
+    </span></li>
+  <li>Press enter.</li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">
+    [1] Success Deleting HIT (NZFRWN8QBXAZ41151WQZ)<br/>
+    [2] Success Deleting HIT (TJ3MPGYNNZEZQRZRKWC0)<br/>
+    [3] Success Deleting HIT (KT9ZVZYM1W2ZYBYD3Y5Z)<br/>
+    [4] Success Deleting HIT (1J0ERTZQYX2671Z6BZW0)<br/>
+    [5] Success Deleting HIT (0AXZNTHEVXH8XKYZPY50)<br/>
+    </span></li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, the HIT itself is hosted externally (<a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_ExternalQuestionArticle.html" target="_blank">ExternalQuestion</a>) outside of Amazon Mechanical Turk.
+
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\external_hit</span></li>
+  <li>Open the file called <strong>external_hit.question</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  &lt;ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd"&gt;<br/>
+    &lt;ExternalURL&gt;http://s3.amazonaws.com/mturk/samples/sitecategory/externalpage.htm?url=${helper.urlencode($urls)}&lt;/ExternalURL&gt;<br/>
+    &lt;FrameHeight&gt;400&lt;/FrameHeight&gt;<br/>
+  &lt;/ExternalQuestion&gt;<br/>
+  </span></li>
+  <li>In this example, the <strong>externalpage.htm</strong> web page is being configured by the request parameter called <strong>url</strong>.</li>
+  <li>The <strong>${helper.urlencode($urls)}</strong> is a special feature that can be used to encode the raw URL from your input file (i.e. <strong>$urls</strong>) so that it can be included as a request parameter.</li>
+  <li>Open the file called <strong>externalpage.htm</strong> in an HTML editor or a text editor to view the source.  This simple HTML file demonstrates how to submit results back to Amazon Mechanical Turk as well as implementing the Javascript necessary to have the same file work in the Developers Sandbox and the Production system.</li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="imagecategory"/>
+<h2>Running the "Image Categorization" Sample Application</h2>
+With this sample application, you create HITs asking workers to categorize images based on a list of pre-defined categories.  This sample comes with a list of 200 images and asks 3 workers to evaluate each image.  You will be creating 200 HITs with 3 assignments each with a total of up to 600 assignments.<p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_category</span></li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+<span class="programlisting"><pre>
+--[Initializing]----------
+ Input: ..\samples\image_category\image_category.input
+ Properties: ..\samples\image_category\image_category.properties
+ Question File: ..\samples\image_category\image_category.question
+ Preview mode disabled
+--[Loading HITs]----------
+  Start time: Fri Nov 23 15:52:14 PST 2007
+Created HIT 1: HITId=J9CT5ZC4JWF6QKC7DRN0
+Created HIT 2: HITId=0WQJY6XD5YXZV5YK9Z2Z
+Created HIT 3: HITId=J2R8RS5MKZXZR69WCZ9Z
+Created HIT 4: HITId=KRMTVGY0HVXGPTZ37GRZ
+Created HIT 5: HITId=XHFPY48G5XTARGNDP1M0
+Created HIT 6: HITId=J9CRZKZ28J0ZT0XGMG4Z
+...
+
+You may see your HIT(s) with HITTypeId '1HFZ6K8MJ8EZYQYBH0YZ' here:
+
+<strong>http://www.mturk.com/mturk/preview?groupId=1HFZ6K8MJ8EZYQYBH0YZ</strong>
+
+  End time: Fri Nov 23 15:52:20 PST 2007
+--[Done Loading HITs]----------
+  Total load time: 82 seconds.
+  Successfully loaded 200 HITs.
+  </pre></span>
+  </li>
+  </ol>
+
+Your HITs have been successfully loaded.  You can visit the Amazon Mechanical Turk site with the URL provided in the output to view the HITs.<p/>
+
+To retrieve the results after workers have submitted their answers:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_category</span></li>
+  <li>Run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the file called <strong>image_category.results</strong> to view the results.  The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.  The submitted results can be found at the last columns in the file.</li>
+  <li>To view a summary report of the results, run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: generateResultsSummary<br/>
+  For Unix: ./generateResultsSummary.sh
+  </span></li>
+  <li>Open the file called <strong>image_category.summary</strong> to view the summarized results.  This file shows the majority answer for each question, the percentage of workers who selected this answer, and how many workers selected the answer out of the number who worked on the HIT. The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.</li>
+</ol>
+
+To approve and delete the results:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_category</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveAndDeleteResults<br/>
+  For Unix: ./approveAndDeleteResults.sh
+  </span></li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">You are about to delete 200 HITs.<br/>
+To confirm this operation, please press ENTER (or press Ctrl+C to abort):
+    </span></li>
+  <li>Press enter.</li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">
+    [1] Success Deleting HIT (NZFRWN8QBXAZ41151WQZ)<br/>
+    [2] Success Deleting HIT (TJ3MPGYNNZEZQRZRKWC0)<br/>
+    [3] Success Deleting HIT (KT9ZVZYM1W2ZYBYD3Y5Z)<br/>
+    [4] Success Deleting HIT (1J0ERTZQYX2671Z6BZW0)<br/>
+    [5] Success Deleting HIT (0AXZNTHEVXH8XKYZPY50)<br/>
+    ... <br/>
+    </span></li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+The image categorization sample is a good example of how you can use multiple assignments to determine the correct answer for a HIT.<p/>
+
+The number of assignments per HIT is defined in the .property file:<br/>
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_category</span></li>
+  <li>Open the file called <strong>image_category.properties</strong> in a text editor and you should see the following text:
+  <span class="programlisting">
+  <pre>
+assignments:3
+</pre>
+  </span></li>
+  <li>When your HIT asks questions that requires multiple choice answers, you can ask several workers to complete the same HIT so you can easily compare their answers.</li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="imagetag"/>
+<h2>Running the "Image Tagging" Sample Application</h2>
+With this sample application, you create HITs asking workers to create tags for a list of images.  This sample comes with a list of 250 images.  Given an image, a worker will be asked to give tags, or keywords, that are relevant to the image.  Workers are required to give at least 3 tags but they can optionally assign up to 5 tags for each image.  You will be creating a total of 250 HITs with this sample.<p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_tagging</span></li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+<span class="programlisting"><pre>
+--[Initializing]----------
+ Input: ..\samples\image_tagging\image_tagging.input
+ Properties: ..\samples\image_tagging\image_tagging.properties
+ Question File: ..\samples\image_tagging\image_tagging.question
+ Preview mode disabled
+--[Loading HITs]----------
+  Start time: Fri Nov 23 15:52:14 PST 2007
+Created HIT 1: HITId=Y08ZRHY35VKWXJ0MJZ3Z
+Created HIT 2: HITId=RKFZSGWZ9XSTR01ERKR0
+Created HIT 3: HITId=AZZZPGY97RV65FZ8Q1FZ
+Created HIT 4: HITId=6KHZQAZA8T9ASAY9Q330
+Created HIT 5: HITId=71HJTJY0CXNEX6D5EKE0
+Created HIT 6: HITId=5XFGW4YAY9RTR7C89WTZ
+...
+
+You may see your HIT(s) with HITTypeId 'SKZZTCZDDY8ZZTYA2YCZ' here:
+
+<strong>http://www.mturk.com/mturk/preview?groupId='SKZZTCZDDY8ZZTYA2YCZ'</strong>
+
+--[Done Loading HITs]----------
+  Total load time: 102 seconds.
+  Successfully loaded 250 HITs.
+  </pre></span>
+  </li>
+  </ol>
+
+Your HITs have been successfully loaded.  You can visit the Amazon Mechanical Turk site with the URL provided in the output to view the HITs.<p/>
+
+To retrieve the results after workers have submitted their answers:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_tagging</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the file called <strong>image_tagging.results</strong> to view the results.  The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.  The submitted results can be found at the last columns in the file.</li>
+</ol>
+
+To approve and delete the results:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_tagging</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveAndDeleteResults<br/>
+  For Unix: ./approveAndDeleteResults.sh
+  </span></li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">You are about to delete 250 HITs.<br/>
+To confirm this operation, please press ENTER (or press Ctrl+C to abort):
+    </span></li>
+  <li>Press enter.</li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">
+
+    [1] Success Deleting HIT (Y08ZRHY35VKWXJ0MJZ3Z)<br/>
+    [2] Success Deleting HIT (RKFZSGWZ9XSTR01ERKR0)<br/>
+    [3] Success Deleting HIT (AZZZPGY97RV65FZ8Q1FZ)<br/>
+    [4] Success Deleting HIT (6KHZQAZA8T9ASAY9Q330)<br/>
+    [5] Success Deleting HIT (71HJTJY0CXNEX6D5EKE0)<br/>
+    ... <br/>
+    </span></li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+
+In this sample, the HIT is designed to ask workers to supply at least 3 tags up to 5 tags. In the HIT, the first three questions are required and the last two questions are optional.
+
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\image_tagging</span></li>
+  <li>Open the file called <strong>image_tagging.question</strong> in a text editor.</li>
+  <li>Note the following section of:<br/>
+  <span class="programlisting">
+   <!-- The code below will create 5 inputs for tags. It will force the first 3 to be mandatory. --> <br/>
+    #set( $minimumNumberOfTags = <strong>3</strong> )<br/>
+    #foreach( $tagNum in [1..<strong>5</strong>] )<br/>
+        &lt;Question&gt;<br/>
+            &lt;QuestionIdentifier&gt;tag${tagNum}&lt;/QuestionIdentifier&gt;<br/>
+            #if( $tagNum <= $minimumNumberOfTags)<br/>
+                &lt;IsRequired&gt;true&lt;/IsRequired&gt;<br/>
+            #else<br/>
+                &lt;IsRequired&gt;false&lt;/IsRequired&gt;<br/>
+            #end  <br/>
+	</span></li>
+  <li>This code segment takes advantage of a free open source templating language called <a href="http://velocity.apache.org" target="_blank"> Velocity</a>.  In this example, we use a simple if-else statement to determine whether a question should be required.  This creates 5 questions where the first 3 are required. You can re-use this code segment for your own application and change the numbers as appropriate.</li>
+  <li>For more information about how to use <a href="http://velocity.apache.org" target="_blank"> Velocity</a>, go to the <a href="http://www.jajakarta.org/velocity/velocity-1.2/docs/vtl-reference-guide.html" target="_blank">Velocity Reference Guide</a>.
+  </li>
+</ol>
+
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="sitefilter"/>
+<h2>Running the "Website Filtering" Sample Application</h2>
+With this sample application, you create HITs asking workers to identify adult porn sites.  There are 100 websites for workers to evaluate.  Each HIT asks 3 different workers to evaluate one website.  This sample creates a total of 100 HITs with 3 assignments each.  Workers are required to have passed the qualification test for <a href="#sitefilterqual">Qualified to Identify Adult Porn Websites</a> before they can work on the HITs.
+<p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\site_filter</span></li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+<span class="programlisting"><pre>
+--[Initializing]----------
+ Input: ..\samples\site_filter\site_filter.input
+ Properties: ..\samples\site_filter\site_filter.properties
+ Question File: ..\samples\site_filter\site_filter.question
+ Preview mode disabled
+--[Loading HITs]----------
+
+Created HIT 1: HITId=KYSRWE4Z8Y5ZZ708YZP0
+Created HIT 2: HITId=F9EZXC4082PEZAZFNYZZ
+Created HIT 3: HITId=JYF6T3ZM2KYZY14S1XKZ
+Created HIT 4: HITId=R0FZQ5ZY1X0Z0D9KDWCZ
+Created HIT 5: HITId=EXDYN7YGR0S22ZS1FJP0
+Created HIT 6: HITId=W08T2Q9QXW7ZXBY4VHF0
+...
+
+You may see your HIT(s) with HITTypeId 'WBTP3SDX5TB8SYZFCZ0Z' here:
+
+<strong>http://www.mturk.com/mturk/preview?groupId='WBTP3SDX5TB8SYZFCZ0Z'</strong>
+
+--[Done Loading HITs]----------
+  Total load time: 41 seconds.
+  Successfully loaded 100 HITs.
+  </pre></span>
+  </li>
+  </ol>
+
+Your HITs have been successfully loaded.  You can visit the Amazon Mechanical Turk site with the URL provided in the output to view the HITs.<p/>
+
+To retrieve the results after workers have submitted their answers:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\site_filter</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the file called <strong>site_filter.results</strong> to view the results.  The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.  The submitted results can be found at the last columns in the file.</li>
+  <li>To view a summary report of the results, run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: generateResultsSummary<br/>
+  For Unix: ./generateResultsSummary.sh
+  </span></li>
+  <li>Open the file called <strong>site_filter.summary</strong> to view the summarized results.  This file shows the majority answer for each question, the percentage of workers who selected this answer, and how many workers selected the answer out of the number who worked on the HIT. The file contains tab-delimited data so it is best viewed in Microsoft Excel or any other application suitable for viewing this kind of file.</li>
+</ol>
+
+To approve and delete the results:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\site_filter</span></li>
+  <li>Then run the following command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveAndDeleteResults<br/>
+  For Unix: ./approveAndDeleteResults.sh
+  </span></li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">You are about to delete 100 HITs.<br/>
+To confirm this operation, please press ENTER (or press Ctrl+C to abort):
+    </span></li>
+  <li>Press enter.</li>
+  <li>You should see the following output:<br/>
+    <span class="programlisting">
+
+    [1] Success Deleting HIT (KYSRWE4Z8Y5ZZ708YZP0)<br/>
+    [2] Success Deleting HIT (F9EZXC4082PEZAZFNYZZ)<br/>
+    [3] Success Deleting HIT (JYF6T3ZM2KYZY14S1XKZ)<br/>
+    [4] Success Deleting HIT (R0FZQ5ZY1X0Z0D9KDWCZ)<br/>
+    [5] Success Deleting HIT (EXDYN7YGR0S22ZS1FJP0)<br/>
+    ... <br/>
+    </span></li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+
+In this sample, the website to be evaluated is embedded in the HIT using the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_FormattedContentXHTMLArticle.html" target="_blank">&lt;FormattedContent&gt;</a> functionality in the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html"  target="_blank">QuestionForm</a>.
+
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\site_filter</span></li>
+  <li>Open the file called <strong>site_filter.question</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  &lt;FormattedContent&gt;&lt;![CDATA[<br/>
+&lt;iframe src="${urls}" width="100%" height="400"&gt;This text is necessary to ensure proper XML validation. &lt;/iframe&gt;<br/>
+    ]]&gt;&lt;/FormattedContent&gt;<br/>
+  </span></li>
+  <li>The &lt;iframe&gt; tag allows you to display content from another website directly in the HIT itself.  There must be some text in between the &lt;iframe&gt; and &lt;/iframe&gt; to conform with XML validation.</li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="assignqual"/>
+<h2>Running the "Assign Qualification" Sample Application</h2>
+With this sample application, you will create a simple Qualification that does not require a test and assign this Qualification to a Worker. This is the easiest way to use Qualifications to track the performance of Workers and manage who can complete your HITs.<p/>
+
+Note: By default, qualifications created in the samples are in the Developer Sandbox instead of the Production environment. <p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\assign_qualification</span></li>
+  <li>The first step is to create the Qualification that you will be assigning to workers.</li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span></li>
+  <li>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+  Created qualification type: KYJ4GZZ5G3M6TDCEWYF0<br/>
+  You can request the qualification here: http://workersandbox.mturk.com/mturk/requestqualification?qualificationId=KYJ4GZZ5G3M6TDCEWYF0<br/>
+  </span>
+  </li>
+</ol>
+
+Your Qualification has been successfully created.  You can visit the Amazon Mechanical Turk <a href="http://workersandbox.mturk.com" target="_blank">Developer Sandbox worker</a> site with the URL provided in the output to view the Qualification.<p/>
+
+The next step in this sample is to assign this newly created Qualification to a worker.  Before proceeding further, you should have a worker ID that can be used.  You can find the worker ID by opening one of the results files from any of the create HIT samples above.
+
+To assign the Qualification to the worker with an initial score of 100:
+<ol>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: assignQual -workerid [your workerid] -score 100<br/>
+  For Unix: ./assignQual -workerid [your workerid] -score 100
+  </span></li>
+  <li>You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+  Assigned qualification KYJ4GZZ5G3M6TDCEWYF0 to A3C4G8DMXFG5PQ with value 100
+  </span>
+  </li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, you created a Qualification that did not require a test.
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\assign_qualification</span></li>
+  <li>Open the file called <strong>qualification.properties</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  name=Qualification Assign<br/>
+  description=This qualification is assigned to workers<br/>
+  keywords=assignqual<br/>
+  </span></li>
+  <li>The name and description parameters are the only required parameters to create a basic Qualification.</li>
+  <li>When the Qualification was successfully created, a Qualification Success file was generated.  Open the file called <strong>qualification.properties.success</strong></li>
+  <li>The file contains the Qualification type ID that was created:
+  <span class="programlisting">
+    qualtypeid<br/>
+    KYJ4GZZ5G3M6TDCEWYF0<br/>
+  </span>
+  </li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="quizqual"/>
+<h2>Running the "Quiz Qualification" Sample Application</h2>
+With this sample application, you create will create a Qualification with a test that is automatically graded by Amazon 
+Mechanical Turk with an answer key.<p/>
+
+Note: By default, qualifications created in the samples are in the Developer Sandbox instead of the Production environment. <p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\quiz_qual</span></li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span></li>
+  <li>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+  Created qualification type: 9WKZ0KXWCBAE3WZDFZP0<br/>
+  You can take the test here: http://workersandbox.mturk.com/mturk/requestqualification?qualificationId=9WKZ0KXWCBAE3WZDFZP0<br/>
+  </span>
+  </li>
+</ol>
+
+Your Qualification has been successfully created.  You can visit the Amazon Mechanical Turk <a href="http://workersandbox.mturk.com" target="_blank">Developer Sandbox worker</a> site with the URL provided in the output to view the Qualification.<p/>
+
+Since this Qualification has a test as well as an answer key, you will be able to complete the Qualification test and be immediately notified of your results.
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, you created a Qualification that required a test.
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\quiz_qual</span></li>
+  <li>Open the file called <strong>qualification.question</strong> in a text editor.</li>
+  <li>This file contains the QuestionForm XML for the test.  Notice that the format of this file is the same as the Question file used to create HITs.</li>
+  <li>Open the file called <strong>qualification.properties</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  <pre>
+retrydelayinseconds=3600
+
+# Workers will have 15 minutes to complete this test. 15 minutes = 60 seconds * 15 minutes = 900
+testdurationinseconds=900</pre>
+  </span></li>
+  <li>The <strong>retrydelayinseconds</strong> parameter defines how much time needs to pass before a worker can retry the test.</li>
+  <li>The <strong>testdurationinseconds</strong> parameter defines how much time a worker has to complete the test.</li>
+</ol>
+
+Additionally, in this sample, you also provided an answer key for the test above which allows Amazon Mechanical Turk to automatically grade the test and assign the worker a Qualification score.
+
+<ol>
+  <li>Open the file called <strong>qualification.answer</strong> in a text editor.</li>
+  <li>This file contains the XML for the answer key.  Notice that the format of this file is similar to the QuestionForm.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+  <pre>
+&lt;Question&gt;
+&lt;QuestionIdentifier&gt;question1&lt;/QuestionIdentifier&gt;
+&lt;AnswerOption&gt;
+  &lt;SelectionIdentifier&gt;1b&lt;/SelectionIdentifier&gt;
+  &lt;AnswerScore&gt;10&lt;/AnswerScore&gt;
+&lt;/AnswerOption&gt;
+&lt;/Question&gt;</pre>
+  </span></li>
+  <li>The above snippet indicates that the correct answer for question1 is 1b and will be assigned a score of 10.</li>
+  <li>There is an answer that corresponds to each question.  For this sample, each answer is assigned a score of 10.  The total score that will be assigned to a worker is the sum of all correctly answered questions.</li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="javaqual"/>
+<h2>Running the "Java Qualification" Sample Application</h2>
+With this sample application, you will create a Qualification that tests a worker's knowledge of Java where the answers will be scored by you instead of Amazon Mechanical Turk.  You will retrieve Qualification requests from workers and score their tests using an answer key that you define.<p/>
+
+Note: By default, qualifications created in the samples are in the Developer Sandbox instead of the Production environment. <p/>
+
+This sample uses the Command Line Tools' simple EvaluateQualificationRequests command that will allow you to configure an answer key that the worker must answer all correctly in order to be granted the Qualification.
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\java_qual_test</span></li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: run<br/>
+  For Unix: ./run.sh
+  </span></li>
+  <li>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+    Created qualification type: YTQJWWYVWTFZG2YZXY20<br/>
+    You can take the test here: http://workersandbox.mturk.com/mturk/requestqualification?qualificationId=YTQJWWYVWTFZG2YZXY20<br/>
+  </span>
+  </li>
+</ol>
+
+Your Qualification has been successfully created.  You can visit the Amazon Mechanical Turk <a href="http://workersandbox.mturk.com" target="_blank">Developer Sandbox worker</a> site with the URL provided in the output to view the Qualification.<p/>
+
+Since this Qualification has a test, you should complete the Qualification test so that a Qualification request is created.<p/>
+
+The next step in this sample is to grade the Qualification request:
+<ol>
+  <li>Run the following command to preview the outcome of grading.  This step will not actually grant or reject the Qualification requests :
+  <span class="programlisting">For Microsoft Windows: evaluateRequests -preview<br/>
+  For Unix: ./evaluateRequests.sh -preview
+  </span></li>
+  <li>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+  <pre>
+Preview flag is set. Qualification requests will not be approved or rejected.
+---[Worker A3C4G8DMFSG5PQ]--------------------------------------------------------------
+Question question1:CORRECT [The answer key 'false' matches the given answer 'false']
+Question question2:CORRECT [The answer key 'true' matches the given answer 'true']
+Question question3:CORRECT [The answer key '1' matches the given answer '1']
+Question question4:CORRECT [The answer key 'true' matches the given answer 'true']
+Question question5:CORRECT [The answer key '0' matches the given answer '0']
+Worker A3C4G8DMFSG5PQ has PASSED your test and scored 100
+---------------------------------------------------------------------------------------</pre>
+  </span>
+  </li>
+  <li>If the preview results look good, you can turn preview off and grant/reject the Qualification requests by running the following command:
+  <span class="programlisting">For Microsoft Windows: evaluateRequests<br/>
+    For Unix: ./evaluateRequests.sh
+  </span></li>
+  <li>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):
+  <span class="programlisting">
+  <pre>
+---[Worker A3C4G8DMFSG5PQ]--------------------------------------------------------------
+Question question1:CORRECT [The answer key 'false' matches the given answer 'false']
+Question question2:CORRECT [The answer key 'true' matches the given answer 'true']
+Question question3:CORRECT [The answer key '1' matches the given answer '1']
+Question question4:CORRECT [The answer key 'true' matches the given answer 'true']
+Question question5:CORRECT [The answer key '0' matches the given answer '0']
+Worker A3C4G8DMFSG5PQ has PASSED your test and scored 100
+Qualification request granted.
+---------------------------------------------------------------------------------------</pre>
+  </span>
+  </li>
+  <li>The worker above has been granted the Qualification.</li>
+</ol>
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, you created a Qualification that required a test where the results are scored by you instead of Amazon Mechanical Turk.
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\java_qual_test</span></li>
+  <li>Open the file called <strong>qualification.answerkey</strong> in a text editor.</li>
+  <li>Note the following section of text:<br/>
+  <span class="programlisting">
+    question1=false<br/>
+    question2=true<br/>
+    question3=1<br/>
+    question4=true<br/>
+    question5=0<br/>
+  </span></li>
+  <li>The format of the file is simply [QuestionIdentifier]=[correct SelectionIdentifier] for each question in the <strong>qualification.question</strong> file.</li>
+  <li>This method allows you to score answers that are provided in the FreeTextAnswer format.</li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="sitefilterqual"/>
+<h2>Running the "Website Filtering Qualification" Sample Application</h2>
+With this sample application, you will create a Qualification that tests a worker's ability to identify adult porn sites. This qualification has a test with an answer key that can be automatically graded by Amazon Mechanical Turk<p/>
+
+Note: By default, qualifications created in the samples are in the Developer Sandbox instead of the Production environment. <p/>
+
+To run this sample:
+<ol>
+  <li>Navigate to the following directory:
+  <span class="programlisting">[Command Line Tools Installation Directory]\samples\site_filter_qual</span></li>
+  <li>Run the following command:
+  <span class="programlisting">For Microsoft Windows: createQualification<br/>
+  For Unix: ./createQualification.sh
+  </span></li>
+  <li>
+  You should see the following output (Note: any IDs, dates or times are illustrative and will differ from your output):<br/>
+  <span class="programlisting">
+  Created qualification type: G2KZ1182ZRHZRDYJA880<br/>
+  You can take the test here: http://workersandbox.mturk.com/mturk/requestqualification?qualificationId=G2KZ1182ZRHZRDYJA880<br/>
+  </span>
+  </li>
+</ol>
+
+Your Qualification has been successfully created.  You can visit the Amazon Mechanical Turk <a href="http://workersandbox.mturk.com" target="_blank">Developer Sandbox worker</a> site with the URL provided in the output to view the Qualification.<p/>
+
+Since this Qualification has a test as well as an answer key, you will be able to complete the Qualification test and be immediately notified of your results.
+
+<h3>Concepts Covered in this Sample</h3>
+In this sample, similar to the Quiz Qualification, you have created a qualification that requires a test.
+<ol>
+  <li>Navigate to the following directory:<br/>
+    <span class="programlisting">[Command Line Tools Installation Directory]\samples\site_filter_qual</span></li>
+  <li>Open the file called <strong>site_filter_qual.question</strong> in a text editor.</li>
+  <li>This file contains the QuestionForm XML for the test.  Notice that the format of this file is the same as the Question file used to create HITs.</li>
+  <li>In this test, you're essentially asking workers to do the same thing as they would when they work on your <a href="#sitefilter">Website Filtering HITs</a>.  You're requiring workers to evaluate 10 websites and determine whether they're adult porn sites.</li>
+  <li>A worker's performance on this qualification test should act as a good indicator as to whether they will understand your instructions when they work on your Website Filtering HITs.  </li>
+</ol>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="filedescriptions"/>
+<h2>Description of Files Used by the Command Line Tools</h2>
+The following table describes the key files used by the Command Line Tools.<p/>
+
+<table id="aws-table" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Input File</strong></th>
+      <th valign="top"><strong>Filename</strong></th>
+      <th valign="top"><strong>Description</strong></th>
+    </tr>
+    <tr>
+      <td valign="top">MTurk Properties</td>
+      <td valign="top">mturk.properties</td>
+      <td valign="top">
+        <ul>
+          <li>A text file containing specific information on your AWS Identifiers as well as the Amazon Mechanical Turk service endpoint.</li>
+          <li>This file must exist in the current directory from where you are running the Command Line Tools.</li>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Input File</td>
+      <td valign="top">[your filename].input</td>
+      <td valign="top">
+        <ul>
+          <li>A tab delimited text file containing the dynamic fields that is merged with your Question Template and HIT Properties files.</li>
+          <li>The first row of the file contains the field headings.</li>
+          <li>Subsequent rows represents the custom field values for the HITs to be loaded.</li>
+          <li>Each row represents one HIT.  (e.g. 1000 data rows = 1000 HITs)</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">HIT Properties File</td>
+      <td valign="top">[your filename].properties</td>
+      <td valign="top">
+        <ul>
+          <li>A text file defining the properties of the HITs to be created.</li>
+          <li><strong>title</strong> parameter defines the title of the HIT.</li>
+          <li><strong>description</strong> parameter defines the description of the HIT.</li>
+          <li><strong>keywords</strong> parameter defines the key words to associate with the HIT.</li>
+          <li><strong>reward</strong> parameter defines the reward for the HIT in $0.00 USD.</li>
+          <li><strong>assignments</strong> parameter defines the maximum number of assignments to make available for this HIT.</li>
+          <li><strong>annotation</strong> parameter defines a value that you can use to uniquely identify this HIT from the others.</li>
+          <li>The <strong>annotation</strong> parameter can be merged with values from the Input File by using the following syntax "${the field name}".  Apache Velocity is used to perform the merge.  Refer to <a href="http://velocity.apache.org/" target="_blank">http://velocity.apache.org</a> for advanced merge syntax.</li>
+          <li><strong>assignmentduration</strong> parameter defines how much time a worker has to complete the assignment.</li>
+          <li><strong>hitlifetime</strong> parameter defines how long the HIT will be active before it expires.</li>
+          <li><strong>autoapprovaldelay</strong> parameter defines how much time will pass before a submitted assignment is automatically approved.</li>
+          <li>To specify <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QualificationRequirementDataStructureArticle.html" target="_blank">Qualification Requirements</a> for your HIT, you can use the following convention:</br>
+          <ul>
+            <li><strong>qualification.1</strong> parameter defines the Qualification Type ID.</li>
+            <li><strong>qualification.comparator.1</strong> parameter defines the comparator to use.</li>
+            <li><strong>qualification.value.1</strong> parameter defines the integer value for the comparator to use.</li>
+            <li><strong>qualification.locale.1</strong> parameter defines the locale value to use.</li>
+            <li><strong>qualification.private.1</strong> parameter defines if the HIT can be previewed by workers who not meet the qualification requirements.</li>
+            <li>To specify more Qualification requirements, simply increment the .1 suffix to .2 up to .X.</li>
+          <li>For more details on the parameters of a HIT, refer to the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_CreateHITOperation.html" target="_blank">Developer Guide</a>.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Question Template File</td>
+      <td valign="top">[your filename].question</td>
+      <td valign="top">
+        <ul>
+          <li>A text file containing the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html"  target="_blank">QuestionForm</a> XML that defines your HIT.</li>
+          <li>Your <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html"  target="_blank">QuestionForm</a> can be made into a template and merged with values from your Input File by using the following syntax "${the field name}".  Apache Velocity is used to perform the merge.  Refer to <a href="http://velocity.apache.org/" target="_blank">http://velocity.apache.org</a> for advanced merge syntax.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Success File</td>
+      <td valign="top">[your Input File file name].success</td>
+      <td valign="top">
+        <ul>
+          <li>A tab delimited text file containing the HIT IDs and the HIT Type IDs that were successfully loaded into Amazon Mechanical Turk.</li>
+          <li>This file is autogenerated when HITs are loaded using the Command Line Tools.</li>
+          <li>This file is used to retrieve the results of the HITs that have been loaded.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Failure File</td>
+      <td valign="top">[your Input File file name].failure</td>
+      <td valign="top">
+        <ul>
+          <li>A tab delimited text file containing the rows from the Input File that failed to load into Amazon Mechanical Turk.</li>
+          <li>This file is autogenerated when HITs are loaded using the Command Line Tools.</li>
+          <li>This file can be fixed, renamed and used to load the HITs that failed.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Output File</td>
+      <td valign="top">[your Output file name]</td>
+      <td valign="top">
+        <ul>
+          <li>A tab delimited text file containing the results of submitted HITs that are retrieved from Amazon Mechanical Turk.</li>
+          <li>Contains all data related to the HIT and assignments submitted.</li>
+          <li>The last column contains a tab delimited set of question/answer pairs for each question field defined in your <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html"  target="_blank">QuestionForm</a>.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Qualification Properties File</td>
+      <td valign="top">[your qualification file name].properties</td>
+      <td valign="top">
+        <ul>
+          <li>A text file defining the properties of the Qualification to be created.</li>
+          <li><strong>name</strong> parameter defines the name of the Qualication.</li>
+          <li><strong>description</strong> parameter defines the description of the Qualification.</li>
+          <li><strong>keywords</strong> parameter defines the key words to associate with the Qualification.</li>
+          <li><strong>retrydelayinseconds</strong> parameter defines the minimum amount of time required to pass before a Worker can re-request the Qualification.</li>
+          <li><strong>testdurationinseconds</strong> parameter defines the time allowed for the Worker to complete the Qualification test (if a test exists).</li>
+          <li><strong>autogranted</strong> parameter defines if the Qualification should be autogranted upon request.  Valid values are "true" and "false".  This parameter is only valid if a Qualification does not have a test associated with it.</li>
+          <li><strong>autograntedvalue</strong> parameter defines the default Qualification score to be assigned to the Worker if the Qualification is to be auto granted.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Qualification Question File</td>
+      <td valign="top">[your qualification file name].question</td>
+      <td valign="top">
+        <ul>
+          <li>A text file containing the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_QuestionFormDataStructureArticle.html"  target="_blank">QuestionForm</a> XML that defines your Qualification test.</li>
+          <li>This file is similar to the HIT Question File except that templating is not applicable.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Qualification Answer File</td>
+      <td valign="top">[your qualification file name].answer</td>
+      <td valign="top">
+        <ul>
+          <li>A text file containing the <a href="http://docs.amazonwebservices.com/AWSMechanicalTurkRequester/2007-06-21/ApiReference_AnswerKeyDataStructureArticle.html"  target="_blank">AnswerKey</a> XML that defines the answer key for your Qualification test that will be automatically scored by the Amazon Mechanical Turk system.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Qualification Command Line Tools Answer Key File</td>
+      <td valign="top">[your qualification file name].answerkey</td>
+      <td valign="top">
+        <ul>
+          <li>A text file containing name/value pairs of your questions and expected answer.</li>
+          <li>The format is simply <strong>questionid</strong>=<strong>expected answer value</strong></li>
+          <li>This answer key provides another method to evaluate Qualification requests by giving you control over when requests are granted.  This format also provides more flexibility by allowing you to evaluate FreeTextAnswer answers which can not currently be auto graded by Amazon Mechanical Turk.</li>
+        </ul>
+      </td>
+    </tr>
+
+
+
+  </tbody>
+
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="overviewofoperations"/>
+<h2>Overview of Command Line Tool Operations</h2>
+The Amazon Mechanical Turk Command Line Tools offers you the following features and benefits:<p/>
+
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th>Operation</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><a href="#getBalance">Get Balance</a></td>
+      <td>Returns your Requester account balance.</td>
+    </tr>
+    <tr>
+      <td><a href="#loadhits">Load HITs</a></td>
+      <td>Loads HITs into Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td><a href="#getresults">Get Results</a></td>
+      <td>Retrieves the results of submitted HITs from Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td><a href="#approvework">Approve Work</a></td>
+      <td>Approves assignments submitted by Workers via Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td><a href="#rejectwork">Reject Work</a></td>
+      <td>Rejects assignments submitted by Workers via Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td><a href="#reviewresults">Review Results</a></td>
+      <td>Approves or rejects assignments from a file.</td>
+    </tr>
+    <tr>
+      <td><a href="#deletehits">Delete HITs</a></td>
+      <td>Deletes your HITs created on Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td><a href="#updatehits">Update HITs</a></td>
+      <td>Updates certain properties of HITs (i.e. reward) that are already on Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td><a href="#extendhits">Extend HITs</a></td>
+      <td>Add time or assignments to your HITs.</td>
+    </tr>
+    <tr>
+      <td><a href="#grantbonus">Grant Bonus</a></td>
+      <td>Give a bonus to a Worker who has done work for you.</td>
+    </tr>
+    <tr>
+      <td><a href="#blockworker">Block Worker</a></td>
+      <td>Blocks a Worker from working on your HITs.</td>
+    </tr>
+    <tr>
+      <td><a href="#unblockworker">Unblock Worker</a></td>
+      <td>Unblocks a Worker from working on your HITs.</td>
+    </tr>
+    <tr>
+      <td><a href="#createqual">Create Qualification Type</a></td>
+      <td>Creates a Qualification that can be used for your HITs on Amazon Mechanical Turk.</td>
+    </tr>
+    <tr>
+      <td><a href="#updatequal">Update Qualification Type</a></td>
+      <td>Updates the properties of your Qualification.</td>
+    </tr>
+    <tr>
+      <td><a href="#assignqual">Assign Qualification</a></td>
+      <td>Assigns your Qualification to a Worker without them requesting the Qualification.</td>
+    </tr>
+    <tr>
+      <td><a href="#getqualrequests">Get Qualification Requests</a></td>
+      <td>Retrieve the Qualification requests from Workers for your Qualifications.</td>
+    </tr>
+    <tr>
+      <td><a href="#approvequalrequests">Approve Qualification Requests</a></td>
+      <td>Approve Workers Qualification requests.</td>
+    </tr>
+    <tr>
+      <td><a href="#rejectqualrequests">Reject Qualification Requests</a></td>
+      <td>Reject Workers Qualification requests.</td>
+    </tr>
+    <tr>
+      <td><a href="#evaluatequalrequests">Evaluate Qualification Requests</a></td>
+      <td>Evaluate the answers submitted to approve/reject Qualification requests.</td>
+    </tr>
+    <tr>
+      <td><a href="#updatequalscore">Update Qualification Scores</a></td>
+      <td>Update the Qualification scores for Workers.</td>
+    </tr>
+    <tr>
+      <td><a href="#revokequal">Revoke Qualification</a></td>
+      <td>Revoke a Qualification from a Worker.</td>
+    </tr>
+    <tr>
+      <td><a href="#resetaccount">Reset Account</a></td>
+      <td>Delete all existing HITs from your account.</td>
+    </tr>
+    <tr>
+      <td><a href="#maketemplate">Make Template</a></td>
+      <td>Make a copy of a sample application.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+
+
+
+<a name="getbalance"/>
+<h2>Running the Get Balance Operation</h2>
+This operation returns your Requester account balance.<p/>
+
+To run the getBalance operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: getBalance<br/>
+  For Unix: ./getBalance.sh
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="loadhits"/>
+<h2>Running the Load HITs Operation</h2>
+This operation loads HITs into Amazon Mechanical Turk.<p/>
+
+To run the loadHITs operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: loadHITs [your options]<br/>
+  For Unix: ./loadHITs.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-label [label name]</td>
+      <td>Define a label to attach to this set of HITs that are being loaded.</td>
+      <td>no</td>
+      <td>-label 2006-12-12-contracts</td>
+    </tr>
+    <tr>
+      <td>-input [Input File filename]</td>
+      <td>Specify the Input File.</td>
+      <td>yes</td>
+      <td>-input helloworld.input</td>
+    </tr>
+    <tr>
+      <td>-question [Question File filename]</td>
+      <td>Specify the Question File.</td>
+      <td>yes</td>
+      <td>-question helloworld.question</td>
+    </tr>
+      <td>-properties [HIT Properties File filename]</td>
+      <td>Specify the HIT Properties File.</td>
+      <td>yes</td>
+      <td>-properties helloworld.properties</td>
+    </tr>
+    <tr>
+      <td>-preview</td>
+      <td>Creates an HTML preview of the HIT instead of loading it into Amazon Mechanical Turk.  If -previewfile is not specified, this operation will create a file called preview.html in the current directory.</td>
+      <td>no</td>
+      <td>-preview</td>
+    </tr>
+    <tr>
+      <td>-previewfile [filename of preview HTML file]</td>
+      <td>Specify the file name of the preview HTML file.</td>
+      <td>no.  Only useful if -preview is used</td>
+      <td>-previewfile helloworld.html</td>
+    </tr>
+    <tr>
+      <td>-maxhits</td>
+      <td>Specify the maximum number of HITs to create (used for testing purposes if you don't want to load the entire Input File).</td>
+      <td>no</td>
+      <td>-maxhits 1</td>
+    </tr>
+    <tr>
+      <td>-help or -h </td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+<strong>Note:</strong> When you run LoadHITs multiple times in the same directory, the latest .success file will override the .success file from the previous run that shares the same name.  You can use the -label parameter to give a unique name to the .success file for each run so that you can retain the .success files from all runs.
+</p>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="getresults"/>
+<h2>Running the Get Results Operation</h2>
+This operation retrieves the results of submitted HITs from Amazon Mechanical Turk.<p/>
+
+To run the getResults operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults [your options]<br/>
+  For Unix: ./getResults.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-successfile [Success File filename]</td>
+      <td>Specify the Success File containing the HITs to be retrieved.</td>
+      <td>yes</td>
+      <td>-successfile helloworld.success</td>
+    </tr>
+    <tr>
+      <td>-outputfile [Output File filename]</td>
+      <td>Specify the Output File.</td>
+      <td>yes</td>
+      <td>-outputfile helloworld.results</td>
+    </tr>
+    <tr>
+      <td>-namevaluepair</td>
+      <td>Specify the answers to be comma separated name value pairs for multiple questions.  This is the old output format.</td>
+      <td>yes</td>
+      <td>-outputfile helloworld.results</td>
+    </tr>
+    <tr>
+      <td>-help or -h </td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+ When you run GetResults multiple times in the same directory, the latest .results file will override the .results file from the previous GetResults run.
+</p>
+<p>
+  Each HIT in this file has a link to your <strong>Manage HITs</strong> page in the <a href="http://requester.mturk.com" target="_blank">Requester web site</a>.</li>. Use these links if you want to manually reject assignments, pay bonuses, or send emails to Workers.
+</p>
+<p>
+ <strong>Note:</strong> When a HIT has multiple questions for each assignment, each answer is returned in its own column, rather than the old format of a comma separate list of answers unless you specify the -namevaluepair parameter.
+</p>
+<p>
+  This operation returns metrics for the results in the file. These metrics show:
+  <ul>
+		<li>The number and percentage of assignments completed</li>
+		<li>Elapsed time
+		  <ul>
+			 <li>If HITs are still being worked on, this is (current time - time HITs were loaded.)</li>
+			 <li>If all HITs are complete, this is (the time the last assignment was submitted - time HITs were loaded.)</li>
+				</ul>
+		</li>
+		<li>Average time to submit per assignment</li>
+	</ul>
+	You will see output similar to the following on the screen.<br/>
+  <span class="programlisting">Results have been written to file '..\samples\site_filter\site_filter.results'.<br/>
+        Assignments completed: 30/30 (100%)<br/>
+         Time elapsed: 0:05:16 (h:mm:ss)<br/>
+  Average submit time: 13.7 seconds<br/> 
+</span>
+</p>
+
+
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+
+<a name="approvework"/>
+<h2>Running the Approve Work Operation</h2>
+This operation approves assignments submitted by workers via Amazon Mechanical Turk.<p/>
+
+To run the approveWork operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveWork [your options]<br/>
+  For Unix: ./approveWork.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-assignment [assignment IDs]</td>
+      <td>Specify the assignment ID to approve.  For multiple assignments, separate each assignment ID with a comma and enclosed in quotation marks.</td>
+      <td>yes if -approvefile isn't chosen</td>
+      <td>-assignment "SYSZH6HTMKFG2ZDECWS0,KYRZSX0F7154T054AZT0"</td>
+    </tr>
+    <tr>
+      <td>-approvefile [filename containing list of assignment IDs]</td>
+      <td>Specify the filename of a text file containing a list of assignment IDs and optionally approval comments.<br/>
+      <ul>
+        <li>First row must contain column header named "assignmentIdToApprove"</li>
+        <li>Optional column header following named "assignmentIdToApproveComment"</li>
+        <li>Fields should be separated with a tab and comments should be enclosed in quotes ("")</li>
+      </ul>
+      </td>
+      <td>yes if -assignment isn't chosen.</td>
+      <td>-approvefile helloworld_approve.txt</td>
+    </tr>
+    <tr>
+      <td>-successfile</td>
+      <td>Specify the filename of a .success file that contains a list of HIT IDs and HIT type IDs.  The operation will approve all of the assignments for the HITs in the file.</td>
+      <td>no</td>
+      <td>-successfile image_category.success</td>
+    </tr>
+      <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="rejectwork"/>
+<h2>Running the Reject Work Operation</h2>
+This operation rejects assignments submitted by workers via Amazon Mechanical Turk.<p/>
+
+To run the rejectWork operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: rejectWork [your options]<br/>
+  For Unix: ./rejectWork.sh [your options]
+  </span>
+  </li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-assignment [assignment IDs]</td>
+      <td>Specify the assignment ID to reject.  For multiple assignments, separate each assignment ID with a comma and enclosed in quotation marks.</td>
+      <td>yes if -rejectfile isn't chosen</td>
+      <td>-assignment "SYSZH6HTMKFG2ZDECWS0,KYRZSX0F7154T054AZT0"</td>
+    </tr>
+    <tr>
+      <td>-rejectfile [filename containing list of assignment IDs]</td>
+      <td>Specify the filename of a text file containing a list of assignment IDs and optionally rejection comments.<br/>
+      <ul>
+        <li>First row must contain column header named "assignmentIdToReject"</li>
+        <li>Optional column header following named "assignmentIdToRejectComment"</li>
+        <li>Fields should be separated with a tab and comments should be enclosed in ""</li>
+      </ul>
+      </td>
+      <td>yes if -assignment isn't chosen.</td>
+      <td>-rejectfile helloworld_reject.txt</td>
+    </tr>
+    <tr>
+      <td>-successfile</td>
+      <td>Specify the filename of a .success file that contains a list of HIT IDs and HIT type IDs.  The operation will reject all of the assignments for the HITs in the file.</td>
+      <td>no</td>
+      <td>-successfile image_category.success</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="reviewresults"/>
+<h2>Running the Review Results Operation</h2>
+This operation allows you to accept and reject multiple assignments. Use the results file produced by the 
+<a href="#getresults">Get Results</a> operation to specify which assignments to reject.  All other assignments
+in the file will be approved.<p/>
+
+To run the reviewResults operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the getResults command:<br/>
+  <span class="programlisting">For Microsoft Windows: getResults<br/>
+  For Unix: ./getResults.sh
+  </span></li>
+  <li>Open the output file.</li>
+  <li>For each assignment that you want to reject, type any character in the "reject" column for that assignment.</li>
+  <li>Specify this file as the -resultsfile option in the command.</li>
+  <li>Run the reviewResults command:<br/>
+  <span class="programlisting">For Microsoft Windows: reviewResults [your options]<br/>
+  For Unix: ./reviewResults.sh [your options]
+  </span>
+  </li>
+</ol>
+<para>
+  <strong>Note:</strong>  Any mark in the "reject" column causes the assignment to be rejected. Any unmarked assignments 
+  are accepted.  
+</para>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr><tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>--help or -h</td>
+    </tr>
+    <tr>
+      <td>-resultsfile [filename]</td>
+      <td>
+        Specifies the results file that was generated by a call to the getResults command. You must mark 
+        the "reject" column of the assignments to reject. All other assignments will be approved.
+      </td>
+      <td>yes</td>
+      <td>-resultsfile helloworld.results</td>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="deletehits"/>
+<h2>Running the Delete HITs Operation</h2>
+This operation deletes your HITs created on Amazon Mechanical Turk.<p/>
+
+To run the deleteHITs operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: deleteHITs [your options]<br/>
+  For Unix: ./deleteHITs.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-successfile [Success File filename]</td>
+      <td>Specify the Success File containing the HITs to be deleted.</td>
+      <td>yes</td>
+      <td>-successfile helloworld.success</td>
+    </tr>
+    <tr>
+      <td>-force</td>
+      <td>Bypasses any confirmations around deleting the HITs.  HITs are deleted immediately.</td>
+      <td>no</td>
+      <td>-force</td>
+    </tr>
+    <tr>
+      <td>-approve</td>
+      <td>Automatically approves any assignments that have been submitted and have not been approved or rejected.  Assignments that are in the review or reviewing states cannot be deleted.</td>
+      <td>no</td>
+      <td>-approve</td>
+    </tr>
+    <tr>
+      <td>-expire</td>
+      <td>Automatically expires any HITs that are still available to workers on Amazon Mechanical Turk.  Live HITs cannot be deleted.</td>
+      <td>no</td>
+      <td>-expire</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="updatehits"/>
+<h2>Running the Update HITs Operation</h2>
+This operation updates properties of HITs that are already on Amazon Mechanical Turk.<p/>
+
+All properties of a HIT Type (except for Reward) can be modified for a HIT.  Properties such as:
+<ul>
+  <li>title</li>
+  <li>description</li>
+  <li>keywords</li>
+  <li>assignmentdurationinseconds</li>
+  <li>autoapprovaldelayinseconds</li>
+  <li>Qualification requirements</li>
+</ul>
+
+The reward property can only be updated for HITs that do not have any assignments that have been accepted, submitted, approved or rejected.  <p/>
+
+To run the updateHITs operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: updateHITs [your options]<br/>
+  For Unix: ./updateHITs.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-input [Input file filename]</td>
+      <td>A file containing the HIT ids to be updated.  The file must contain a column labeled <strong>hitid</strong>.  The Success File can be used as the input file for this operation</td>
+      <td>yes</td>
+      <td>-input helloworld.input.success</td>
+    </tr>
+    <tr>
+      <td>-properties</td>
+      <td>The HIT Properties file that contains the new properties to update the HITs with.  The HITs will be updated with all the values defined in the properties file.</td>
+      <td>yes</td>
+      <td>-properties helloworld.properties</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="extendhits"/>
+<h2>Running the Extend HITs Operation</h2>
+This operation can allows HITs to be active on Amazon Mechanical Turk for a longer period of time by extending the expiration date of existing HITs.  It can also allow more Workers to work on a HIT by adding more assignments to existing HITs.<p/>
+
+When you add assignments to existing HITs you must have enough balance to pay for those additional assignments.<p/>
+
+To run the extendHITs operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: extendHITs [your options]<br/>
+  For Unix: ./extendHITs.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-successfile [.success filename]</td>
+      <td>A .success file containing the HIT ids to be updated.  The file must contain a column labeled <strong>hitid</strong>.  </td>
+      <td>yes</td>
+      <td>-successfile helloworld.success</td>
+    </tr>
+    <tr>
+      <td>-hours</td>
+      <td>How many hours to extend the expiration date of the HITs.</td>
+      <td>No</td>
+      <td>-hours 24</td>
+    </tr>
+    <tr>
+      <td>-assignments [number of assignments] </td>
+      <td>How many assignments to add to the HITs.</td>
+      <td>No</td>
+      <td>-assignments 3</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="grantbonus"/>
+<h2>Running the Grant Bonus Operation</h2>
+This operation grants a bonus to a Worker.  You can pay a bonus to any Worker who has submitted an assignment for you.  You must have enough balance in your account to pay for the bonus.<p/>
+
+To run the grantBonus operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: grantBonus [your options]<br/>
+  For Unix: ./grantBonus.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-workerid [worker ID]</td>
+      <td>The ID (i.e. A3C4G8DMXFG5PQ) of the worker you want to pay the worker.</td>
+      <td>yes</td>
+      <td>-workerid A3C4G8DMXFG5PQ</td>
+    </tr>
+    <tr>
+      <td>-amount [amount to pay]</td>
+      <td>The amount of bonus you want to give to the worker in dollars.</td>
+      <td>yes</td>
+      <td>-amount 0.25 </td>
+    </tr>
+    <tr>
+      <td>-assignment [assignment for this bonus]</td>
+      <td>The assignment associated with this bonus. You can find the assignment ID in the .results file.</td>
+      <td>yes</td>
+      <td>-assignment ZYJZWSCAT0DZRFY5KYP00S0ZS8Y5H0NZR9YAMY1Z</td>
+    </tr>
+    <tr>
+      <td>-reason</td>
+      <td>The reason you're paying the bonus.  The reason string should be enclosed by quotes ""</td>
+      <td>yes</td>
+      <td>-reason "Good job, you did the most work last week!"</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="blockworker"/>
+<h2>Running the Block Worker Operation</h2>
+This operation blocks a Worker from working on your HITs.  This operation should be used sparingly in order to prevent Workers who consistently submit low quality work from completing your HITs.  This operation should not replace the Qualifications capabilities that are available for managing your Workers.  Corrective action will be taken against Workers who are consistently blocked by Requesters.<p/>
+
+To run the blockWorker operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: blockWorker [your options]<br/>
+  For Unix: ./blockWorker.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-workerid [worker ID]</td>
+      <td>The ID (i.e. A3C4G8DMXFG5PQ) of the worker you want to block.</td>
+      <td>yes</td>
+      <td>-workerid A3C4G8DMXFG5PQ</td>
+    </tr>
+    <tr>
+      <td>-reason</td>
+      <td>The reason why the Worker is being blocked.  This reason is logged in our system for auditing purposes and can be used to determine if corrective action against the Worker is necessary.  The reason string should be enclosed by quotes ""</td>
+      <td>yes</td>
+      <td>-reason "After several warnings, the Worker continued to submit answers without reading the instructions carefully."</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="unblockworker"/>
+<h2>Running the Unblock Worker Operation</h2>
+This operation unblocks a Worker that has been blocked from working on your HITs.<p/>
+
+To run the unblockWorker operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: unblockWorker [your options]<br/>
+  For Unix: ./unblockWorker.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-workerid [worker ID]</td>
+      <td>The ID (i.e. A3C4G8DMXFG5PQ) of the worker you want to unblock.</td>
+      <td>yes</td>
+      <td>-workerid A3C4G8DMXFG5PQ</td>
+    </tr>
+    <tr>
+      <td>-reason</td>
+      <td>The reason why the Worker is being unblocked.  This reason is logged in our system for auditing purposes.  The reason string should be enclosed by quotes ""</td>
+      <td>yes</td>
+      <td>-reason "Made a mistake.  Blocked the wrong Worker ID"</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="createqual"/>
+<h2>Running the Create Qualification Type Operation</h2>
+This operation creates a Qualification that can be used for your HITs on Amazon Mechanical Turk.<p/>
+
+To run the createQualificationType operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: createQualificationType [your options]<br/>
+  For Unix: ./createQualificationType.sh [your options]
+  </span></li>
+</ol>
+
+This operation will output a file containing the QualificationTypeID of the Qualification that was just created called <strong>[Qualifications Properties File].success</strong>.
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-properties [Qualification Properties File filename]</td>
+      <td>Specify the Qualification Properties File.</td>
+      <td>yes</td>
+      <td>-properties qualification.properties</td>
+    </tr>
+    <tr>
+      <td>-question [Qualification Question File filename]</td>
+      <td>Specify the Qualification Question File that contains the Qualification test.</td>
+      <td>no</td>
+      <td>-question qualification.question</td>
+    </tr>
+    <tr>
+      <td>-answer [Qualification Answer File filename]</td>
+      <td>Specify the Qualification Answer File that contains the AnswerKey XML for the Qualification test so that the Amazon 
+       Mechanical Turk system can automatically grade a Qualification request.</td>
+      <td>no</td>
+      <td>-answer qualification.answer</td>
+    </tr>
+    <tr>
+      <td>-noretry</td>
+      <td>Specify that Workers cannot retry requesting the Qualification.  Workers can only request the Qualification once.</td>
+      <td>no</td>
+      <td>-noretry</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="updatequal"/>
+<h2>Running the Update Qualification Type Operation</h2>
+This operation updates the properties of your Qualification.<p/>
+
+To run the updateQualificationType operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: updateQualificationType [your options]<br/>
+  For Unix: ./updateQualificationType.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-qualtypeid [Qualification Type ID]</td>
+      <td>Specify the Qualification Type ID of the Qualification you want to update.  This ID can be found in a .success file generated after you created the Qualification with the createQualificationType operation.</td>
+      <td>yes</td>
+      <td>-qualtypeid RWFZTKZ55ZPZXN1C8TDZ</td>
+    </tr>
+    <tr>
+      <td>-properties [Qualification Properties File filename]</td>
+      <td>Specify the Qualification Properties File that contains the new properties for the Qualification.  The Qualification will be 
+       updated with all the properties defined in the file.  Note: Amazon Mechanical Turk currently does not allow you to modify 
+       the title of a Qualification.  This will be fixed in a future release of Amazon Mechanical Turk.</td>
+      <td>no</td>
+      <td>-properties qualification.properties</td>
+    </tr>
+    <tr>
+      <td>-question [Qualification Question File filename]</td>
+      <td>Specify the Qualification Question File that contains the new Qualification test.</td>
+      <td>no</td>
+      <td>-question qualification.question</td>
+    </tr>
+    <tr>
+      <td>-answer [Qualification Answer File filename]</td>
+      <td>Specify the Qualification Answer File that contains the new AnswerKey XML for the Qualification test so that the 
+      Amazon Mechanical Turk system can automatically evaluate and score a Qualification request.</td>
+      <td>no</td>
+      <td>-answer qualification.answer</td>
+    </tr>
+    <tr>
+      <td>-status [Active or Inactive]</td>
+      <td>Specify that the Qualification is Active or Inactive.  Inactive Qualifications are no longer available for Workers and cannot be used for new HITs.  Valid values are "Active" or "Inactive".</td>
+      <td>no</td>
+      <td>-status Active</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="assignqualop"/>
+<h2>Running the Assign Qualification Operation</h2>
+This operation assigns your Qualification to a Worker without them requesting the Qualification.<p/>
+
+To run the assignQualification operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: assignQualification [your options]<br/>
+  For Unix: ./assignQualification.sh [your options]
+  </span></li>
+</ol>
+
+There are 2 ways to call this operation:<p/>
+<ul>
+  <li><strong>Bulk Assign:</strong> where the Qualification Type ID and the list Workers that will be assigned the Qualification are defined in files.
+  <span class="programlisting">assignQualification -input [input file containing Qualification ID] -scorefile [File containing list of Worker IDs and assigned Qualification scores]</span> </li>
+  <li><strong>Single Assign:</strong> where the Qualification Type ID, Worker and their assigned Qualification score are specified on the command line.
+  <span class="programlisting">assignQualification -qualtypeid [Qualification ID] -workerid [Worker ID]</span> </li>
+</ul>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-input [File containing the Qualification ID]</td>
+      <td>Specify the file that contains the Qualification ID you want to assign to workers.  This ID can be found in a .success file generated after you created the Qualification with the createQualificationType operation.  The file must have a column header called <strong>qualtypeid</strong></td>
+      <td>yes.  Only if the qualtypeid parameter is not specified.</td>
+      <td>-input qualification.properties.success</td>
+    </tr>
+    <tr>
+      <td>-scorefile [File containing Worker IDs and Qualification scores]</td>
+      <td>Specify the file that contains a tab delimited list of Worker IDs and Qualification scores to assign the Qualification to.  The file must contain a column called <strong>workerid</strong>.  The file can optionally contain an additional column called <strong>score</strong> containing the Qualification scores to assign to each Worker.  If the score is not specified, a default value of 1 will be assigned.</td>
+      <td>yes.  Only if the workerid parameter is not specified.</td>
+      <td>-scorefile workerstoassign.txt</td>
+    </tr>
+    <tr>
+      <td>-qualtypeid [Qualification Type ID]</td>
+      <td>Specify the Qualification Type ID of the Qualification you want to assign to the worker.  This ID can be found in a .success file generated after you created the Qualification with the createQualificationType operation.</td>
+      <td>yes.  Only if the input parameter is not specified.</td>
+      <td>-qualtypeid RWFZTKZ55ZPZXN1C8TDZ</td>
+    </tr>
+    <tr>
+      <td>-workerid [Worker ID]</td>
+      <td>Specify the Worker ID to assign the Qualification to.</td>
+      <td>yes.  Only if the scorefile parameter is not specified.</td>
+      <td>-workerid A3C4G8DMXFG5PQ</td>
+    </tr>
+    <tr>
+      <td>-score [Qualification score to assign]</td>
+      <td>Specify the default Qualification score to assign to workers. This optional parameter can be used in both cases.  If this is not specified, and the score has not been defined in the scorefile, the default score value of 1 will be used.</td>
+      <td>no</td>
+      <td>-score 100</td>
+    </tr>
+    <tr>
+      <td>-donotnotify</td>
+      <td>Specifies that the Worker will not be notified that they have been assigned the Qualification.</td>
+      <td>no</td>
+      <td>-donotnotify</td>
+    </tr>
+
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="getqualrequests"/>
+<h2>Running the Get Qualification Requests Operation</h2>
+This operation retrieves the Qualification requests from Workers for your Qualifications.<p/>
+
+To run the getQualificationRequests operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: getQualificationRequests [your options]<br/>
+  For Unix: ./getQualificationRequests.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-outputfile [Filename for output file]</td>
+      <td>Specify the output filename that is a tab delimited text file containing the details on the Qualification requests made by Workers.  Qualification Requests are to be approved or rejected by using the ApproveQualificationRequests and RejectQualificationRequests operations respectively.</td>
+      <td>yes</td>
+      <td>-outputfile qualification_requests.txt</td>
+    </tr>
+    <tr>
+      <td>-qualtypeid [Qualification Type ID]</td>
+      <td>Specify the Qualification Type ID of the Qualification you want to retrieve Qualification requests for.  This ID can be found in a .success file generated after you created the Qualification with the createQualificationType operation.  If this is not specified, all Qualification requests for Qualifications you own will be included in the output file.</td>
+      <td>no</td>
+      <td>-qualtypeid RWFZTKZ55ZPZXN1C8TDZ</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="approvequalrequests"/>
+<h2>Running the Approve Qualification Requests Operation</h2>
+This operation approves Worker Qualification requests.<p/>
+
+To run the approveQualificationRequests operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: approveQualificationRequests [your options]<br/>
+  For Unix: ./approveQualificationRequests.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-approvefile [file containing Qualification requests to approve]</td>
+      <td>Specify the tab delimited text file containing the list of Qualification requests to approve.  The file must contain a column titled <strong>qualificationRequestToApprove</strong> containing the Qualification request IDs.  An optional column called <strong>qualificationRequestToApproveValue</strong> can be specified containing the Qualification score to assign for each Qualification request.</td>
+      <td>yes.  Only if qualRequest parameter is not specified.</td>
+      <td>-approvefile qualification_requests_toapprove.txt</td>
+    </tr>
+    <tr>
+      <td>-score [integer value for default Qualification score]</td>
+      <td>Specify the default score to assign for each approved Qualification request. Scores defined in the approve file will override this default score.</td>
+      <td>no</td>
+      <td>-score 100</td>
+    </tr>
+    <tr>
+      <td>-qualRequest [Qualification request ID]</td>
+      <td>Specify the Qualification request ID(s) to approve.  Multiple Qualification request IDs should be comma-separated.</td>
+      <td>yes.  Only if approvefile parameter is not specified.</td>
+      <td>-qualRequest "TA3ZJBYP2Y7ZJSX2BBN0TZ8ZTM4F6H4ZVQ4DE8FZ,TA3ZJBYP2Y7ZJSX2CCN0TZ8ZTM4F6H4ZVQ4DE8FZ"</td>
+    </tr>
+    <tr>
+      <td>-force</td>
+      <td>Specify NOT to prompt for manual confirmation before performing the reject operation.  This parameter should only be used by advanced users.</td>
+      <td>no</td>
+      <td>-force</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="rejectqualrequests"/>
+<h2>Running the Reject Qualification Requests Operation</h2>
+This operation rejects Worker Qualification requests.<p/>
+
+To run the rejectQualificationRequests operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: rejectQualificationRequests [your options]<br/>
+  For Unix: ./rejectQualificationRequests.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-rejectfile [file containing Qualification requests to approve]</td>
+      <td>Specify the tab delimited text file containing the list of Qualification requests to reject.  The file must contain a column titled <strong>qualificationRequestToReject</strong> containing the Qualification request IDs.  An optional column called <strong>qualificationRequestToRejectComment</strong> can be specified containing comments you want to provide to the Worker regarding the rejection.</td>
+      <td>yes.  Only if qualRequest parameter is not specified.</td>
+      <td>-rejectfile qualification_requests_toreject.txt</td>
+    </tr>
+    <tr>
+      <td>-qualRequest [Qualification request ID]</td>
+      <td>Specify the Qualification request ID(s) to reject.  Multiple Qualification request IDs should be comma-separated.</td>
+      <td>yes.  Only if rejectfile parameter is not specified.</td>
+      <td>-qualRequest "TA3ZJBYP2Y7ZJSX2BBN0TZ8ZTM4F6H4ZVQ4DE8FZ,TA3ZJBYP2Y7ZJSX2CCN0TZ8ZTM4F6H4ZVQ4DE8FZ"</td>
+    </tr>
+    <tr>
+      <td>-force</td>
+      <td>Specify NOT to prompt for manual confirmation before performing the reject operation.  This parameter should only be used by advanced users.</td>
+      <td>no</td>
+      <td>-force</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="evaluatequalrequests"/>
+<h2>Running the Evaluate Qualification Requests Operation</h2>
+This operation evaluates the answers submitted by Workers in order to approve/reject Qualification requests.<p/>
+
+This operation uses an answer key file for the Qualification test to automatically review the test results submitted by Workers and determine if the Qualification request should be approved or rejected.  This method allows you to specify free text answers that can be automatically processed.  This overcomes a current limitation of the Amazon Mechanical Turk system where FreeTextAnswer type answers cannot be auto graded.<p/>
+
+All questions must be answered correctly in order for the Qualification request to be approved.  A Qualification score of 100 will be assigned for approvals.<p/>
+
+To run the evaluateQualificationRequests operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: evaluateQualificationRequests [your options]<br/>
+  For Unix: ./evaluateQualificationRequests.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-answers [Qualification Command Line Tools Answer Key File]</td>
+      <td>Specify the Qualification Command Line Tools Answer Key File (see <a href="#filedescriptions">Description of Files Used by the Command Line Tools </a>for more details on file format) that contains the answer key.</td>
+      <td>yes</td>
+      <td>-answers qualification.answerkey</td>
+    </tr>
+    <tr>
+      <td>-input [File containing the Qualification Type ID]</td>
+      <td>Specify the file that contains the Qualification ID you want to assign to workers. This ID can be found in a .success file generated after you created the Qualification with the createQualificationType operation. The file must have a column header called <strong>qualtypeid</strong>.</td>
+      <td>yes.  Only if the qualtypeid parameter is not specified.</td>
+      <td>-input qualification.properties.success</td>
+    </tr>
+    <tr>
+      <td>-qualtypeid [Qualification Type ID]</td>
+      <td>Specify the Qualification Type ID to evaluate Qualification requests for.</td>
+      <td>yes.  Only if the input parameter is not specified.</td>
+      <td>-qualtypeid RWFZTKZ55ZPZXN1C8TDZ</td>
+    </tr>
+    <tr>
+      <td>-preview</td>
+      <td>Specify if you want to preview the outcome of the Qualification request evaluations before submitting the decisions to
+      Amazon Mechanical Turk.</td>
+      <td>no</td>
+      <td>-preview</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="updatequalscore"/>
+<h2>Running the Update Qualification Scores Operation</h2>
+This operation updates the Qualification scores for Workers.<p/>
+
+To run the updateQualificationScore operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: updateQualificationScore [your options]<br/>
+  For Unix: ./updateQualificationScore.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-input [File containing Worker IDs and scores]</td>
+      <td>Specify the tab delimited file that contains the Worker IDs and desired Qualification scores to assign. The file must have a column header called <strong>workerid</strong> containing the Worker IDs.  An optional column called <strong>score</strong> can be specified to assign specific scores to Workers.</td>
+      <td>yes.  Only if the workerid parameter is not specified.</td>
+      <td>-input worker_qual_scores.txt</td>
+    </tr>
+    <tr>
+      <td>-qualtypeid [Qualification Type ID]</td>
+      <td>Specify the Qualification Type ID to evaluate Qualification requests for.</td>
+      <td>yes</td>
+      <td>-qualtypeid RWFZTKZ55ZPZXN1C8TDZ</td>
+    </tr>
+    <tr>
+      <td>-score [Integer value for score]</td>
+      <td>Specify the score to assign to each Worker for the given Qualification Type ID.</td>
+      <td>yes.  Only if the score has NOT been defined in the input file.</td>
+      <td>-score 50</td>
+    </tr>
+    <tr>
+      <td>-workerid [Worker ID]</td>
+      <td>Specify the Worker ID of the Worker that you want to assign the score to.</td>
+      <td>yes.  Only if the input parameter is not specified.</td>
+      <td>-workerid A3C4G8DMXFG5PQ</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="revokequal"/>
+<h2>Running the Revoke Qualification Operation</h2>
+This operation revokes a Qualification from a Worker.<p/>
+
+To run the revokeQualification operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: revokeQualification [your options]<br/>
+  For Unix: ./revokeQualification.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-qualtypeid [Qualification Type ID]</td>
+      <td>Specify the Qualification Type ID of the Qualification to revoke the Worker from.</td>
+      <td>yes</td>
+      <td>-qualtypeid RWFZTKZ55ZPZXN1C8TDZ</td>
+    </tr>
+    <tr>
+      <td>-workerid [Worker ID]</td>
+      <td>Specify the Worker ID of the Worker that you want to revoke the Qualification from.</td>
+      <td>yes</td>
+      <td>-workerid A3C4G8DMXFG5PQ</td>
+    </tr>
+    <tr>
+      <td>-reason [reason for revoking Qualification]</td>
+      <td>Specify the reason for revoking the Qualification from the Worker.  The reason should be enclosed by "".</td>
+      <td>no</td>
+      <td>-reason "I'm sorry but your work quality is below acceptable standards."</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="resetaccount"/>
+<h2>Running the Reset Account Operation</h2>
+This operation deletes all of your existing HITs from Amazon Mechanical Turk.  If any of the HITs are still being worked on by workers then those HITs are not deleted.  If any of the assignments for the HITs are submitted but not yet approved, they will be automatically approved before the HITs are deleted.<p/>
+
+To run the resetAccount operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\bin</span></li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: resetAccount [your options]<br/>
+  For Unix: ./resetAccount.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-sandbox </td>
+      <td>Configures the command line tools to run against the Developer Sandbox environment.  Overrides the setting in mturk.properties file.</td>
+      <td>no</td>
+      <td>-sandbox </td>
+    </tr>
+    <tr>
+      <td>-force </td>
+      <td>If the -force option is specified then the user is not prompted for confirmation when running the resetAccount command.</td>
+      <td>no</td>
+      <td>-force</td>
+    </tr>
+    <tr>
+      <td>-help or -h</td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h</td>
+    </tr>
+  </tbody>
+</table>
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="maketemplate"/>
+<h2>Running the Make Template Operation</h2>
+This operation creates a copy of a sample applciation. After you run the sample applications that the Amazon Mechanical Turk Command Line Tools provide, you might want to create your own application, probably one that is similar to one of the sample applications. The Make Template operation makes it easy for you to replicate one of the samples in a different directory. You can make a template of a HIT-generating sample, such as the Hello World sample or the Best Image sample. For these templates, run the Make Template operation from the [Command Line Tools installation directory]\hits directory.<p/>
+
+You can also make copies of a Qualification sample by running the Make Template operation from the [Command Line Tools installation directory]\qualifications directory.<p/>
+
+To run the Make Template operation:
+<ol>
+  <li>Navigate to the following directory:<br/>
+  <span class="programlisting">[Command Line Tools installation directory]\hits</span>
+  or to the following directory:
+  <span class="programlisting">[Command Line Tools installation directory]\qualifications</span>
+  </li>
+  <li>Run the command:<br/>
+  <span class="programlisting">For Microsoft Windows: makeTemplate [your options]<br/>
+  For Unix: ./makeTemplate.sh [your options]
+  </span></li>
+</ol>
+
+<h3>Options for MakeTemplate for HITs</h3>
+<table id="aws-table">
+  <tbody>
+    <tr>
+      <th valign="top"><strong>Option</strong></th>
+      <th valign="top"><strong>Definition</strong></th>
+      <th valign="top"><strong>Required</strong></th>
+      <th valign="top"><strong>Example</strong></th>
+    </tr>
+    <tr>
+      <td>-target [directory name]</td>
+      <td>Specifies the name of the directory to create. This is the directory where the new files will be copied. This name is also used for the files that are created in this directory.  Note: this directory has to be under the hits or qualifications directory.</td>
+      <td>yes</td>
+      <td>-target my_survey</td>
+    </tr>
+    <tr>
+      <td>-template [directory name]</td>
+      <td>The name of the sample directory from which you are making the template.</td>
+      <td>yes</td>
+      <td>-template helloworld</td>
+    </tr>
+    <tr>
+      <td>-help or -h </td>
+      <td>Print Help for this operation.</td>
+      <td>no</td>
+      <td>-help or -h </td>
+    </tr>
+  </tbody>
+</table>
+
+ <p>
+ When you run this operation for HIT-generating samples, the Command Line Tools creates the new directory and copies the .input, .question, and .properties files from the specified sample. These files are created with the name specified in the -target option. 
+ If you are using Windows, the Command Line Tools creates new run.cmd, getResults.cmd, and approveAndDeleteResults.cmd 
+ files. If you are using Unix, the new files are run.sh, getResults.sh, and approveAndDeleteResults.sh.
+</p>
+
+<h3>Options for MakeTemplate for Qualifications</h3>
+
+When you run the makeTemplate command for qualifications, you can simply pass in the name of the target directory, e.g. makeTemplate myQual.  The makeTemplate command for qualifications only copies over one sample qualification unlike the makeTemplate for HITs operation.
+
+<p>
+ When you run this operation for Qualification-generating samples, the Command Line Tools creates the new directory and copies 
+ the .answer, .question, and .properties files from the specified sample. These files are created with the name of the target directory you specified. If you are using Windows, the Command Line Tools creates new createQualification.cmd, updateQualification.cmd, 
+ and deactivateQualification.cmd files. If you are using Unix, the new files are createQualification.sh, updateQualification.sh, and 
+ deactivateQualification.sh.
+</p>
+ 
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="logging"/>
+<h2>Logging and Debugging</h2>
+By default, logging has been enabled for all operations performed by the Command Line Tools.  The logs will contain significant details on each web request made to Amazon Mechanical Turk as well as details on the responses received back from the system.<p/>
+
+These logs can be helpful in troubleshooting any issues you encounter with the Command Line Tools and contains sufficient details to allow us to diagnose them.<p/>
+
+You can access the logs here:
+<span class="programlisting">
+[Command Line Tools Installation Directory]\log\java-aws-mturk.log
+</span>
+Since this file currently logs all requests, it will grow in size very quickly.  You can safely delete this file and not impact the functionality of the Command Line Tools.</p>
+The logs are configured to only take up a maximum of 10 MB.  When a log file exceeds 2 MB, another log file is created (i.e. java-aws-mturk.2.log) up to 5 log files.  Once the maximum of 10 MB is reached, the first log file will be overwritten and will continue as a rolling process.<p/>
+
+For advanced users, the level of logging can be specified.  To set the level of logging:
+<ol>
+  <li>Open your <strong>mturk.properties</strong> in a text editor.</li>
+  <li>Add the following line as a property in the file:<br/>
+  <span class="programlisting">log_level=[your desired log level]</span></li>
+  <li>Save and close the file.</li>
+</ol>
+
+The Command Line Tools uses <a href="http://logging.apache.org/log4j/docs/index.html" target="_blank">Log4J</a> for logging.  The following log level definitions are available:<br/>
+<ul>
+  <li>ALL</li>
+  <li>FATAL</li>
+  <li>ERROR</li>
+  <li>WARN</li>
+  <li>INFO</li>
+  <li>DEBUG</li>
+  <li>OFF</li>
+</ul>
+
+For more information on what details are logged for each log level, access the Log4J documentation on <a href="http://logging.apache.org/log4j/docs/api/index.html" target="_blank">log levels</a>.
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+
+<a name="portability"/>
+<h2>Portability of Convenience Files</h2>
+In general, the convenience files (i.e. mturk.properties, input files, question template, HIT template, etc.) used by the Amazon Mechanical Turk Command Line tools are portable to the Amazon Mechanical Turk SDK for Java.<p/>
+However, the convenience files are not currently portable to other Amazon Mechanical Turk SDKs in other programming languages (i.e. Ruby, C#, PERL, etc.).<p/>
+Portability across SDKs on different programming platforms is a desired goal for future releases.
+
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+<a name="comments"/>
+<h2>Comments, Questions or Feedback</h2>
+If you have any comments, questions or feedback on the Amazon Mechanical Turk SDK for Java or the service in general, please visit the <a href="http://developer.amazonwebservices.com/connect/forum.jspa?forumID=11" target="_blank">Amazon Mechanical Turk discussion forums</a>.
+Alternatively, you can visit the open source project <a href="http://sourceforge.net/projects/mturkclt" target="_blank">home page</a>.
+<p/><a href="#tableofcontents">Return to Table of Contents</a>
+
+</body></html>
