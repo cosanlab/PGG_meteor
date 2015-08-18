@@ -1,0 +1,15 @@
+{
+	"turkserver": {
+    	"adminPassword": "something",
+		"hits": {
+			"acceptUnknownHits": true
+  	 	},
+    	"mturk": {
+	    	"sandbox": true,
+	        "accessKeyId": "Look at lab wiki",
+	        "secretAccessKey": "Look at lab wiki",
+	        "externalURL":"https://mini_ug.meteor.com/",
+	        "frameHeight": 800
+    	}
+	}
+}

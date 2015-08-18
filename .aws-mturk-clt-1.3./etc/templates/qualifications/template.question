@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuestionForm xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd">
+    <Overview>
+        <Title>Trivia Qualification</Title>
+    </Overview>
+    <Question>
+		<QuestionIdentifier>question1</QuestionIdentifier>
+		<QuestionContent>
+			<Text>Who directed The Man With the Golden Gun?</Text>
+		</QuestionContent>
+		<AnswerSpecification>
+			<SelectionAnswer>
+			  <StyleSuggestion>radiobutton</StyleSuggestion>
+			  <Selections>
+			    <Selection>
+			      <SelectionIdentifier>1</SelectionIdentifier>
+			      <Text>Terence Young</Text>
+			    </Selection>
+			    <Selection>
+			      <SelectionIdentifier>2</SelectionIdentifier>
+			      <Text>Lewis Gilbert</Text>
+			    </Selection>
+			    <Selection>
+			      <SelectionIdentifier>3</SelectionIdentifier>
+			      <Text>John Glen</Text>
+			    </Selection>
+			    <Selection>
+			      <SelectionIdentifier>4</SelectionIdentifier>
+			      <Text>Guy Hamilton</Text>
+			    </Selection>
+			  </Selections>
+			</SelectionAnswer>
+		</AnswerSpecification>
+	</Question>
+    <Question>
+		<QuestionIdentifier>question2</QuestionIdentifier>
+		<QuestionContent>
+			<Text>What did Henry Ford call the new model that he introduced in 1928?</Text>
+		</QuestionContent>
+		<AnswerSpecification>
+			<SelectionAnswer>
+			  <StyleSuggestion>radiobutton</StyleSuggestion>
+			  <Selections>
+			    <Selection>
+			      <SelectionIdentifier>1</SelectionIdentifier>
+			      <Text>Model B</Text>
+			    </Selection>
+			    <Selection>
+			      <SelectionIdentifier>2</SelectionIdentifier>
+			      <Text>Model T</Text>
+			    </Selection>
+			    <Selection>
+			      <SelectionIdentifier>3</SelectionIdentifier>
+			      <Text>Model A</Text>
+			    </Selection>
+			    <Selection>
+			      <SelectionIdentifier>4</SelectionIdentifier>
+			      <Text>DeLuxe</Text>
+			    </Selection>
+			  </Selections>
+			</SelectionAnswer>
+		</AnswerSpecification>
+	</Question>
+</QuestionForm>
