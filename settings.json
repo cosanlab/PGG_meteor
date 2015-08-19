@@ -6,8 +6,8 @@
   	 	},
     	"mturk": {
 	    	"sandbox": true,
-	        "accessKeyId": "Look at lab wiki",
-	        "secretAccessKey": "Look at lab wiki",
+	        "accessKeyId": "AKIAIML7DP2HQBD7CVTA",
+	        "secretAccessKey": "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",
 	        "externalURL":"https://mini_ug.meteor.com/",
 	        "frameHeight": 800
     	}
