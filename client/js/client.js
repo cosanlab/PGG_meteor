@@ -15,7 +15,7 @@ Tracker.autorun(function(){
         return;
     } 
     Meteor.subscribe('Players');
-    Meteor.subscribe('Games');
+    Meteor.subscribe('Games',group);
 }); 
 
 

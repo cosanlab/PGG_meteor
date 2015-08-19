@@ -188,8 +188,9 @@ Meteor.methods({
 		} else if(currentUser == game.playerB){
 			asst.addPayment(Bbonus);
 		}
+		//Shut down experiment and route client to exit survey
 		var exp = TurkServer.Instance.currentInstance();
-		exp.teardown();
+		exp.teardown();	
 	}
 });
 

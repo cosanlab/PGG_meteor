@@ -19,3 +19,13 @@ Template.payoffs.helpers({
 		}
 	}
 });
+
+Template.payoffs.onRendered(function(){
+	var gameId = Games.findOne()._id;
+	//Wait 5 seconds to end experiment
+	Meteor.setTimeout(function(){
+		Meteor.call('goToEndSurvey', gameId);
+
+	},5000);
+    
+});

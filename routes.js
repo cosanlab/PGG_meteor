@@ -104,13 +104,6 @@ Router.route('/payoffs',{
   },
   action: function(){
     this.render('payoffs');
-    this.next();
-    var gameId = Games.findOne()._id;
-    setTimeout(function(){
-          //Send all clients to end survey and calculate bonuses
-          Meteor.call('goToEndSurvey', gameId);
-        },  
-        5000);
   }
 });
 
