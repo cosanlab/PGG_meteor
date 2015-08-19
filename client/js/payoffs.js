@@ -19,3 +19,10 @@ Template.payoffs.helpers({
 		}
 	}
 });
+
+//Allow client to submit HIT to mturk
+Template.payoffs.events({
+	'click button': function(){
+		Meteor.call('goToEndSurvey');
+	}
+});

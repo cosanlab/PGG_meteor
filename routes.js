@@ -14,7 +14,9 @@ Router.route('/', {
 });
 
 //Lobby template, make sure we see the players db for matching
-Router.route('/lobby',{
+Router.route('/lobbyUG',{
+  name: 'lobbyUG',
+  template: 'lobby',
   waitOn: function(){
     return Meteor.subscribe('Players');
   },
@@ -84,7 +86,7 @@ Router.route('/game',{
           Router.go('payoffs');
           //Update all client statuses
           Meteor.call('playerFinished', game._id); 
-        },
+        },  
         5000);
         this.next();
                 
@@ -102,6 +104,17 @@ Router.route('/payoffs',{
   },
   action: function(){
     this.render('payoffs');
+  }
+});
+
+//End survey
+Router.route('/endSurvey',{
+  waitOn: function(){
+    //Might need to change this depending on where we store survye data
+    Meteor.subscribe('Players');
+  },
+  action: function(){
+    this.render('endSurvey');
   }
 });
 

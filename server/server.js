@@ -1,4 +1,18 @@
-//Subjects DB
+//We're going to have to create our own assigner. Currently Simple and Test Assigner both push clients directly to the experiment, which I've handled for now by simply starting our experiment from within TurkServers.inExperiment, effectively by-passing their lobby entirely
+
+//Share instance with other users and go straight to expermient
+Meteor.startup(function(){
+	try{
+		var batch = TurkServer.Batch.getBatchByName('Test_1');
+		batch.setAssigner(new TurkServer.Assigners.TestAssigner);
+	} 
+	catch(e){
+		console.log(e);
+		return;
+	}
+});
+
+///Subjects DB
 Meteor.publish('Players', function(){
 	return Players.find({},{fields: {name:1, enterTime:1, status:1}});
 });
@@ -11,11 +25,7 @@ Meteor.publish('Games', function(){
 	// return Games.find( {} );
 });
 
-/*
-Meteor.publish('gameAttendees', function(ids) {  
-  return Meteor.users.find({_id: {$in: ids}}, {fields: {'profile.pictureUrl': 1, username: 1}});
-});
-*/
+
 
 Meteor.methods({
 	
@@ -151,4 +161,14 @@ Meteor.methods({
 	'addMessage':function(gameId, message){
 		Games.update(gameId, {$set:{'message':message}});
 	},
+
+	//TURKSERVER METHODS
+
+	//End the experiment sending the client back to the lobby
+	//This needs to be modified to only act on the client who called the method
+	'goToEndSurvey': function(){
+		var exp = TurkServer.Instance.currentInstance();
+		exp.teardown();
+	}
 });
+
