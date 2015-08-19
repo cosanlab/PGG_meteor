@@ -9,7 +9,7 @@ Template.payoffs.helpers({
 		} else if(game.PlayerBChoice == 'Left'){
 			return {
 				playerA: '0',
-				playerB: '0',
+				playerB: '1',
 			};
 		} else if(game.PlayerBChoice == 'Right'){
 			return {
@@ -17,12 +17,5 @@ Template.payoffs.helpers({
 				playerB: '2',
 			};
 		}
-	}
-});
-
-//Allow client to submit HIT to mturk
-Template.payoffs.events({
-	'click button': function(){
-		Meteor.call('goToEndSurvey');
 	}
 });

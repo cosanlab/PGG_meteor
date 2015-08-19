@@ -1,6 +1,7 @@
 //Going to have edit this when we get an Assigner working, e.g. .inLobby
 Tracker.autorun(function(){
     //Treat this as if they just successfully logged in with an email
+    //send them to OUR lobby and handle matching 
     if (TurkServer.inExperiment()){
         Meteor.call('addPlayer', {}, function(){
             Router.go('lobbyUG');
@@ -8,10 +9,16 @@ Tracker.autorun(function(){
     } else if (TurkServer.inExitSurvey()){
         Router.go('endSurvey');
     }
+    //Subscribe to the partitioned databases
+    var group = TurkServer.group();
+    if (group == null){
+        return;
+    } 
+    Meteor.subscribe('Players');
+    Meteor.subscribe('Games');
 }); 
 
-Meteor.subscribe('Players');
-Meteor.subscribe('Games');
+
 
 //New Spacebars function that should work on all templates
 Template.registerHelper("equals", function(a,b){
@@ -71,6 +78,7 @@ Template.register.onRendered(function(){
 
 */
 //Login handler
+/*
 Template.login.onRendered(function(){
     var validator = $('.login').validate({
         submitHandler: function(event){
@@ -96,7 +104,7 @@ Template.login.onRendered(function(){
             });
         }
     });
-});
+}); */
 
 Template.navigation.events({
     'click .logout': function(event){
