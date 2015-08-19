@@ -3,6 +3,8 @@
 //Share instance with other users and go straight to expermient
 Meteor.startup(function(){
 	try{
+		//Create a test batch for now and give it an assigner
+		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
 		var batch = TurkServer.Batch.getBatchByName('Test_1');
 		batch.setAssigner(new TurkServer.Assigners.TestAssigner);
 	} 
@@ -166,7 +168,26 @@ Meteor.methods({
 
 	//End the experiment sending the client back to the lobby
 	//This needs to be modified to only act on the client who called the method
-	'goToEndSurvey': function(){
+	'goToEndSurvey': function(gameId){
+		//First calculate bonuses
+		var asst = TurkServer.Assignment.currentAssignment();
+		var currentUser = Meteor.userId();
+		var game = Games.findOne({_id:gameId});
+		if(game.PlayerAChoice == 'Left'){
+			Abonus = 0.10;
+			Bbonus = 0.30;
+		} else if(game.PlayerBChoice == 'Left'){
+			Abonus = 0;
+			Bbonus = 0.1;
+		} else if(game.PlayerBChoice == 'Right'){
+			Abonus = 0.2;
+			Bbonus = 0.2;
+		}
+		if(currentUser == game.playerA){
+			asst.addPayment(Abonus);
+		} else if(currentUser == game.playerB){
+			asst.addPayment(Bbonus);
+		}
 		var exp = TurkServer.Instance.currentInstance();
 		exp.teardown();
 	}
