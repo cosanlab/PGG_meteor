@@ -1,7 +1,9 @@
-//Allow client to submit HIT to mturk, but take them back to lobby
-//Need to figure out how to handle new subjects in the lobby who want to get matched 
+//When a client clicks the submit button it tears down the experiment and submits their hit
 Template.endSurvey.events({
 	'click button': function(){
-		TurkServer.submitExitSurvey({});
+		Router.go('endExperiment');
+		var gameId = Games.findOne()._id;
+		Meteor.call('endExperiment',gameId);
+		
 	}
 });

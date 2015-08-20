@@ -168,7 +168,7 @@ Meteor.methods({
 
 	//End the experiment sending the client back to the lobby
 	//This needs to be modified to only act on the client who called the method
-	'goToEndSurvey': function(gameId){
+	'endExperiment': function(gameId){
 		//First calculate bonuses
 		var asst = TurkServer.Assignment.currentAssignment();
 		var currentUser = Meteor.userId();
@@ -188,9 +188,12 @@ Meteor.methods({
 		} else if(currentUser == game.playerB){
 			asst.addPayment(Bbonus);
 		}
-		//Shut down experiment and route client to exit survey
+		//Submit the HIT
+		TurkServer.submitExitSurvey({});
+		//Shut down experiment instance
+		//Will need to edit this tear down mechanism
 		var exp = TurkServer.Instance.currentInstance();
-		exp.teardown();	
+		exp.teardown(returnToLobby = false);	
 	}
 });
 
