@@ -109,6 +109,9 @@ Router.route('/payoffs',{
 
 //End survey
 Router.route('/endSurvey',{
+  
+  name: 'endSurvey',
+
   waitOn: function(){
     //Might need to change this depending on where we store survye data
     Meteor.subscribe('Players');
@@ -116,6 +119,12 @@ Router.route('/endSurvey',{
   action: function(){
     this.render('endSurvey');
   }
+});
+
+//End experiment
+Router.route('/endExperiment',{
+  name: 'endExperiment',
+  template: 'endExperiment'
 });
 
 

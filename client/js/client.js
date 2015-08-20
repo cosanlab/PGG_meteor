@@ -1,7 +1,6 @@
 //Going to have edit this when we get an Assigner working, e.g. .inLobby
 Tracker.autorun(function(){
-    //Treat this as if they just successfully logged in with an email
-    //send them to OUR lobby and handle matching 
+    //FIX THIS TO WORK WITH NEW ASSIGNER
     if (TurkServer.inExperiment()){
         Meteor.call('addPlayer', {}, function(){
             Router.go('lobbyUG');
