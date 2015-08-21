@@ -67,7 +67,8 @@ Template.instructionsInteractive.helpers({
 		steps: tutorialSteps,
 		onFinish: function(){
 			var gameId = Games.findOne()._id;
-    		Meteor.call('playerReady',gameId);
+			var currentUser = Meteor.userId();
+    		Meteor.call('playerReady',gameId, currentUser);
 		}
 	}
 });

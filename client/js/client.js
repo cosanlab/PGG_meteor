@@ -1,21 +1,36 @@
-//Going to have edit this when we get an Assigner working, e.g. .inLobby
-Tracker.autorun(function(){
-    //FIX THIS TO WORK WITH NEW ASSIGNER
-    if (TurkServer.inExperiment()){
-        Meteor.call('addPlayer', {}, function(){
-            Router.go('lobbyUG');
+//Setup up a reactive computation that monitors when clients' states
+Meteor.startup(function(){
+    Meteor.defer(function(){
+        Tracker.autorun(function(){
+            //If in lobby show them the lobby page; the assigner adds them to the players db
+            if (TurkServer.inLobby){
+                var batch = Turkserver.batch();
+                Meteor.subscribe('lobby', batch._id);
+                //May conflict with TS lobby`
+                Router.go('lobbyUG');
+            }
+            //If in experiment add to players db and send to instructions
+            else if (TurkServer.inExperiment()){
+                Router.go('instructionsInteractive');
+            } 
+            //If in the experiment has ended take them to the exit survey
+            else if (TurkServer.inExitSurvey()){
+                Router.go('endSurvey');
+            }
         });
-    } else if (TurkServer.inExitSurvey()){
-        Router.go('endSurvey');
-    }
-    //Subscribe to the partitioned databases
+    });
+});
+
+//Reactively subscribe to the partitioned databases
+Tracker.autorun(function(){
     var group = TurkServer.group();
     if (group == null){
         return;
-    } 
+    }
     Meteor.subscribe('Players');
     Meteor.subscribe('Games',group);
-}); 
+});
+ 
 
 
 
@@ -104,7 +119,7 @@ Template.login.onRendered(function(){
         }
     });
 }); */
-
+/*
 Template.navigation.events({
     'click .logout': function(event){
         event.preventDefault();
@@ -112,3 +127,4 @@ Template.navigation.events({
         Router.go('login');
     }
 });
+*/
