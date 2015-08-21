@@ -1,7 +1,9 @@
-//Submit the HIT, calculate the bonuses and tear down the experiment 
+//Submit the HIT
 Template.endSurvey.events({
 	'click button': function(){
-		TurkServer.submitExitSurvey({});	
+		TurkServer.submitExitSurvey({});
+		//Need this once HIT is submitted
+		Router.go('endExperiment');	
 	}
 });
 

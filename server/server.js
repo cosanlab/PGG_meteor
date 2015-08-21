@@ -191,6 +191,7 @@ Meteor.methods({
 	},
 
 	//Send a user back to the lobby
+	//Currently not in use
 	goToLobby: function(currentUser){
 		var inst = TurkServer.Instance.currentInstance();
 		if (inst == null){
@@ -198,6 +199,12 @@ Meteor.methods({
 			return;
 		}
 		inst.sendUserToLobby(currentUser);
+	},
+
+	//Rather than have the assigner send clients to the exit survey if they enter the lobby for a second time just have a client call it on themselves
+	sendToExitSurvey: function(currentUser){
+		asst = TurkServer.Assignment.currentAssignment();
+		asst.showExitSurvey();
 	}
 });
 
