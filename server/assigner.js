@@ -6,11 +6,10 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
 TurkServer.Assigners.UGAssigner = (function(superClass) {
   extend(UGAssigner, superClass);
 
-  function UGAssigner(groupSize){
-    this.groupSize = groupSize; 
-    //We don't really need this since the Assigner "parent class" constructor actually gets called with any arguments
+  function UGAssigner(){}
+    //this.groupSize = groupSize
     //return UGAssigner.__super__constructor.apply(this,arguments);
-  }
+  //}
 
   UGAssigner.prototype.initialize = function(){
     //Call the parent's initialize method first
@@ -24,26 +23,26 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
       return asst.showExitSurvey();
     } 
     //Otherwise add them to the players db
-    else {
+    else {  
         Meteor.call('addPlayer',asst.userId);
     }
     //If there are 2 people in the lobby create a new instance and send both players there
     //Also change their status in the players db and create a game
     var lobbyUsers = this.lobby.getAssignments();
     
-    if (lobbyUsers == this.groupSize){
-      var treatment = _.sample(this.batch.getTreatments());
-      this.instance = this.batch.createInstance([treatment]);
+    if (lobbyUsers.length == 2){
+      //var treatment = _.sample(this.batch.getTreatments());
+      this.instance = this.batch.createInstance([]);
       this.instance.setup();
       results = []; playerIds = [];
       for (i = 0, len = lobbyUsers.length; i < len; i++) {
-        asst = lobbyAssts[i];
+        asst = lobbyUsers[i];
         this.lobby.pluckUsers([asst.userId]);
         Meteor.call('updatePlayer', asst.userId,'instructions');
-        results.push(instance.addAssignment(asst));
-        players.push(asst.userId);
+        results.push(this.instance.addAssignment(asst));
+        playerIds.push(asst.userId);
       }
-      Meteor.call('create', playerIds);
+      Meteor.call('createGame', playerIds);
       return results;
     } else{
       return; //do nothing cause there's not enough players

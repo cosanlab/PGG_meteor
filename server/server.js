@@ -3,7 +3,7 @@ Meteor.startup(function(){
 		//Create a test batch for now and give it an assigner
 		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
 		var batch = TurkServer.Batch.getBatchByName('Test_1');
-		batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
+		batch.setAssigner(new TurkServer.Assigners.UGAssigner());
 	} 
 	catch(e){
 		console.log(e);
@@ -103,9 +103,11 @@ Meteor.methods({
 				condition: cond
 			};
 		}
-
-		// Add Game to DB
-		return Games.insert(data);
+		//Since the server is doing a db instance and isn't a user, need to pretend to be a user who has access to the slice of the db in order to insert
+		Partitioner.bindUserGroup(clientId,function(){
+			Games.insert(data);
+		});
+		return;
 	},
 
 	'updateGameState': function(gameId, state) {

@@ -20,8 +20,11 @@ Template.payoffs.helpers({
 	}
 });
 
+//Not sure if this is the best way to do this
 Template.payoffs.onRendered(function(){
 	var currentUser = Meteor.userId();
+	var gameId = Games.findOne()._id;
+	Meteor.call('calcBonuses', gameId, currentUser);
 	//Wait 5 seconds to send a user back to the lobby
 	Meteor.setTimeout(function(){
 		Meteor.call('goToLobby', currentUser);
