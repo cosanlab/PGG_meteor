@@ -18,10 +18,17 @@ Router.route('/lobbyUG',{
   name: 'lobbyUG',
   template: 'lobbyUG',
   waitOn: function(){
-    return Meteor.subscribe('Players');
+    Meteor.subscribe('Players');
   },
   action: function(){
-     this.render('lobby');
+     this.render('lobbyUG');
+  },
+  onBeforeAction: function() {
+    if (!Meteor.user()) {
+      return this.render("tsUserAccessDenied");
+        } else {
+          return this.next();
+        }
   }
 }); 
 

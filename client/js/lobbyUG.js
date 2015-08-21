@@ -9,7 +9,11 @@ Template.lobbyUG.helpers({
   },
   //Scope of this is lobbyinfo
   identifier: function() {
-    var ref3;
-    return ((ref3 = Meteor.users.findOne(this._id)) != null ? ref3.username : void 0) || "<i>unnamed user</i>";
+    var user = Meteor.users.findOne(this._id);
+    return(user != null ? user._id : "<i>unnamed user</i>");
+  },
+
+  desiredNumPlayers: function(){
+    return 2;
   }
 });

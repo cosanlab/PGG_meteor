@@ -2,6 +2,10 @@ Meteor.startup(function(){
 	try{
 		//Create a test batch for now and give it an assigner
 		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
+		TurkServer.ensureTreatmentExists({name: 'withMessaging'});
+    	TurkServer.ensureTreatmentExists({name: 'noMessaging'});
+		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: 'withMessaging'}});
+		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: 'noMessaging'}});
 		var batch = TurkServer.Batch.getBatchByName('Test_1');
 		batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
 	} 
@@ -70,11 +74,11 @@ Meteor.methods({
 	},	
 
 	//GAMES DB METHODS
-	'createGame': function(playerIds){
+	'createGame': function(playerIds, condition){
 		var clientId = playerIds[0];
 		var partnerId = playerIds[1];
 		//Randomize condition; with or without messaging enabled
-		var messageCond = Math.random() > 0.5;
+		var messageCond = condition;
 		var cond;
 		if(messageCond){
 			cond = 'withMessaging';
@@ -91,7 +95,7 @@ Meteor.methods({
 				state: "instructions",
 				playerAReady:false,
 				playerBReady:false,
-				condition: cond
+				condition: messageCond
 			};
 		} else {
 			data = {
@@ -100,7 +104,7 @@ Meteor.methods({
 				state: "instructions",
 				playerAReady:false,
 				playerBReady:false,
-				condition: cond
+				condition: messageCond
 			};
 		}
 		//Since the server is doing a db instance and isn't a user, need to pretend to be a user who has access to the slice of the db in order to insert

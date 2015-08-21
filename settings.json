@@ -1,4 +1,9 @@
 {
+	"public": {
+		"turkserver": {
+	    	"autoLobby": false
+		}
+    },
 	"turkserver": {
     	"adminPassword": "something",
 		"hits": {
