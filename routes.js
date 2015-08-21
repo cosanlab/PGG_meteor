@@ -21,14 +21,15 @@ Router.route('/lobbyUG',{
     Meteor.subscribe('Players');
   },
   action: function(){
-     this.render('lobbyUG');
+      this.render('lobbyUG');
   },
   onBeforeAction: function() {
     if (!Meteor.user()) {
       return this.render("tsUserAccessDenied");
-        } else {
-          return this.next();
-        }
+    } else{
+      return this.next();
+    }
+
   }
 }); 
 
