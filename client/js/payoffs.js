@@ -21,9 +21,10 @@ Template.payoffs.helpers({
 });
 
 Template.payoffs.onRendered(function(){
-	//Wait 5 seconds to go the end survey 
+	var currentUser = Meteor.userId();
+	//Wait 5 seconds to send a user back to the lobby
 	Meteor.setTimeout(function(){
-		Router.go('endSurvey');
+		Meteor.call('goToLobby', currentUser);
 
 	},5000);
     

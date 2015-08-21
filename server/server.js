@@ -1,12 +1,9 @@
-//We're going to have to create our own assigner. Currently Simple and Test Assigner both push clients directly to the experiment, which I've handled for now by simply starting our experiment from within TurkServers.inExperiment, effectively by-passing their lobby entirely
-
-//Share instance with other users and go straight to expermient
 Meteor.startup(function(){
 	try{
 		//Create a test batch for now and give it an assigner
 		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
 		var batch = TurkServer.Batch.getBatchByName('Test_1');
-		batch.setAssigner(new TurkServer.Assigners.TestAssigner);
+		batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
 	} 
 	catch(e){
 		console.log(e);
@@ -24,7 +21,6 @@ Meteor.publish('Games', function(){
     // Security
     var currentUser = this.userId;		
 	return Games.find({"$or": [{"playerA":currentUser},{"playerB":currentUser}]});
-	// return Games.find( {} );
 });
 
 
@@ -32,8 +28,7 @@ Meteor.publish('Games', function(){
 Meteor.methods({
 	
 	//PLAYERS DB METHODS
-	'addPlayer': function(){
-		var currentUser = Meteor.userId();
+	'addPlayer': function(currentUser){
 		var data = {
 			_id: currentUser,
 			name: currentUser,
@@ -45,8 +40,7 @@ Meteor.methods({
 		}
 		Players.insert(data);
 	},
-	'removePlayer': function(){
-		var currentUser = Meteor.userId();
+	'removePlayer': function(currentUser){
 		var data = {
 			_id: currentUser,
 		};
@@ -58,19 +52,6 @@ Meteor.methods({
 	'updatePlayer': function(playerId, state){
 		check(state,String);
 		return Players.update(playerId, {$set: {status: state}});
-	},
-	'matchPlayers': function(){
-		var clientId = Meteor.userId();
-		var numPlayers = Players.find({status:'waiting'},{}).count();
-		if (numPlayers >= 2){
-			// Grab the earliest waiting player
-			var partnerId = Players.findOne({status:'waiting'},{sort:{enterTime:1}})._id;
-			// update each player's status
-			Meteor.call('updatePlayer', clientId, 'instructions');
-			Meteor.call('updatePlayer', partnerId, 'instructions');
-			// Create a game
-			Meteor.call('createGame', clientId, partnerId);
-		}
 	},
 	'playerFinished': function(gameId){
 		//Update the clients's status in the Players DB
@@ -89,7 +70,9 @@ Meteor.methods({
 	},	
 
 	//GAMES DB METHODS
-	'createGame': function(clientId, partnerId){
+	'createGame': function(playerIds){
+		var clientId = playerIds[0];
+		var partnerId = playerIds[1];
 		//Randomize condition; with or without messaging enabled
 		var messageCond = Math.random() > 0.5;
 		var cond;
@@ -135,29 +118,32 @@ Meteor.methods({
 		} else if(player == 'B'){
 			return Games.update(gameId, {$set: {'PlayerBChoice':choice}});
 		} else {
-			throw new Meteor.error ('playerError','Unrecognized player. Games not updated with player deciision!');
+			throw new Meteor.error ('playerError','Unrecognized player. Games not updated with player decision!');
 		}
 	},
-	'playerReady': function(gameId){
+	'playerReady': function(gameId, currentUser){
 		// update player status to ready for games matching gameId
-		var currentUser = Meteor.userId();
-		if(Games.find({_id:gameId}).fetch()[0].playerA == currentUser){
+		var game = Games.findOne({_id:gameId});
+		if(currentUser == game.playerA){
 			data = {
 				playerAReady:true
 			};
 		}
-		if (Games.find({_id:gameId}).fetch()[0].playerB == currentUser) {
+		else if (currentUser == game.playerB) {
 			data = {
 				playerBReady:true
 			};
 		}
 		Games.update(gameId, {$set: data});
+
 		//Update game status to playing if both player statuses are ready
 		//Make sure we take game condition into account
-		if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady && Games.find({_id:gameId}).fetch()[0].condition == 'withMessaging'){
-			Meteor.call('updateGameState',gameId, "playerBmessaging");
-		} else if(Games.find({_id:gameId}).fetch()[0].playerAReady && Games.find({_id:gameId}).fetch()[0].playerBReady && Games.find({_id:gameId}).fetch()[0].condition == 'noMessaging'){
-			Meteor.call('updateGameState',gameId, "playerAdeciding");
+		game = Games.findOne(); //Re-query the db after the update
+
+		if(game.playerAReady && game.playerBReady && game.condition == 'withMessaging'){
+			Meteor.call('updateGameState',game._id, "playerBmessaging");
+		} else if(game.playerAReady && game.playerBReady && game.condition == 'noMessaging'){
+			Meteor.call('updateGameState',game._id, "playerAdeciding");
 		}
 	},
 	'addMessage':function(gameId, message){
@@ -166,12 +152,10 @@ Meteor.methods({
 
 	//TURKSERVER METHODS
 
-	//End the experiment sending the client back to the lobby
-	//This needs to be modified to only act on the client who called the method
-	'endExperiment': function(gameId){
+	//Calculate bonuses and shut down the instance, which both users won't be in anymore because this only gets call from the exit survey
+	'calcBonuses': function(gameId, currentUser){
 		//First calculate bonuses
 		var asst = TurkServer.Assignment.currentAssignment();
-		var currentUser = Meteor.userId();
 		var game = Games.findOne({_id:gameId});
 		if(game.PlayerAChoice == 'Left'){
 			Abonus = 0.10;
@@ -188,12 +172,26 @@ Meteor.methods({
 		} else if(currentUser == game.playerB){
 			asst.addPayment(Bbonus);
 		}
-		//Submit the HIT
-		TurkServer.submitExitSurvey({});
+
+		Meteor.call('endExperiment');
+	},
+
+	'endExperiment': function(){
 		//Shut down experiment instance
-		//Will need to edit this tear down mechanism
 		var exp = TurkServer.Instance.currentInstance();
-		exp.teardown(returnToLobby = false);	
+		if (exp != null){
+			exp.teardown(returnToLobby = false);	
+		}
+	},
+
+	//Send a user back to the lobby
+	goToLobby: function(currentUser){
+		var inst = TurkServer.Instance.currentInstance();
+		if (inst == null){
+			console.log('No instance for ' + currentUser + '. User not sent to lobby!');
+			return;
+		}
+		inst.sendUserToLobby(currentUser);
 	}
 });
 

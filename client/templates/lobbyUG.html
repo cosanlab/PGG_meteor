@@ -1,0 +1,19 @@
+<template name="lobbyUG">
+	<div class="jumbotron">
+        <h3>Waiting for enough users to start the task. Sit tight for a few minutes, it shouldn't  be vey long!</h3>
+
+        <p> Including you, there are {{lobby.count}} user(s) currently waiting:</p>
+
+        <table class="table table-striped">
+            <tbody>
+            {{#each lobby.info}}
+            <tr>
+                <td>
+                    {{{ identifier }}}
+                </td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>
