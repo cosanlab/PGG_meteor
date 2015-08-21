@@ -30,9 +30,9 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
     //Also change their status in the players db and create a game
     var lobbyUsers = this.lobby.getAssignments();
     
-    if (lobbyUsers.length == this.groupSize){
-      //var treatment = _.sample(this.batch.getTreatments());
-      this.instance = this.batch.createInstance([]);
+    if (lobbyUsers.length == this.groupSize)  {
+      var treatment = _.sample(this.batch.getTreatments());
+      this.instance = this.batch.createInstance([treatment]);
       this.instance.setup();
       results = []; playerIds = [];
       for (i = 0, len = lobbyUsers.length; i < len; i++) {
@@ -42,7 +42,7 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
         results.push(this.instance.addAssignment(asst));
         playerIds.push(asst.userId);
       }
-      Meteor.call('createGame', playerIds);
+      Meteor.call('createGame', playerIds, treatment);
       return results;
     } else{
       return; //do nothing cause there's not enough players

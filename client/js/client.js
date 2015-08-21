@@ -4,7 +4,12 @@ Meteor.startup(function(){
         Tracker.autorun(function(){
             //Just use TS's default lobby and let the Assigner handle matching
             //If in experiment add to players db and send to instructions
-            if (TurkServer.inExperiment()){
+            if(TurkServer.inLobby()){
+                var batch = TurkServer.batch();
+                Meteor.subscribe('lobby', batch && batch._id);
+                Router.go('lobbyUG');
+            }
+            else if (TurkServer.inExperiment()){
                 Router.go('instructionsInteractive');
             } 
             //If in the experiment has ended take them to the exit survey
