@@ -6,10 +6,10 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
 TurkServer.Assigners.UGAssigner = (function(superClass) {
   extend(UGAssigner, superClass);
 
-  function UGAssigner(){}
-    //this.groupSize = groupSize
+  function UGAssigner(groupSize){
+    this.groupSize = groupSize;
     //return UGAssigner.__super__constructor.apply(this,arguments);
-  //}
+  }
 
   UGAssigner.prototype.initialize = function(){
     //Call the parent's initialize method first
@@ -30,7 +30,7 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
     //Also change their status in the players db and create a game
     var lobbyUsers = this.lobby.getAssignments();
     
-    if (lobbyUsers.length == 2){
+    if (lobbyUsers.length == this.groupSize){
       //var treatment = _.sample(this.batch.getTreatments());
       this.instance = this.batch.createInstance([]);
       this.instance.setup();

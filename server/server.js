@@ -3,7 +3,7 @@ Meteor.startup(function(){
 		//Create a test batch for now and give it an assigner
 		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
 		var batch = TurkServer.Batch.getBatchByName('Test_1');
-		batch.setAssigner(new TurkServer.Assigners.UGAssigner());
+		batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
 	} 
 	catch(e){
 		console.log(e);
