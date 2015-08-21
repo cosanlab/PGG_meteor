@@ -1,4 +1,4 @@
-Template.lobby.helpers({
+Template.lobbyUG.helpers({
   
   lobby:function(){
     var lobby = LobbyStatus.find();

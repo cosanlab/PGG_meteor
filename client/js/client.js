@@ -2,15 +2,9 @@
 Meteor.startup(function(){
     Meteor.defer(function(){
         Tracker.autorun(function(){
-            //If in lobby show them the lobby page; the assigner adds them to the players db
-            if (TurkServer.inLobby){
-                var batch = Turkserver.batch();
-                Meteor.subscribe('lobby', batch._id);
-                //May conflict with TS lobby`
-                Router.go('lobbyUG');
-            }
+            //Just use TS's default lobby and let the Assigner handle matching
             //If in experiment add to players db and send to instructions
-            else if (TurkServer.inExperiment()){
+            if (TurkServer.inExperiment()){
                 Router.go('instructionsInteractive');
             } 
             //If in the experiment has ended take them to the exit survey
