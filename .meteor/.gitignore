@@ -1,1 +1,4 @@
 local
+../settings.json
+../ssl.pem
+*.pem

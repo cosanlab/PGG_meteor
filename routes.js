@@ -13,6 +13,7 @@ Router.route('/', {
   template: 'home',
 });
 
+
 //Lobby template, make sure we see the players db for matching
 Router.route('/lobbyUG',{
   name: 'lobbyUG',
