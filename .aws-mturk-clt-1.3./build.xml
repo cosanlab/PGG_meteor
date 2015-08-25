@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+<!--
+  Copyright 2012 Amazon Technologies, Inc.
+  
+  Licensed under the Amazon Software License (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at:
+  
+  http://aws.amazon.com/asl
+  
+  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
+  OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project name="MTurkCmdLineTool" default="jar" basedir="." >
+
+  <property name="nsis.home.dir" value="C:\Program Files\NSIS\"/>
+	
+  <property file="build.properties" />
+  <property name="release.name" value="${cmd.name}-${version}"/>
+  <property name="release.jre.name" value="${cmd.name}-jre-${version}"/>
+  <property name="test.name" value="aws-mturk-clt-test"/>
+  	
+  <property name="dist.dir" location="dist"/>
+  <property name="doc.dir" location="doc"/>
+  <property name="bin.dir" location="bin"/>
+  <property name="temp.dir" location="${dist.dir}/temp"/>
+  <property name="output.dir" location="build"/> 
+  <property name="lib.dir" location="${output.dir}/lib"/>
+  <property name="mturk.lib.dir" value="lib/mturk-api"/>
+  <property name="mturkcmd.lib.dir" value="lib/mturk"/>
+  <property name="cmd.src.dir" value="src"/>
+  <property name="cmd.test.dir" value="test"/>
+  <property name="cmd.classes.dir" value="build/private/classes/${cmd.name}"/>
+  <property name="cmd.script.dir" value="bin"/>
+  <property name="samples.dir" value="samples"/>
+  <property name="etc.dir" value="etc"/>
+  <property name="installer.dir" value="installer"/>
+	
+  <property name="third-party.lib.dir" value="lib/third-party"/>	
+
+  <path id="build.classpath">
+    <fileset dir="${mturk.lib.dir}" includes="*.jar"/>
+    <!-- Make sure Xerces comes before jaxme. -->
+    <fileset dir="${third-party.lib.dir}" includes="xerces*/*.jar"/>
+    <fileset dir="${third-party.lib.dir}" includes="**/*.jar" excludes="xerces*/*.jar"/>
+  </path>
+  
+  <path id="test.classpath">
+    <path refid="build.classpath" />
+    <fileset dir="${lib.dir}" includes="*.jar"/>
+    <path path="${cmd.script.dir}"/>
+  </path>
+  
+  <path id="runtime.classpath">
+  	<path path="${cmd.classes.dir}"/>
+    <path refid="build.classpath"/>
+    <fileset dir="${lib.dir}" includes="*.jar"/>
+  </path>
+
+  <target name="compile-cmd" description="Compile cmd Java source files">
+    <echo message="Compiling the cmd java source files..." />
+    <mkdir dir="${cmd.classes.dir}"/>
+    <javac destdir="${cmd.classes.dir}" debug="on" source="1.5" target="1.5">
+      <src path="${cmd.src.dir}"/>
+      <classpath refid="build.classpath"/>
+    </javac>
+  	<copy todir="${cmd.classes.dir}">
+  		<fileset dir="${cmd.src.dir}" includes="**/*.template"/>
+    </copy>
+    <mkdir dir="${lib.dir}"/>
+  </target>
+  
+  <target name="generate-scripts" depends="generate-scripts-unix, generate-scripts-dos"/>
+	
+  <target name="generate-scripts-dos" depends="compile-cmd, checkDistType" if="can.build.dosScripts">
+	<java classpathref="runtime.classpath" fork="true" classname="com.amazonaws.mturk.build.CreateScripts">
+	  <arg path="${cmd.src.dir}"/>
+	  <arg value="${bin.dir}"/>
+      <arg value="Dos"/>
+	</java>
+  </target>
+	
+  <target name="generate-scripts-unix" depends="compile-cmd, checkDistType" if="can.build.unixScripts">
+	<java classpathref="runtime.classpath" fork="true" classname="com.amazonaws.mturk.build.CreateScripts">
+	  <arg path="${cmd.src.dir}"/>
+	  <arg value="${bin.dir}"/>
+      <arg value="Unix"/>
+	</java>    
+  </target>
+	
+  <target name="jar"
+          depends="compile-cmd, generate-scripts"
+          description="Creates jar containing Command Line Tools java classes">
+    <jar destfile="${lib.dir}/${cmd.name}.jar">
+      <fileset dir="${cmd.classes.dir}"  includes="com/**/*" excludes="**/test/**/*.class"/>
+      <fileset dir="${cmd.src.dir}"  includes="**/*.java"/>
+      <!-- Note: The notice file is different for the jars than the distributable. -->
+      <fileset dir="${cmd.src.dir}" includes="NOTICE"/>
+      <fileset dir="." includes="LICENSE"/>
+    </jar>
+  </target>
+  
+  <target name="jar-test" depends="jar" >
+    <condition property="junit.available">
+      <available classname="junit.framework.TestCase" classpathref="test.classpath"/>
+    </condition>
+    <fail unless="junit.available">
+      JUnit not available.
+      
+      Tests can not be compiled without JUnit.
+      
+      You must download JUnit from http://www.junit.org/ and place the JUnit
+      jar under lib/third-party in order to compile and run tests.
+      
+    </fail>
+    <javac destdir="${cmd.classes.dir}" debug="on" source="1.5" target="1.5">
+      <src path="${cmd.test.dir}"/>
+      <classpath refid="test.classpath"/>
+    </javac>
+    <jar destfile="${lib.dir}/${test.name}.jar" >
+      <fileset dir="${cmd.classes.dir}" includes="**/test/**/*.class"/>
+      <fileset dir="${cmd.test.dir}" includes="**/*.java" />
+      <!-- Note: The notice file is different for the jars than the distributable. -->
+      <fileset dir="${cmd.src.dir}" includes="NOTICE"/>
+      <fileset dir="." includes="LICENSE"/>
+    </jar>
+  </target>
+
+  <target name="run-test" depends="jar-test" description="Run tests">
+    <echo message="Running the Cmd line tool test application..."/>
+    <java dir="${cmd.script.dir}" classname="com.amazonaws.mturk.cmd.test.TestAll" fork="true">
+      <classpath refid="test.classpath" />
+      <classpath path="${cmd.classes.dir}"/>
+    </java>
+    <echo message="Running the Cmd line tool script test application..."/>
+    <java dir="${cmd.script.dir}" classname="com.amazonaws.mturk.cmd.test.scripts.TestAll" fork="true">
+      <env key="MTURK_CMD_HOME" value="${basedir}"/>
+      <!-- uncomment this to test the .sh commands under Cygwin -->
+      <!-- <sysproperty key="USE_CYGWIN" value="true"/> -->
+      <classpath refid="test.classpath" />
+      <classpath path="${cmd.classes.dir}"/>
+    </java>
+    <echo message="Running the Cmd line tool samples test application..."/>
+    <java dir="${cmd.script.dir}" classname="com.amazonaws.mturk.cmd.test.samples.TestAll" fork="true">
+      <env key="MTURK_CMD_HOME" value="${basedir}"/>
+      <!-- uncomment this to test the .sh commands under Cygwin -->
+      <!-- <sysproperty key="USE_CYGWIN" value="true"/> -->
+      <classpath refid="test.classpath" />
+      <classpath path="${cmd.classes.dir}"/>
+    </java>
+  </target>
+  
+  <target name="doc" description="Generates Javadoc" >
+    <mkdir dir="${doc.dir}" />
+      <javadoc destdir="${doc.dir}" access="protected" classpathref="runtime.classpath">
+        <fileset dir="${cmd.src.dir}" />
+    </javadoc>  
+  </target>
+  
+  <target name="createTempDist" depends="jar">
+
+    <delete dir="${temp.dir}"/>
+
+    <!-- copy fileset to temp-->
+    <copy todir="${temp.dir}/${release.name}/${cmd.src.dir}">
+      <fileset dir="${cmd.src.dir}">
+        <include name="**/*.java"/>
+        <include name="NOTICE"/>
+      </fileset>
+    </copy>
+    <copy todir="${temp.dir}/${release.name}/${cmd.test.dir}">
+      <fileset dir="${cmd.test.dir}">
+        <include name="**/*.java"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${temp.dir}/${release.name}/bin">
+      <fileset dir="${cmd.script.dir}" includes="*.sh,*.cmd,*.properties"/>
+    </copy>
+
+    <copy todir="${temp.dir}/${release.name}/samples">
+      <fileset dir="${samples.dir}" excludes="**/*.success,**/*.failure,**/*.log,**/preview.html"/>
+    </copy>
+    
+    <copy todir="${temp.dir}/${release.name}/etc">
+      <fileset dir="${etc.dir}"/>
+    </copy>
+    
+    <copy todir="${temp.dir}/${release.name}/hits">
+        <fileset dir="hits"/>
+    </copy>
+    
+    <copy todir="${temp.dir}/${release.name}/qualifications">
+        <fileset dir="qualifications"/>
+    </copy>    
+
+    <copy todir="${temp.dir}/${release.name}/installer">
+      <fileset dir="installer"/>
+    </copy>
+  	
+    <copy file="UserGuide.html" todir="${temp.dir}/${release.name}/"/>
+    <copy file="GetStarted.html" todir="${temp.dir}/${release.name}/"/>
+    <copy file="UnixCommands.html" todir="${temp.dir}/${release.name}/"/>
+    <copy file="DOSCommands.html" todir="${temp.dir}/${release.name}/"/>
+    <copy file="VersionHistory.html" todir="${temp.dir}/${release.name}/"/>
+    <copy file="LICENSE" todir="${temp.dir}/${release.name}/"/>
+    <copy file="NOTICE" todir="${temp.dir}/${release.name}/"/>
+    <copy file="build.xml" todir="${temp.dir}/${release.name}/"/>
+    <copy file="build.properties" todir="${temp.dir}/${release.name}/"/>
+    <propertyfile file="${temp.dir}/${release.name}/build.properties">
+      <entry key="dist.type" value="${target.dist.type}"/>
+    </propertyfile>
+    <copy todir="${temp.dir}/${release.name}/${third-party.lib.dir}" >
+      <fileset dir="${third-party.lib.dir}">
+        <exclude name="jre"/>
+        <exclude name="jre/**"/>
+        <exclude name="junit*"/>
+        <exclude name="junit*/**"/>
+      </fileset>
+    </copy>
+    <copy todir="${temp.dir}/${release.name}/${mturk.lib.dir}">
+      <fileset dir="${mturk.lib.dir}" />
+    </copy>
+    <copy todir="${temp.dir}/${release.name}/${mturkcmd.lib.dir}">
+      <fileset dir="${lib.dir}">
+        <include name="${cmd.name}.jar"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="checkDistType">
+    <echo message="Distribution type: ${dist.type}"/>
+    <condition property="can.build.unixNoJre">
+      <or>
+        <equals arg1="${dist.type}" arg2="unixNoJre" casesensitive="false" trim="true"/>
+        <equals arg1="${dist.type}" arg2="repository" casesensitive="false" trim="true"/>
+      </or>
+    </condition>
+    <condition property="can.build.windowsWithJre">
+      <or>
+        <equals arg1="${dist.type}" arg2="repository" casesensitive="false" trim="true"/>
+        <equals arg1="${dist.type}" arg2="windowsWithJre" casesensitive="false" trim="true"/>
+      </or>
+    </condition>
+    <condition property="can.build.windowsNoJre">
+      <or>
+        <equals arg1="${dist.type}" arg2="repository" casesensitive="false" trim="true"/>
+        <equals arg1="${dist.type}" arg2="windowsWithJre" casesensitive="false" trim="true"/>
+        <equals arg1="${dist.type}" arg2="windowsNoJre" casesensitive="false" trim="true"/>
+      </or>
+    </condition>
+  	<condition property="can.build.dosScripts">
+      <or>
+        <equals arg1="${dist.type}" arg2="repository" casesensitive="false" trim="true"/>
+        <equals arg1="${dist.type}" arg2="windowsWithJre" casesensitive="false" trim="true"/>
+        <equals arg1="${dist.type}" arg2="windowsNoJre" casesensitive="false" trim="true"/>
+      </or>
+    </condition>
+  	<condition property="can.build.unixScripts">
+      <or>
+        <equals arg1="${dist.type}" arg2="repository" casesensitive="false" trim="true"/>
+        <equals arg1="${dist.type}" arg2="unixNoJre" casesensitive="false" trim="true"/>
+      </or>
+    </condition>
+  </target>
+
+  <target name="dist" depends="_unixNoJre, _windowsWithJre, _windowsNoJre, windowsInstaller"/>
+
+  <target name="unixNoJre" depends="checkDistType">
+    <fail message="You can not build the unixNoJre distribution from a ${dist.type} distribution."
+          unless="can.build.unixNoJre"/>
+    <antcall target="_unixNoJre"/>
+  </target> 
+
+  <target name="_unixNoJre" depends="checkDistType" if="can.build.unixNoJre">
+
+    <antcall target="createTempDist">
+      <param name="target.dist.type" value="unixNoJre"/>
+    </antcall>
+
+    <property name="tar.filename" value="${dist.dir}/temp.tar"/>
+
+    <!-- convert crlfs to unix-->
+    <fixcrlf srcdir="${temp.dir}" eol="unix" excludes="**/*.jar **/*.zip"/>
+
+    <!--<delete *.cmd-->
+    <delete>
+      <fileset dir="${temp.dir}">
+        <include name="**/*.cmd"/>
+        <include name="**/*.bat"/>
+      </fileset>
+    </delete>
+
+    <tar destfile="${tar.filename}">
+      <tarfileset dir="${temp.dir}" mode="777">
+        <include name="**/*.sh"/>
+      </tarfileset>
+      <tarfileset dir="${temp.dir}">
+        <exclude name="**/*.sh"/>
+      </tarfileset>
+    </tar>
+
+    <gzip destfile="${dist.dir}/${release.name}.tar.gz" src="${tar.filename}"/>
+
+    <delete file="${tar.filename}"/>
+    <delete dir="${temp.dir}"/>
+  </target>
+
+  <target name="prepareWindowsDistribution">
+    <antcall target="createTempDist"/>
+    <fixcrlf srcdir="${temp.dir}" eol="dos" excludes="**/*.jar **/*.zip"/>
+    <delete dir="${temp.dir}" includes="**/*.sh"/>
+  </target>
+
+  <target name="windowsNoJre" depends="checkDistType">
+    <fail message="You can not build the windowsNoJre distribution from a ${dist.type} distribution."
+          unless="can.build.windowsNoJre"/>
+    <antcall target="_windowsNoJre"/>
+  </target> 
+
+  <target name="_windowsNoJre" depends="checkDistType" if="can.build.windowsNoJre">
+    <antcall target="prepareWindowsDistribution">
+      <param name="target.dist.type" value="windowsNoJre"/>
+    </antcall>
+    <zip destfile="${dist.dir}/${release.name}.zip" basedir="${temp.dir}"/>
+    <delete dir="${temp.dir}"/>
+  </target>
+
+  <target name="windowsWithJre" depends="checkDistType">
+    <fail message="You can not build the windowsWithJre distribution from a ${dist.type} distribution."
+          unless="can.build.windowsWithJre"/>
+    <antcall target="_windowsWithJre"/>
+  </target> 
+
+  <target name="_windowsWithJre" depends="checkDistType" if="can.build.windowsWithJre">
+    <antcall target="prepareWindowsDistribution">
+      <param name="target.dist.type" value="windowsWithJre"/>
+    </antcall>
+    <unzip src="${third-party.lib.dir}/jre/${windows.jre}" dest="${temp.dir}/${release.name}"/>
+    <zip destfile="${dist.dir}/${release.jre.name}.zip" basedir="${temp.dir}"/>
+    <delete dir="${temp.dir}"/>
+  </target>
+
+  <target name="windowsInstaller" depends="checkDistType" if="can.build.windowsWithJre">
+  	<available file="${nsis.home.dir}/makensis.exe" property="makensis.present"/>
+    <fail message="You can not build the windowsInstaller distribution without NSIS (http://nsis.sourceforge.net/Download) installed."
+          unless="makensis.present"/>
+    <available file="${nsis.home.dir}/include/TextReplace.nsh" property="textreplace.present"/>
+    <fail message="You can not build the windowsInstaller distribution without NSIS TextReplace plugin (http://nsis.sourceforge.net/TextReplace_plugin) installed."
+          unless="textreplace.present"/>
+  	
+    <antcall target="prepareWindowsDistribution">
+      <param name="target.dist.type" value="windowsWithJre"/>
+    </antcall>
+    <unzip src="${third-party.lib.dir}/jre/${windows.jre}" dest="${temp.dir}/${release.name}"/>
+  	<exec executable="${nsis.home.dir}/makensis.exe">
+      <arg value="/DVERSION=${version}"/>
+  	  <arg value="/DBASEDIR=${temp.dir}/${release.name}"/>
+  	  <arg value="/DOUTFILE=${dist.dir}/mech-turk-setup.exe"/>
+      <arg value="/DINCLUDEJRE"/>
+      <arg value="${installer.dir}/setup.nsi"/>
+  	</exec>
+    <delete dir="${temp.dir}"/>
+  </target>
+	
+  <target name="clean" description="Deletes all the generated artifacts.">
+    <delete dir="${output.dir}"/>
+    <delete dir="${dist.dir}"/>
+    <delete dir="${doc.dir}"/>
+  </target>
+
+  <target name="help" description="Show ant targets">
+    <echo message="Run 'ant jar' to build the command line tool java sources build the jar." />
+    <echo message="Run 'ant run-test' to run the junit tests for the command line tool." />
+    <echo message="Run 'ant doc' to create javadocs for the command line tool java sources." />
+    <echo message="Run 'ant dist' to create all distributables possible of the command line tools." />
+    <echo message="Run 'ant unixNoJre' to create the tar/gzip distributable of the command line tool for unix." />
+    <echo message="Run 'ant windowsNoJre' to create the zip distributable of the command line tool for unix." />
+    <echo message="Run 'ant windowsInstaller' to create the installer exe file." />
+  </target>
+
+</project>
+

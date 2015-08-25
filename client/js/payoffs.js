@@ -9,7 +9,7 @@ Template.payoffs.helpers({
 		} else if(game.PlayerBChoice == 'Left'){
 			return {
 				playerA: '0',
-				playerB: '0',
+				playerB: '1',
 			};
 		} else if(game.PlayerBChoice == 'Right'){
 			return {
@@ -18,4 +18,17 @@ Template.payoffs.helpers({
 			};
 		}
 	}
+});
+
+//Not sure if this is the best way to do this
+Template.payoffs.onRendered(function(){
+	var currentUser = Meteor.userId();
+	var gameId = Games.findOne()._id;
+	Meteor.call('calcBonuses', gameId, currentUser);
+	//Wait 5 seconds to send a user back to the lobby
+	Meteor.setTimeout(function(){
+		Meteor.call('sendToExitSurvey', currentUser);
+
+	},5000);
+    
 });
