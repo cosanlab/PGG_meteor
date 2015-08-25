@@ -14,43 +14,26 @@ Router.route('/', {
 });
 
 //Lobby template, make sure we see the players db for matching
-Router.route('/lobby',{
+Router.route('/lobbyUG',{
+  name: 'lobbyUG',
+  template: 'lobbyUG',
   waitOn: function(){
-    return Meteor.subscribe('Players');
+    Meteor.subscribe('Players');
   },
   action: function(){
-    var currentUser = Meteor.userId();
-    if(Players.findOne({_id:currentUser}).status == 'instructions'){
-      Router.go('instructionsInteractive');
+      this.render('lobbyUG');
+  },
+  onBeforeAction: function() {
+    if (!Meteor.user()) {
+      return this.render("tsUserAccessDenied");
     } else{
-      this.render('lobby');
+      return this.next();
     }
+
   }
 }); 
 
-//Instructions template, make sure we can see the games db for routing forward
-//to the game
-/*
-Router.route('/instructions',{
-  waitOn: function(){
-    return Meteor.subscribe('Games');
-  },
-  action: function(){
-      var gameState = Games.findOne().state;
-      if(gameState== 'instructions'){
-        this.render('instructions');
-      }
-      else{
-        Router.go('game');
-        //Each client updates their own status
-        Meteor.call('updatePlayer', Meteor.userId(),'playing');
-      }
-  }
-}); */
-
-//Instructions template, make sure we can see the games db for routing forward
-//to the game
-
+//Instructions template, that sends players to the game if the game state is ready
 Router.route('/instructionsInteractive',{
   waitOn: function(){
     return Meteor.subscribe('Games');
@@ -84,7 +67,7 @@ Router.route('/game',{
           Router.go('payoffs');
           //Update all client statuses
           Meteor.call('playerFinished', game._id); 
-        },
+        },  
         5000);
         this.next();
                 
@@ -103,6 +86,26 @@ Router.route('/payoffs',{
   action: function(){
     this.render('payoffs');
   }
+});
+
+//End survey
+Router.route('/endSurvey',{
+
+  name: 'endSurvey',
+
+  waitOn: function(){
+    //Might need to change this depending on where we store survye data
+    Meteor.subscribe('Games');
+  },
+  action: function(){
+    this.render('endSurvey');
+  }
+});
+
+//End experiment
+Router.route('/endExperiment',{
+  name: 'endExperiment',
+  template: 'endExperiment'
 });
 
 

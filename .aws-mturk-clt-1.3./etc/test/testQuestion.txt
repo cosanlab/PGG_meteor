@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuestionForm xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd">
+  <Question>
+    <QuestionIdentifier>1</QuestionIdentifier>
+    <QuestionContent>
+      <Text>$testheader1</Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <FreeTextAnswer/>
+    </AnswerSpecification>
+  </Question>
+  <Question>
+    <QuestionIdentifier>2</QuestionIdentifier>
+    <QuestionContent>
+      <Text>$testheader2</Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <FreeTextAnswer/>
+    </AnswerSpecification>
+  </Question>
+</QuestionForm>

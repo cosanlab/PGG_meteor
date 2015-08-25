@@ -1,5 +1,37 @@
-Meteor.subscribe('Players');
-Meteor.subscribe('Games');
+//Setup up a reactive computation that monitors when clients' states
+Meteor.startup(function(){
+    Meteor.defer(function(){
+        Tracker.autorun(function(){
+            //Just use TS's default lobby and let the Assigner handle matching
+            //If in experiment add to players db and send to instructions
+            if(TurkServer.inLobby()){
+                var batch = TurkServer.batch();
+                Meteor.subscribe('lobby', batch && batch._id);
+                Router.go('lobbyUG');
+            }
+            else if (TurkServer.inExperiment()){
+                Router.go('instructionsInteractive');
+            } 
+            //If in the experiment has ended take them to the exit survey
+            else if (TurkServer.inExitSurvey()){
+                Router.go('endSurvey');
+            }
+        });
+    });
+});
+
+//Reactively subscribe to the partitioned databases
+Tracker.autorun(function(){
+    var group = TurkServer.group();
+    if (group == null){
+        return;
+    }
+    Meteor.subscribe('Players');
+    Meteor.subscribe('Games',group);
+});
+ 
+
+
 
 //New Spacebars function that should work on all templates
 Template.registerHelper("equals", function(a,b){
@@ -30,6 +62,7 @@ $.validator.setDefaults({
     }
 });
 
+/*
 //Registration handler
 Template.register.onRendered(function(){
     var validator = $('.register').validate({
@@ -56,7 +89,9 @@ Template.register.onRendered(function(){
     });
 });
 
+*/
 //Login handler
+/*
 Template.login.onRendered(function(){
     var validator = $('.login').validate({
         submitHandler: function(event){
@@ -82,8 +117,8 @@ Template.login.onRendered(function(){
             });
         }
     });
-});
-
+}); */
+/*
 Template.navigation.events({
     'click .logout': function(event){
         event.preventDefault();
@@ -91,4 +126,4 @@ Template.navigation.events({
         Router.go('login');
     }
 });
-
+*/

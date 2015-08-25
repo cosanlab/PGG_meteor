@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Version History for the Amazon Mechanical Turk Command Line Tools v1.3.1</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!--
+These style should be copied directly from the common CSS.
+We include them in the document to make distributing files
+easier.
+-->
+<STYLE type=text/css>BODY {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: helvetica,sans-serif, arial
+}
+DIV {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: helvetica,sans-serif, arial
+}
+P {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: helvetica,sans-serif, arial
+}
+TD {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: helvetica,sans-serif, arial
+}
+TH {
+	FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: helvetica,sans-serif, arial
+}
+.aws-h1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 18px; COLOR: #000000; FONT-FAMILY: verdana, arial, helvetica, sans-serif
+}
+H1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 18px; COLOR: #000000; FONT-FAMILY: verdana, arial, helvetica, sans-serif
+}
+.aws-h2 {
+	FONT-SIZE: 14px; COLOR: #c60; FONT-FAMILY: verdana, arial, helvetica, sans-serif
+}
+H2 {
+	FONT-SIZE: 14px; COLOR: #c60; FONT-FAMILY: verdana, arial, helvetica, sans-serif
+}
+.aws-h3 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #333333; FONT-FAMILY: verdana, arial, helvetica, sans-serif
+}
+H3 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #333333; FONT-FAMILY: verdana, arial, helvetica, sans-serif
+}
+#aws-table {
+	BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; WIDTH: 95%
+}
+#aws-table TD {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-SIZE: 12px; PADDING-BOTTOM: 5px; VERTICAL-ALIGN: top; PADDING-TOP: 5px; BORDER-BOTTOM: #cccccc 1px solid
+}
+#aws-table TH {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 12px; PADDING-BOTTOM: 5px; VERTICAL-ALIGN: top; COLOR: #333333; PADDING-TOP: 5px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee; TEXT-ALIGN: left
+}
+.programlisting {
+	BORDER-RIGHT: #333 1px dashed; PADDING-RIGHT: 5px; BORDER-TOP: #333 1px dashed; MARGIN-TOP: 5px; DISPLAY: block; PADDING-LEFT: 5px; FONT-SIZE: 12px; MARGIN-BOTTOM: 5px; PADDING-BOTTOM: 5px; BORDER-LEFT: #333 1px dashed; WIDTH: 75%; COLOR: #000066; PADDING-TOP: 5px; BORDER-BOTTOM: #333 1px dashed; FONT-FAMILY: "Courier New", Courier, mono; BACKGROUND-COLOR: #eff7ff
+}
+.aws-code-inline {
+	FONT-SIZE: 11px; FONT-FAMILY: "Courier New", Courier, mono
+}
+.aws-note {
+	BORDER-RIGHT: #cccccc 1px; PADDING-RIGHT: 10px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; MARGIN-LEFT: 20px; BORDER-LEFT: #cccccc 1px; WIDTH: 95%; MARGIN-RIGHT: 20px; PADDING-TOP: 10px; BORDER-BOTTOM: #cccccc 1px solid
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2900.3157" name=GENERATOR></HEAD>
+<BODY>
+<H2>Version Information</H2>This distributable contains the Amazon Mechanical 
+Turk Command Line Tools version <STRONG>1.3.1</STRONG>.
+<P>This version includes the Amazon Mechanical Turk SDK for Java version 
+<STRONG>1.2.2</STRONG>.
+<P>This version is compatible with Amazon Mechanical Turk web service version 
+<STRONG>2007-06-21</STRONG>.
+<P>The Amazon Mechanical Turk team would appreciate any comments and feedback on 
+the Command Line Tools. Please submit issues via the <A 
+href="http://developer.amazonwebservices.com/connect/forum.jspa?forumID=11" 
+target=_blank>Amazon Mechanical Turk discussion forums</A>. 
+<H2>Revision History</H2>
+
+<H3>Version 1.3.1 - August 23rd, 2012</H3>
+<LI>Upgrade MTurk SDK to version 1.6.2
+<LI>Improved error logging
+</LI></UL>
+
+<H3>Version 1.3.0 - April 22nd, 2008</H3>
+<UL>
+<LI>Fixed: GetResults doesn't return assignment data when the HIT has more than 10 assignments.
+<LI>New Feature: Windows installer for installing the CLT and setting up access keys
+<LI>New Feature: the makeTemplate operation allows you to easily copy a sample and modify it as your own
+<LI>New Feature: the image categorization sample and website filtering sample allow you to generate a result report to easily digest the results
+<LI>New Feature: the .results file now includes links to manage the HITs in requester.mturk.com
+<LI>New Feature: new statistics are displayed when running GetResults
+</LI></UL>
+
+<H3>Version 1.2.1 - February 16th, 2008</H3>
+<UL>
+<LI>Fixed: 1889820 Change updateHITs -input parameter to -success file
+<LI>Fixed: 1889783 Copyright information is incorrect in script files
+</LI></UL>
+
+<H3>Version 1.2.0 - February 6th, 2008</H3>
+<UL>
+<LI>New Feature: 1816696 Update CLT to use New version of MTurk SDK
+<LI>New Feature: 1826391 Add multi-threading features to speed up operations
+<LI>New Feature: 1823722 Add Image Categorization sample to samples directory
+<LI>New Feature: 1823715 Add Image Tagging sample to samples
+<LI>New Feature: 1826393 Support for CSV file format
+<LI>New Feature: 1834851 Change mturk.properties so that production is the default
+<LI>New Feature: 1826400 All methods should have a -sandbox parameter
+<LI>New Feature: 1836091 always override .success and .results files    
+<LI>New Feature: 1836090 approveAndDelete should show a count relative to its total
+<LI>New Feature: 1836088 users shouldn\'t have to type I AM SURE
+<LI>New Feature: 1836086 makeTemplate should create template files that use the -label parameter
+<LI>New Feature: 1834854 Support New version of FormattedContent.xsd for iframe
+<LI>New Feature: 1834853 Add some additional line feeds when outputting the URL
+<LI>New Feature: 1834850 invoke.cmd to not output JAVA_HOME errors
+<LI>New Feature: 1830205 Site_category example should be renamed to external_hit
+<LI>New Feature: 1826929 When operating against the sandbox, reduce # of threads used
+<LI>New Feature: 1826272 GetResults should output rows with no assignments
+<LI>New Feature: 1824965 Show summary data after calling loadHITs
+<LI>New Feature: 1824952 Add template generator scripts for HITs and Qualifications
+<LI>New Feature: 1823712 approveWork should take in a .success file
+<LI>New Feature: 1823696 getResults should allow for -namevaluepairs parameter
+<LI>New Feature: 1816834 Provide -label parameter to loadHITs
+<LI>New Feature: 1798417 GetResults: List answers in column format
+<LI>New Feature: 1796643 GetResults should output the effective hourly rate
+<LI>New Feature: 1838917 Output only the first input field in the .failure file
+<LI>New Feature: 1826189 GetResults should show # of assignments/total assignments
+<LI>New Feature: 1826170 GetResults should show X of Y when downloading results
+<LI>New Feature: 1841320 Need to be able to Reset your Account
+<LI>New Feature: 1841321 Need to be able to Extend HITs
+<LI>New Feature: 1846591 GetResults should show time elapsed
+<LI>New Feature: 1830822 Need Grant Bonus command
+<LI>New Feature: 1841321 Need to be able to Extend HITs
+<LI>Fixed: 1836092 approveAndDelete failed counter is not accurate
+<LI>Fixed: 1831885 The generated .success file is a Unix file even in Windows
+<LI>Fixed: 1829772 The invoke script shouldn\'t blindly prepend a package name
+<LI>Fixed: 1816806 GetResults has missing columns when value is NULL
+<LI>Fixed: 1816703 GetResults: Retrieved HIT number is misleading
+<LI>Fixed: 1816701 ApproveWork/RejectWork help does not specify comments
+<LI>Fixed: 1816693 Exception when a cell in the input file is empty
+<LI>Fixed: 1816692 If approve/reject file have missing comments, op fails
+<LI>Fixed: 1846589 Poor error messaging for invalid IDs in the .success
+</LI></UL>
+
+<p>
+<strong>NOTE: </strong>In this relesae, the Command Line Tools are configured to work against the production site by default.
+</p>
+<H3>Version 1.1.0 patch - October 25th, 2007</H3>
+<UL>
+  <LI>Bug 1819004: Removed Error message when .aws/auth file is not found. 
+</LI></UL>
+<H3>Version 1.1.0 - September 13th, 2007</H3>
+<UL>
+  <LI>New Feature: Added Qualification Management commands allowing you to 
+  create and manage qualifications for your HITs. 
+  <LI>New Feature: Added an Update HITs command allowing you to update 
+  properties of HITs that are in production. 
+  <LI>New Feature: Added Block Worker and Unblock Worker commands to prevent 
+  workers from working on your HITs. 
+  <LI>New Feature: Support for Developer Sandbox throttling. The tools will auto 
+  retry requests if the Developer Sandbox throttles your requests. 
+  <LI>New Feature: Updated to use the Java SDK 1.1.1 and Requester WSDL version 
+  2007-06-21. </LI></UL>
+<H3>Version 1.0.1 - June 15th, 2007</H3>
+<UL>
+  <LI>New Feature: When retrieving results, the data is streamed directly to the 
+  Results file instead of being cached in memory and written at once. Avoids out 
+  of memory errors when retrieving large data sets. 
+  <LI>New Feature: The generated Results file now orders the question/answer 
+  pairs based on the order they appear in the QuestionForm instead of being 
+  ordered alphabetically. 
+  <LI>New Feature: Progress indicator when results are being retrieved from the 
+  system. 
+  <LI>Fixed: Batch operations halt when the first error is encountered instead 
+  of skipping and continuing. 
+  <LI>Fixed: Removed some extraneous files from the distribution. </LI></UL>
+<H3>Version 1.0.0 - June 4th, 2007</H3>
+<UL>
+  <LI>New Feature: The URL to the HITs that are loaded via the Command Line 
+  Tools is displayed. 
+  <LI>New Feature: User specified logging has been added to aid debugging and 
+  reporting issues to Amazon Mechanical Turk. 
+  <LI>New Feature: Command Line Tools supports the Amazon Mechanical Turk 
+  Developer Sandbox <A href="http://sandbox.mturk.com/" 
+  target=_blank>http://sandbox.mturk.com/</A>. 
+  <LI>New Feature: The Java Standard Edition Runtime Environment 1.5.0 (JRE) for 
+  Windows is now included in the distribution to ease installation. 
+  <LI>New Feature: The Amazon Mechanical Turk SDK for Java is now included in 
+  the distribution to ease installation. 
+  <LI>New Feature: Added several convenience scripts in sample applications to 
+  complete HIT workflow (Create HIT-&gt;Get Results-&gt;Approve And Delete 
+  Assignments). 
+  <LI>Fixed: Retrieving assignments for a HIT over a certain number causes the 
+  code to lockup. 
+  <LI>Fixed: -preview of LoadHITs should default to a filename of preview.html 
+  and not require -previewfile to be specified. 
+  <LI>Fixed: Time format in Results file should be standard 0-23 hr format 
+  instead of 1-24 format. 
+  <LI>Fixed: QuestionForm validation fails when using ExternalQuestion 
+  functionality 
+  <LI>Fixed: QuestionForm validation does not validate the XHTML contained in 
+  the FormattedContent blocks of the QuestionForm. It will currently ignore 
+  content inside FormattedContent blocks. 
+  <LI>Fixed: The ordering of the name/value pairs of the HIT results output file 
+  is inconsistent. 
+  <LI>Fixed: When writing the .success and .failure files, it overwrites the 
+  file instead of appending. 
+  <LI>Fixed: The .failure file is output if there are no failures. It should 
+  only exist if there are errors. </LI></UL>
+<UL></UL>
+<H3>Version 0.9.0 Beta - March 28th, 2007</H3>
+<UL>
+  <LI>Initial release </LI></UL></BODY></HTML>

@@ -1,0 +1,22 @@
+<template name="lobbyUG">
+	<div class="jumbotron">
+        <div class="row well well-lg">
+            <div class="col-md-6 col-md-offset-3">
+                <h3>For this particular experiment we need {{desiredNumPlayers}} participants. Just sit tight until another user arrives. It shouldn't be more than a few minutes!</h3>
+                <br>
+                <p> Including you, there are {{lobby.count}} user(s) currently waiting:</p>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <tbody>
+            {{#each lobby.info}}
+            <tr>
+                <td>
+                    {{{ identifier }}}
+                </td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>

@@ -1,0 +1,94 @@
+[2015-08-17 20:54:59] INFO  (GetBalance.java: 51) - Your account balance: $10000.00
+[2015-08-17 21:01:09] INFO  (AbstractCmd.java: 224) - PLEASE READ THIS CAREFULLY
+
+You are about to delete ALL your HITs from Mechanical Turk.
+[2015-08-17 21:01:09] INFO  (AbstractCmd.java: 225) - To confirm this operation, please press ENTER (or press Ctrl+C to abort): 
+[2015-08-17 21:01:12] INFO  (ResetAccount.java: 109) - --- Starting to reset account (4 HITs) ---
+[2015-08-17 21:01:13] DEBUG (WorkQueue.java: 53) - Instantiating work queue with 2 threads
+[2015-08-17 21:01:13] INFO  (ResetAccount.java: 136) - [37NXA7GVSTWTBW81J8G3VE1CX96LVH] Successfully deleted HIT (1/4)
+[2015-08-17 21:01:13] INFO  (ResetAccount.java: 136) - [3KG2UQJ0MJERUOF59M282J6TLCTQNW] Successfully deleted HIT (2/4)
+[2015-08-17 21:01:13] ERROR (ResetAccount.java: 140) - [3QD8LUVX4XO7DWABR01E2A20RUFX59] FAILURE Deleting HIT: Error #1 for RequestId: 453b7986-80e3-4c08-b4ab-3d57bf89a1bb - AWS.MechanicalTurk.InvalidHITState: This HIT is currently in the state 'Unassignable'.  This operation can be called with a status of: Reviewing, Reviewable (1439859673549 s) (3/4)
+com.amazonaws.mturk.service.exception.InvalidStateException: Error #1 for RequestId: 453b7986-80e3-4c08-b4ab-3d57bf89a1bb - AWS.MechanicalTurk.InvalidHITState: This HIT is currently in the state 'Unassignable'.  This operation can be called with a status of: Reviewing, Reviewable (1439859673549 s)
+	at com.amazonaws.mturk.filter.ErrorProcessingFilter.processErrors(ErrorProcessingFilter.java:114)
+	at com.amazonaws.mturk.filter.ErrorProcessingFilter.execute(ErrorProcessingFilter.java:48)
+	at com.amazonaws.mturk.filter.Filter.passMessage(Filter.java:56)
+	at com.amazonaws.mturk.filter.RetryFilter.execute(RetryFilter.java:115)
+	at com.amazonaws.mturk.filter.Filter.passMessage(Filter.java:56)
+	at com.amazonaws.mturk.util.CLTExceptionFilter.sendMessage(CLTExceptionFilter.java:77)
+	at com.amazonaws.mturk.util.CLTExceptionFilter.execute(CLTExceptionFilter.java:62)
+	at com.amazonaws.mturk.service.axis.FilteredAWSService.executeRequests(FilteredAWSService.java:172)
+	at com.amazonaws.mturk.service.axis.FilteredAWSService.executeRequest(FilteredAWSService.java:152)
+	at com.amazonaws.mturk.service.axis.FilteredAWSService.executeRequest(FilteredAWSService.java:116)
+	at com.amazonaws.mturk.service.axis.RequesterServiceRaw.disposeHIT(RequesterServiceRaw.java:502)
+	at com.amazonaws.mturk.service.axis.DeleteHITCommand.disposeHit(DeleteHITCommand.java:92)
+	at com.amazonaws.mturk.service.axis.DeleteHITCommand.processFailure(DeleteHITCommand.java:194)
+	at com.amazonaws.mturk.service.axis.AsyncRequest.call(AsyncRequest.java:80)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:680)
+[2015-08-17 21:01:13] INFO  (ResetAccount.java: 116) - --- Finished resetting account ---
+[2015-08-17 21:01:13] INFO  (ResetAccount.java: 117) -   2 HITs have been deleted or were deleted previously.
+[2015-08-17 21:01:13] INFO  (ResetAccount.java: 118) -   1 HITs failed to delete.
+[2015-08-17 21:01:13] INFO  (ResetAccount.java: 119) -   1 HITs could not be deleted because they are currently being worked on.
+[2015-08-17 21:01:14] INFO  (ResetAccount.java: 123) -   2 HITs are left in your account.
+[2015-08-17 21:16:20] INFO  (DeleteHITs.java: 67) - --- Starting to delete HITs ---
+[2015-08-17 21:16:20] ERROR (AbstractCmd.java: 150) - An error occurred: hits.success (No such file or directory)
+java.io.FileNotFoundException: hits.success (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:120)
+	at java.io.FileInputStream.<init>(FileInputStream.java:79)
+	at com.amazonaws.mturk.addon.HITDataCSVReader.<init>(HITDataCSVReader.java:46)
+	at com.amazonaws.mturk.addon.HITDataCSVReader.<init>(HITDataCSVReader.java:41)
+	at com.amazonaws.mturk.cmd.AbstractCmd.getFieldValuesFromFile(AbstractCmd.java:161)
+	at com.amazonaws.mturk.cmd.DeleteHITs.deleteHITs(DeleteHITs.java:85)
+	at com.amazonaws.mturk.cmd.DeleteHITs.runCommand(DeleteHITs.java:69)
+	at com.amazonaws.mturk.cmd.AbstractCmd.run(AbstractCmd.java:148)
+	at com.amazonaws.mturk.cmd.DeleteHITs.main(DeleteHITs.java:40)
+[2015-08-17 21:16:30] INFO  (DeleteHITs.java: 67) - --- Starting to delete HITs ---
+[2015-08-17 21:16:30] ERROR (AbstractCmd.java: 182) - Your file (../hits.success) seems to be incorrect. The field name 'hitid' is needed but wasn't found
+[2015-08-17 21:16:30] INFO  (DeleteHITs.java: 74) - --- Finished to delete HITs ---
+[2015-08-17 21:16:30] INFO  (DeleteHITs.java: 75) -   0 HITs have been deleted or were deleted previously.
+[2015-08-17 21:16:30] INFO  (DeleteHITs.java: 76) -   0 errors occured.
+[2015-08-17 21:17:28] INFO  (DeleteHITs.java: 67) - --- Starting to delete HITs ---
+[2015-08-17 21:17:28] INFO  (AbstractCmd.java: 224) - You are about to delete 1 HITs.
+[2015-08-17 21:17:28] INFO  (AbstractCmd.java: 225) - To confirm this operation, please press ENTER (or press Ctrl+C to abort): 
+[2015-08-17 21:17:30] DEBUG (WorkQueue.java: 53) - Instantiating work queue with 2 threads
+[2015-08-17 21:17:31] ERROR (DeleteHITs.java: 107) - [3H1C3QRA019J6HS9B5YUSRN335UECT] FAILURE Deleting HIT: Error #1 for RequestId: 5884f02f-2efd-45a0-b517-621f18fa6b04 - AWS.MechanicalTurk.InvalidHITState: This HIT is currently in the state 'Assignable'.  This operation can be called with a status of: Reviewing, Reviewable (1439860651456 s) (1/1)
+com.amazonaws.mturk.service.exception.InvalidStateException: Error #1 for RequestId: 5884f02f-2efd-45a0-b517-621f18fa6b04 - AWS.MechanicalTurk.InvalidHITState: This HIT is currently in the state 'Assignable'.  This operation can be called with a status of: Reviewing, Reviewable (1439860651456 s)
+	at com.amazonaws.mturk.filter.ErrorProcessingFilter.processErrors(ErrorProcessingFilter.java:114)
+	at com.amazonaws.mturk.filter.ErrorProcessingFilter.execute(ErrorProcessingFilter.java:48)
+	at com.amazonaws.mturk.filter.Filter.passMessage(Filter.java:56)
+	at com.amazonaws.mturk.filter.RetryFilter.execute(RetryFilter.java:115)
+	at com.amazonaws.mturk.filter.Filter.passMessage(Filter.java:56)
+	at com.amazonaws.mturk.util.CLTExceptionFilter.sendMessage(CLTExceptionFilter.java:77)
+	at com.amazonaws.mturk.util.CLTExceptionFilter.execute(CLTExceptionFilter.java:62)
+	at com.amazonaws.mturk.service.axis.AsyncRequest.call(AsyncRequest.java:64)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+	at java.lang.Thread.run(Thread.java:680)
+[2015-08-17 21:17:31] INFO  (DeleteHITs.java: 74) - --- Finished to delete HITs ---
+[2015-08-17 21:17:31] INFO  (DeleteHITs.java: 75) -   0 HITs have been deleted or were deleted previously.
+[2015-08-17 21:17:31] INFO  (DeleteHITs.java: 76) -   1 errors occured.
+[2015-08-17 21:25:24] INFO  (DeleteHITs.java: 67) - --- Starting to delete HITs ---
+[2015-08-17 21:25:24] INFO  (AbstractCmd.java: 224) - You are about to delete 1 HITs.
+[2015-08-17 21:25:24] INFO  (AbstractCmd.java: 225) - To confirm this operation, please press ENTER (or press Ctrl+C to abort): 
+[2015-08-17 21:25:25] DEBUG (WorkQueue.java: 53) - Instantiating work queue with 2 threads
+[2015-08-17 21:25:27] INFO  (DeleteHITs.java: 102) - [3H1C3QRA019J6HS9B5YUSRN335UECT] Successfully deleted HIT (1/1)
+[2015-08-17 21:25:27] INFO  (DeleteHITs.java: 74) - --- Finished to delete HITs ---
+[2015-08-17 21:25:27] INFO  (DeleteHITs.java: 75) -   1 HITs have been deleted or were deleted previously.
+[2015-08-17 21:25:27] INFO  (DeleteHITs.java: 76) -   0 errors occured.
+[2015-08-17 21:28:18] INFO  (AbstractCmd.java: 224) - PLEASE READ THIS CAREFULLY
+
+You are about to delete ALL your HITs from Mechanical Turk.
+[2015-08-17 21:28:18] INFO  (AbstractCmd.java: 225) - To confirm this operation, please press ENTER (or press Ctrl+C to abort): 
+[2015-08-17 21:28:20] INFO  (ResetAccount.java: 109) - --- Starting to reset account (2 HITs) ---
+[2015-08-17 21:28:20] INFO  (ResetAccount.java: 116) - --- Finished resetting account ---
+[2015-08-17 21:28:20] INFO  (ResetAccount.java: 117) -   0 HITs have been deleted or were deleted previously.
+[2015-08-17 21:28:20] INFO  (ResetAccount.java: 118) -   0 HITs failed to delete.
+[2015-08-17 21:28:20] INFO  (ResetAccount.java: 119) -   2 HITs could not be deleted because they are currently being worked on.
+[2015-08-17 21:28:20] INFO  (ResetAccount.java: 123) -   2 HITs are left in your account.
+[2015-08-17 21:29:45] ERROR (DeleteHITs.java: 62) - Missing: -successfile [path to success file]
