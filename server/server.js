@@ -117,12 +117,14 @@ Meteor.methods({
 	'updateGameState': function(gameId, state) {
 		return Games.update(gameId, {$set: {'state':state}});
 	},
-	'updatePlayerChoice': function(gameId, player, choice) {
+	'updatePlayerChoice': function(gameId, player, choice, RT) {
 		var gameState = Games.findOne({_id:gameId}).state;
 		if(player == 'A'){
-			return Games.update(gameId, {$set: {'PlayerAChoice':choice}});
+			return Games.update(gameId, {$set: 
+				{'PlayerAChoice':choice, 'PlayerART':RT}});
 		} else if(player == 'B'){
-			return Games.update(gameId, {$set: {'PlayerBChoice':choice}});
+			return Games.update(gameId, {$set: 
+				{'PlayerBChoice':choice, 'PlayerBRT':RT}});
 		} else {
 			throw new Meteor.error ('playerError','Unrecognized player. Games not updated with player decision!');
 		}
@@ -152,8 +154,9 @@ Meteor.methods({
 			Meteor.call('updateGameState',game._id, "playerAdeciding");
 		}
 	},
-	'addMessage':function(gameId, message){
-		Games.update(gameId, {$set:{'message':message}});
+	'addMessage':function(gameId, message,RT){
+		Games.update(gameId, {$set:
+			{'message':message, 'messageRT':RT}});
 	},
 
 	//TURKSERVER METHODS

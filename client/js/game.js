@@ -129,43 +129,51 @@ Template.gameTree.events({
 
 	'click .playerAleft': function(event){
 		event.preventDefault();
+		var RT = (Date.now()-sTime)/1000;
 		var game = Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAleft").attr('class','playerAleft');
-			Meteor.call('updatePlayerChoice', game._id,'A','Left');
+			Meteor.call('updatePlayerChoice', game._id,'A','Left',RT);
 			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}	
+		sTime = Date.now();
 	},
 	'click .playerAright': function(event){
 		event.preventDefault();
+		var RT = (Date.now()-sTime)/1000;
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAright").attr('class','playerAright');
-			Meteor.call('updatePlayerChoice',game._id,'A','Right');
+			Meteor.call('updatePlayerChoice',game._id,'A','Right',RT);
 			Meteor.call('updateGameState',game._id, 'playerBdeciding');
-		}	
+		}
+		sTime = Date.now();	
 	},	
 	'click .playerBleft': function(event){
 		event.preventDefault();
+		var RT = (Date.now()-sTime)/1000;
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBleft").attr('class','playerBleft');
-			Meteor.call('updatePlayerChoice', game._id,'B','Left');
+			Meteor.call('updatePlayerChoice', game._id,'B','Left',RT);
 			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}
+		sTime = Date.now();
 	},
 	'click .playerBright': function(event){
 		event.preventDefault();
+		var RT = (Date.now()-sTime)/1000;
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBright").attr('class','playerBright');
-			Meteor.call('updatePlayerChoice', game._id,'B','Right');
+			Meteor.call('updatePlayerChoice', game._id,'B','Right',RT);
 			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}
+		sTime = Date.now();
 	}	
 });
 
@@ -173,12 +181,14 @@ Template.gameTree.events({
 Template.messageForm.events({
 		'keydown input.form-control': function(event){
 		if(event.which===13){
-        var message = event.target.value;
-        var gameId = Games.findOne()._id;
-        Meteor.call('addMessage',gameId, message);
-        Meteor.call('updateGameState',gameId, 'playerAdeciding');
-        event.target.value = "";
-    	}	
+			var RT = (Date.now()-sTime)/1000;
+        	var message = event.target.value;
+        	var gameId = Games.findOne()._id;
+        	Meteor.call('addMessage',gameId, message, RT);
+        	Meteor.call('updateGameState',gameId, 'playerAdeciding');
+        	event.target.value = "";
+    	}
+    	sTime = Date.now();	
 
 	}
 });
@@ -189,3 +199,9 @@ Template.messageDisplay.helpers({
 		return Games.findOne().message;
 	}
 });
+
+//Initialize timing info
+Template.game.onRendered(function(){
+	sTime = Date.now();
+});
+
