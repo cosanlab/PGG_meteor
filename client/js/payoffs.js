@@ -27,7 +27,8 @@ Template.payoffs.onRendered(function(){
 	Meteor.call('calcBonuses', gameId, currentUser);
 	//Wait 5 seconds to send a user back to the lobby
 	Meteor.setTimeout(function(){
-		Meteor.call('sendToExitSurvey', currentUser);
+		Meteor.call('goToLobby', currentUser);
+		//Meteor.call('sendToExitSurvey', currentUser);
 
 	},5000);
     

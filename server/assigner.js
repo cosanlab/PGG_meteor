@@ -18,9 +18,9 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
 
   UGAssigner.prototype.userJoined = function(asst){
     //Add a player to the players db once they hit the lobby
-    Meteor.call('addPlayer', asst.userId);
+    //Meteor.call('addPlayer', asst.userId);
     
-/*
+
     //If a user has been in the lobby before send them to the exit survey
     if(asst.getInstances().length > 0){
       this.lobby.pluckUsers([asst.userId]);
@@ -30,7 +30,7 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
     else {  
         Meteor.call('addPlayer',asst.userId);
     }
-*/
+
     //If there are 2 people in the lobby create a new instance and send both players there
     //Also change their status in the players db and create a game
     var lobbyUsers = this.lobby.getAssignments();
