@@ -15,6 +15,12 @@ Meteor.startup(function(){
 	}
 });
 
+/*Lili's auto assigner attachment code
+ Batches.find({name: {$nin: ['recruiting', 'exitsurvey']}}).forEach(function(batch) {
+	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PairAssigner);
+    });
+  */
+
 ///Subjects DB
 Meteor.publish('Players', function(){
 	return Players.find({},{fields: {name:1, enterTime:1, status:1}});
