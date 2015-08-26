@@ -13,6 +13,11 @@ Router.route('/', {
   template: 'home',
 });
 
+//External submit route to end experiment template
+Router.route('/mturk/externalSubmit',{
+  name: 'endExperiment',
+  template: 'endExperiment'
+});
 
 //Lobby template, make sure we see the players db for matching
 Router.route('/lobbyUG',{
@@ -103,10 +108,5 @@ Router.route('/endSurvey',{
   }
 });
 
-//End experiment
-Router.route('/endExperiment',{
-  name: 'endExperiment',
-  template: 'endExperiment'
-});
 
 

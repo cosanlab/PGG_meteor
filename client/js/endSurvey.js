@@ -3,7 +3,7 @@ Template.endSurvey.events({
 	'click button': function(){
 		TurkServer.submitExitSurvey({});
 		//Need this once HIT is submitted
-		Router.go('endExperiment');	
+		//Router.go('endExperiment');	
 	}
 });
 
