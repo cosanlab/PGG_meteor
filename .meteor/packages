@@ -14,5 +14,6 @@ themeteorchef:jquery-validation
 accounts-meteor-developer
 mizzao:tutorials
 mizzao:partitioner
-mizzao:turkserver
 force-ssl
+mizzao:turkserver
+aldeed:template-extension

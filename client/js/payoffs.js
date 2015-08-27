@@ -8,13 +8,13 @@ Template.payoffs.helpers({
 			};
 		} else if(game.PlayerBChoice == 'Left'){
 			return {
-				playerA: '0',
-				playerB: '1',
+				playerA: '0.00',
+				playerB: '0.10',
 			};
 		} else if(game.PlayerBChoice == 'Right'){
 			return {
-				playerA: '2',
-				playerB: '2',
+				playerA: '0.20',
+				playerB: '0.20',
 			};
 		}
 	}

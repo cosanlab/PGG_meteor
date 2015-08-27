@@ -6,6 +6,20 @@ img {
     height: 100%;
 }
 
+.footer{
+  position:fixed;
+  width:100%;
+  bottom: 0;
+}
+.footbanner{
+  border:none;
+  height:25px; 
+  color:#000033; 
+  border-color:#000033; 
+  background-color:#000033; 
+  margin-top:2px
+}
+
 .navbar-fixed-top {
     height: 80px;
     margin: 0;
@@ -14,7 +28,6 @@ img {
     background-color: #000033 !important;
     border-color: transparent;
 }
-
 
 .navbar-header {
     height: 80px;
@@ -65,14 +78,14 @@ img {
     display: inline-block;
     position: relative;
     width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
+    padding-bottom: 39%; /* aspect ratio */
     vertical-align: top;
     overflow: hidden;
 }
 .svg-content-responsive {
     display: inline-block;
     position: absolute;
-    top: -5%;
+    top: -15%;
     left: 10%;
 }
 

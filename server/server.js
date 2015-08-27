@@ -6,8 +6,11 @@ Meteor.startup(function(){
     	TurkServer.ensureTreatmentExists({name: 'noMessaging'});
 		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: 'withMessaging'}});
 		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: 'noMessaging'}});
-		var batch = TurkServer.Batch.getBatchByName('Test_1');
-		batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
+		//var batch = TurkServer.Batch.getBatchByName('Test_1');
+		//batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
+		 Batches.find().forEach(function(batch) {
+		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.UGAssigner(2));
+    		});
 	} 
 	catch(e){
 		console.log(e);
@@ -15,11 +18,7 @@ Meteor.startup(function(){
 	}
 });
 
-/*Lili's auto assigner attachment code
- Batches.find({name: {$nin: ['recruiting', 'exitsurvey']}}).forEach(function(batch) {
-	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PairAssigner);
-    });
-  */
+
 
 ///Subjects DB
 Meteor.publish('Players', function(){

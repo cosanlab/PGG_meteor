@@ -4,9 +4,7 @@
 	{{#if equals game.state 'playerBmessaging'}}
 		<div class = "container-fluid">
 			<div class= "col-sm-6 col-sm-offset-3 " >
-					{{#if game.isPlayerB}}
-						{{> messageForm}}
-					{{/if}}
+					{{> messageForm}}
 			</div>
 		</div>
 	{{/if}}
@@ -14,15 +12,13 @@
 
 {{#if equals game.state 'playerAdeciding'}}
 	<div class = "container-fluid">
-		<div class= "col-sm-4 col-sm-offset-4 " >
+		<div class= "col-sm-4 col-sm-offset-4">
 			{{#if equals game.condition 'withMessaging'}}
 				{{> messageDisplay}}
 			{{/if}}
-			{{#if game.isPlayerA}}
-				<div class="well well-sm">
+			<div class="well well-sm " align="center" style="{{game.Adecide}}">
 					<b>Player A:</b> What do you want to do?
-				</div>
-			{{/if}}
+			</div>
 		</div>
 	</div>
 
@@ -31,20 +27,24 @@
 {{#if equals game.state 'playerBdeciding'}}
 	<div class = "container-fluid">
 		<div class= "col-sm-4 col-sm-offset-4 " >
-			{{#if game.isPlayerB}}
-				<div class="well well-sm">
+			<div class="well well-sm" align="center" style="{{game.Bdecide}}">
 					<b>Player B:</b> What do you want to do?
-				</div>
-			{{/if}}
+			</div>
 		</div>
 	</div>
 
 {{/if}}
 
 {{#if equals game.state 'finalChoices'}}
-	<div class = "container-fluid">
+<div class = "container-fluid">
+		<div class= "col-sm-4 col-sm-offset-4 " >
+			<div class="well well-sm" align="center" style="visibility:hidden">
+			<b>Spacing text</b>
+			</div>
+		</div>
 	</div>
 {{/if}}
+
 
 {{> gameTree}}
 
@@ -53,7 +53,7 @@
 
 <!-- template for the message input form -->
 <template name="messageForm">
-	<div class="container-fluid">
+	<div class="container-fluid" style="{{game.messageForm}}">
 		<div class="row-fluid">	
 		  <div class="col-md-12">
 		    <div class="input-group">
@@ -78,6 +78,14 @@
     </div>
   </form>
 </div>
+</template>
+
+<!-- template for message display -->
+<template name="messageDisplay">
+	<div class= "container-fluid">
+		<p class="text-center"><b> Player B says: </b>
+		<span class= "text-info text-center" ><em> {{message}}</em></span></p>
+	</div>
 </template>
 
 
