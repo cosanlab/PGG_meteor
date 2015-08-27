@@ -13,12 +13,6 @@ Router.route('/', {
   template: 'home',
 });
 
-//External submit route to end experiment template
-Router.route('/mturk/externalSubmit',{
-  name: 'endExperiment',
-  template: 'endExperiment'
-});
-
 //Lobby template, make sure we see the players db for matching
 Router.route('/lobbyUG',{
   name: 'lobbyUG',
@@ -98,14 +92,7 @@ Router.route('/payoffs',{
 Router.route('/endSurvey',{
 
   name: 'endSurvey',
-
-  waitOn: function(){
-    //Might need to change this depending on where we store survye data
-    Meteor.subscribe('Games');
-  },
-  action: function(){
-    this.render('endSurvey');
-  }
+  template: 'endSurvey'
 });
 
 

@@ -1,5 +1,5 @@
 Template.game.helpers({
-	game: function(){
+	/* game: function(){
 		var game = Games.findOne();
 		var isPlayerA = false; 
 		var isPlayerB = false;
@@ -19,9 +19,32 @@ Template.game.helpers({
 			isPlayerB: isPlayerB,
 			state: state
 		};
+	}, */
+	game: function(){
+		var game = Games.findOne();
+		var Adecide = "visibility:hidden";
+		var Bdecide = "visibility:hidden";
+		var messageForm = "hidden";
+
+		if(Meteor.userId() == game.playerA){
+			Adecide = "";
+		} else if(Meteor.userId() == game.playerB){
+			if(game.condition == 'withMessaging'){
+				messageForm = "";
+			}
+			Bdecide = "";
+		}
+		return {
+			condition: game.condition,
+			state: game.state,
+			Adecide: Adecide,
+			Bdecide: Bdecide,
+			messageForm: messageForm
+		};
 	}
 });
 
+Template.messageForm.inheritsHelpersFrom('game');
 
 //Set the game tree colors dynamically based on player choices
 Template.gameTree.helpers({
