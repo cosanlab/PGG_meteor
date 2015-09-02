@@ -1,30 +1,10 @@
 Template.game.helpers({
-	/* game: function(){
-		var game = Games.findOne();
-		var isPlayerA = false; 
-		var isPlayerB = false;
-		if(Meteor.userId() == game.playerA){
-			isPlayerA = true;
-		} else if(Meteor.userId() == game.playerB){
-			isPlayerB = true;
-		}
-		var state = game.state;
-		var condition = game.condition;
-		if(condition == 'noMessaging'){
-			Meteor.call('addMessage',game._id, '');
-		}
-		return {
-			condition: condition,
-			isPlayerA: isPlayerA,
-			isPlayerB: isPlayerB,
-			state: state
-		};
-	}, */
 	game: function(){
 		var game = Games.findOne();
 		var Adecide = "visibility:hidden";
 		var Bdecide = "visibility:hidden";
-		var messageForm = "hidden";
+		var messageForm = "visibility:hidden";
+		var messageDisplay = "visibility:hidden";
 
 		if(Meteor.userId() == game.playerA){
 			Adecide = "";
@@ -34,17 +14,23 @@ Template.game.helpers({
 			}
 			Bdecide = "";
 		}
+		if(game.condition == 'withMessaging' && game.state=='playerAdeciding'){
+			messageDisplay = "";
+		}
 		return {
 			condition: game.condition,
 			state: game.state,
 			Adecide: Adecide,
 			Bdecide: Bdecide,
-			messageForm: messageForm
+			messageForm: messageForm,
+			messageDisplay: messageDisplay,
 		};
 	}
 });
 
+//Give messageForm access to parent template helpers 
 Template.messageForm.inheritsHelpersFrom('game');
+Template.messageDisplay.inheritsHelpersFrom('game');
 
 //Set the game tree colors dynamically based on player choices
 Template.gameTree.helpers({
@@ -202,12 +188,17 @@ Template.gameTree.events({
 
 //Mesage input event handler
 Template.messageForm.events({
-		'keydown input.form-control': function(event){
+		'click .bubble' : function(event){
+			event.preventDefault();
+			if($('.message-form').text() == 'Type a message and press Enter to send...'){
+				$('.message-form').text('    ');
+			}
+		},
+		'keydown span.message-form': function(event){
 		if(event.which===13){
-			var RT = (Date.now()-sTime)/1000;
-        	var message = event.target.value;
+        	var message = $('.message-form').text();
         	var gameId = Games.findOne()._id;
-        	Meteor.call('addMessage',gameId, message, RT);
+        	Meteor.call('addMessage',gameId, message);
         	Meteor.call('updateGameState',gameId, 'playerAdeciding');
         	event.target.value = "";
     	}
