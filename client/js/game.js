@@ -23,14 +23,22 @@ Template.game.helpers({
 			Adecide: Adecide,
 			Bdecide: Bdecide,
 			messageForm: messageForm,
-			messageDisplay: messageDisplay,
+			messageDisplay: messageDisplay
 		};
 	}
 });
 
-//Give messageForm access to parent template helpers 
-Template.messageForm.inheritsHelpersFrom('game');
-Template.messageDisplay.inheritsHelpersFrom('game');
+Template.game.events({
+	'click #message-gameTree': function(event){
+		event.preventDefault();
+		if(event.target != this){
+			return;
+		} else if($('.message-form').text() == ""){
+			$('.message-form').text('Type a message here and press Enter to send...');
+		}
+	},
+});
+
 
 //Set the game tree colors dynamically based on player choices
 Template.gameTree.helpers({
@@ -77,7 +85,6 @@ Template.gameTree.events({
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAleft").attr('class','playerAleft hover');		
 		}
-
 	},
 	'mouseleave .playerAleft':function(event){
 		var game = Games.findOne();
@@ -85,7 +92,6 @@ Template.gameTree.events({
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAleft").attr('class','playerAleft');
 		}
-
 	},
 	'mouseenter .playerAright':function(event){
 		var game = Games.findOne();
@@ -93,7 +99,6 @@ Template.gameTree.events({
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAright").attr('class','playerAright hover');		
 		}
-
 	},
 	'mouseleave .playerAright':function(event){
 		var game = Games.findOne();
@@ -101,7 +106,6 @@ Template.gameTree.events({
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAright").attr('class','playerAright');
 		}
-
 	},
 	'mouseenter .playerBleft':function(event){
 		var game = Games.findOne();
@@ -109,7 +113,6 @@ Template.gameTree.events({
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBleft").attr('class','playerBleft hover');		
 		}
-
 	},
 	'mouseleave .playerBleft':function(event){
 		var game = Games.findOne();
@@ -117,7 +120,6 @@ Template.gameTree.events({
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBleft").attr('class','playerBleft');
 		}
-
 	},
 	'mouseenter .playerBright':function(event){
 		var game = Games.findOne();
@@ -125,7 +127,6 @@ Template.gameTree.events({
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBright").attr('class','playerBright hover');		
 		}
-
 	},
 	'mouseleave .playerBright':function(event){
 		var game = Games.findOne();
@@ -133,68 +134,60 @@ Template.gameTree.events({
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBright").attr('class','playerBright');
 		}
-
 	},	
-
 	'click .playerAleft': function(event){
 		event.preventDefault();
-		var RT = (Date.now()-sTime)/1000;
 		var game = Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAleft").attr('class','playerAleft');
-			Meteor.call('updatePlayerChoice', game._id,'A','Left',RT);
+			Meteor.call('updatePlayerChoice', game._id,'A','Left');
 			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}	
-		sTime = Date.now();
 	},
 	'click .playerAright': function(event){
 		event.preventDefault();
-		var RT = (Date.now()-sTime)/1000;
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerA && game.state=='playerAdeciding'){
 			$(".playerAright").attr('class','playerAright');
-			Meteor.call('updatePlayerChoice',game._id,'A','Right',RT);
+			Meteor.call('updatePlayerChoice',game._id,'A','Right');
 			Meteor.call('updateGameState',game._id, 'playerBdeciding');
 		}
-		sTime = Date.now();	
 	},	
 	'click .playerBleft': function(event){
 		event.preventDefault();
-		var RT = (Date.now()-sTime)/1000;
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBleft").attr('class','playerBleft');
-			Meteor.call('updatePlayerChoice', game._id,'B','Left',RT);
+			Meteor.call('updatePlayerChoice', game._id,'B','Left');
 			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}
-		sTime = Date.now();
 	},
 	'click .playerBright': function(event){
 		event.preventDefault();
-		var RT = (Date.now()-sTime)/1000;
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
 		if(currentUser == game.playerB && game.state=='playerBdeciding'){
 			$(".playerBright").attr('class','playerBright');
-			Meteor.call('updatePlayerChoice', game._id,'B','Right',RT);
+			Meteor.call('updatePlayerChoice', game._id,'B','Right');
 			Meteor.call('updateGameState',game._id, 'finalChoices');
 		}
-		sTime = Date.now();
 	}	
 });
 
+//Give messageForm access to game template helpers 
+Template.messageForm.inheritsHelpersFrom('game');
 //Mesage input event handler
 Template.messageForm.events({
 		'click .bubble' : function(event){
 			event.preventDefault();
-			if($('.message-form').text() == 'Type a message and press Enter to send...'){
-				$('.message-form').text('    ');
+			if($('.message-form').text() == 'Type a message here and press Enter to send...'){
+				$('.message-form').text('');
 			}
 		},
-		'keydown span.message-form': function(event){
+		'keydown p.message-form': function(event){
 		if(event.which===13){
         	var message = $('.message-form').text();
         	var gameId = Games.findOne()._id;
@@ -202,20 +195,27 @@ Template.messageForm.events({
         	Meteor.call('updateGameState',gameId, 'playerAdeciding');
         	event.target.value = "";
     	}
-    	sTime = Date.now();	
-
 	}
 });
 
+//Give messageDisplay access to game template helpers 
+Template.messageDisplay.inheritsHelpersFrom('game');
 //Message display template helper
 Template.messageDisplay.helpers({
 	message: function(){
-		return Games.findOne().message;
+		var game = Games.findOne();
+		var whoSaid;
+		var currentUser = Meteor.userId();
+		if(currentUser==game.playerA){
+			whoSaid = 'Player B says:';
+		}
+		else if(currentUser == game.playerB){
+			whoSaid = 'You said:';
+		}
+		return {
+			content: game.message,
+			whoSaid: whoSaid
+		};
 	}
-});
-
-//Initialize timing info
-Template.game.onRendered(function(){
-	sTime = Date.now();
 });
 

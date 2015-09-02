@@ -151,6 +151,7 @@ Meteor.methods({
 
 		//Update game status to playing if both player statuses are ready
 		//Make sure we take game condition into account
+		//Also record the time the experiment started to calculate RTs later
 		game = Games.findOne(); //Re-query the db after the update
 
 		if(game.playerAReady && game.playerBReady && game.condition == 'withMessaging'){

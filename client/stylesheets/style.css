@@ -20,6 +20,8 @@ img {
   white-space: -moz-pre-wrap; /* Mozilla */
   white-space: -hp-pre-wrap;  /* HP Printers */
   word-wrap: break-word;      /* IE 5+ */
+  min-width: 10px;
+  min-height: 60px;
 }
 blockquote{
   margin-bottom:0px;
@@ -28,7 +30,7 @@ blockquote{
 
 .bubble{
 position: relative;
-min-height: 40px;
+min-height: 60px;
 width: 75%;
 height: 100%;
 padding: 10px;
@@ -52,7 +54,7 @@ top: -12px;
 left: 15%;
 }
 
-span.message-form:focus{
+p.message-form:focus{
   outline: 0px solid transparent;
 
 }
