@@ -5,7 +5,7 @@
 		<div class= "col-xs-5 col-xs-offset-4">
 		{{#if equals game.state 'playerBmessaging'}}		
 			<div class="well well-sm well-text" align="center" style="{{game.messageForm}}">
-				<b>Player B: </b>Type a message to Player A 
+				<b>Player B: </b>Send a message to Player A 
 			</div>
 		{{else}} {{#if equals game.state 'playerAdeciding'}}
 			<div class="well well-sm well-text" align="center" style="{{game.Adecide}}">
@@ -26,7 +26,7 @@
 		</div>
 	</div>
 
-	<div class = "row" id = "message gameTree">
+	<div class = "row" id = "message-gameTree">
 		{{#if equals game.state 'playerBmessaging'}}
 			{{> messageForm}}
 		{{else}}
@@ -41,8 +41,9 @@
 <!-- template for the message input form -->
 <template name="messageForm">
 	<div class="col-xs-4" style= "{{game.messageForm}}">
+		<p style = "font-size:20px"><b>Insert your message below:</b></p>
       	<div class= "bubble">
-       		<span id="message" class = 'message-form' contenteditable="true">Type a message and press Enter to send...</span>
+       		<p style="font-size:16px" id="message" class = 'message-form' contenteditable="true">Type a message here and press Enter to send...</p>
    		</div>
     </div>
 </template>
@@ -50,8 +51,8 @@
 <!-- template for message display -->
 <template name="messageDisplay">
 	<div class= "col-xs-4" style = "{{game.messageDisplay}}">
-		<p><b> Player B says: </b> </p>
-		<p class = "bubble center-block" id="message">{{message}}</p>
+		<p style = "font-size:20px"><b>{{message.whoSaid}}</b> </p>
+		<p style = "font-size: 16px" class = "bubble" id="message">{{message.content}}</p>
 	</div>
 </template>
 
