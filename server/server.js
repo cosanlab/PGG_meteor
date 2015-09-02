@@ -122,14 +122,14 @@ Meteor.methods({
 	'updateGameState': function(gameId, state) {
 		return Games.update(gameId, {$set: {'state':state}});
 	},
-	'updatePlayerChoice': function(gameId, player, choice, RT) {
+	'updatePlayerChoice': function(gameId, player, choice) {
 		var gameState = Games.findOne({_id:gameId}).state;
 		if(player == 'A'){
 			return Games.update(gameId, {$set: 
-				{'PlayerAChoice':choice, 'PlayerART':RT}});
+				{'PlayerAChoice':choice, 'PlayerART':Date.now()}});
 		} else if(player == 'B'){
 			return Games.update(gameId, {$set: 
-				{'PlayerBChoice':choice, 'PlayerBRT':RT}});
+				{'PlayerBChoice':choice, 'PlayerBRT':Date.now()}});
 		} else {
 			throw new Meteor.error ('playerError','Unrecognized player. Games not updated with player decision!');
 		}
@@ -154,14 +154,15 @@ Meteor.methods({
 		game = Games.findOne(); //Re-query the db after the update
 
 		if(game.playerAReady && game.playerBReady && game.condition == 'withMessaging'){
-			Meteor.call('updateGameState',game._id, "playerBmessaging");
+			return Games.update(gameId, {$set: {'state':"playerBmessaging", 'GameStart': Date.now()}});
+			//Meteor.call('updateGameState',game._id, "playerBmessaging");
 		} else if(game.playerAReady && game.playerBReady && game.condition == 'noMessaging'){
-			Meteor.call('updateGameState',game._id, "playerAdeciding");
+			return Games.update(gameId, {$set: {'state':"playerAdeciding", 'GameStart': Date.now()}});
 		}
 	},
-	'addMessage':function(gameId, message,RT){
+	'addMessage':function(gameId, message){
 		Games.update(gameId, {$set:
-			{'message':message, 'messageRT':RT}});
+			{'message':message, 'messageRT':Date.now()}});
 	},
 
 	//TURKSERVER METHODS

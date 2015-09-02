@@ -1,127 +1,90 @@
 <template name="game">
+<div class= "container-fluid">
 
-{{#if equals game.condition 'withMessaging'}}
-	{{#if equals game.state 'playerBmessaging'}}
-		<div class = "container-fluid">
-			<div class= "col-sm-6 col-sm-offset-3 " >
-					{{> messageForm}}
+	<div class = "row" id = "gameState Label">
+		<div class= "col-xs-5 col-xs-offset-4">
+		{{#if equals game.state 'playerBmessaging'}}		
+			<div class="well well-sm well-text" align="center" style="{{game.messageForm}}">
+				<b>Player B: </b>Type a message to Player A 
 			</div>
-		</div>
-	{{/if}}
-{{/if}}
-
-{{#if equals game.state 'playerAdeciding'}}
-	<div class = "container-fluid">
-		<div class= "col-sm-4 col-sm-offset-4">
-			{{#if equals game.condition 'withMessaging'}}
-				{{> messageDisplay}}
-			{{/if}}
-			<div class="well well-sm " align="center" style="{{game.Adecide}}">
-					<b>Player A:</b> What do you want to do?
+		{{else}} {{#if equals game.state 'playerAdeciding'}}
+			<div class="well well-sm well-text" align="center" style="{{game.Adecide}}">
+				<b>Player A: </b>What do you want to do?
 			</div>
-		</div>
-	</div>
-
-{{/if}}
-
-{{#if equals game.state 'playerBdeciding'}}
-	<div class = "container-fluid">
-		<div class= "col-sm-4 col-sm-offset-4 " >
-			<div class="well well-sm" align="center" style="{{game.Bdecide}}">
-					<b>Player B:</b> What do you want to do?
+		{{else}} {{#if equals game.state 'playerBdeciding'}}
+			<div class="well well-sm well-text" align="center" style="{{game.Bdecide}}">
+				<b>Player B: </b>What do you want to do?
 			</div>
+		{{else}} {{#if equals game.state 'finalChoices'}}
+			<div class="well well-sm well-text" align="center" style="visibility:hidden">
+				<b>Invisible spacing text </b>
+			</div>
+		{{/if}}
+		{{/if}}
+		{{/if}}
+		{{/if}}
 		</div>
 	</div>
 
-{{/if}}
-
-{{#if equals game.state 'finalChoices'}}
-<div class = "container-fluid">
-		<div class= "col-sm-4 col-sm-offset-4 " >
-			<div class="well well-sm" align="center" style="visibility:hidden">
-			<b>Spacing text</b>
-			</div>
-		</div>
+	<div class = "row" id = "message gameTree">
+		{{#if equals game.state 'playerBmessaging'}}
+			{{> messageForm}}
+		{{else}}
+			{{> messageDisplay}}
+		{{/if}}
+		{{> gameTree}}
 	</div>
-{{/if}}
-
-
-{{> gameTree}}
-
+</div>	
 </template>
 
 
 <!-- template for the message input form -->
 <template name="messageForm">
-	<div class="container-fluid" style="{{game.messageForm}}">
-		<div class="row-fluid">	
-		  <div class="col-md-12">
-		    <div class="input-group">
-		      <span class="input-group-addon" id="basic-addon1">Message to Player A: </span>
-		        <input type="text" class="form-control" placeholder="Type a message and press Enter to send..." aria-describedby="basic-addon1">
-		    </div>
-		   </div>
-		 </div>
-	</div>
-</template>
-
-<!-- template for the message selection -->
-<template name= "messageChoice">
-<div class="container-fluid text-center">
-  <p class= "text-center">Please select which of the following messages you want to send to Player A.</p>
-  <form role="form">
-    <div class="radio text-center">
-      <label><input type="radio" name="optradio">Guilt Message</label>
+	<div class="col-xs-4" style= "{{game.messageForm}}">
+      	<div class= "bubble">
+       		<span id="message" class = 'message-form' contenteditable="true">Type a message and press Enter to send...</span>
+   		</div>
     </div>
-    <div class="radio text-center">
-      <label><input type="radio" name="optradio">Anger Message</label>
-    </div>
-  </form>
-</div>
 </template>
 
 <!-- template for message display -->
 <template name="messageDisplay">
-	<div class= "container-fluid">
-		<p class="text-center"><b> Player B says: </b>
-		<span class= "text-info text-center" ><em> {{message}}</em></span></p>
+	<div class= "col-xs-4" style = "{{game.messageDisplay}}">
+		<p><b> Player B says: </b> </p>
+		<p class = "bubble center-block" id="message">{{message}}</p>
 	</div>
 </template>
 
 
-<!-- template for the game tree
-dynamically renders branches based on player choices -->
-
+<!-- template for the game tree -->
 <template name = "gameTree">
-	<div id="tree">
-		<div class = "svg-container">
-			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 1000 450" class= "svg-content-responsive">
-				<text x = "400" y="90" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
-				<g class="playerAleft" stroke= "{{branch.colorAL}}" stroke-width= "{{branch.widthAL}}" fill = "{{branch.colorAL}}">
-					<path d= "M400, 100L300, 200"></path>
-					<text x="300" y="230" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
-					<text x="300" y="260" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
-					<text x="310" y="150" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
-				</g>
-				<g class ="playerAright" stroke= "{{branch.colorAR}}" stroke-width= "{{branch.widthAR}}" fill = "{{branch.colorAR}}">
-					<path d= "M400, 100L500, 200"></path>
-					<text x="500" y="230" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
-					<text x="495" y="150" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
-				</g>
-				<g class="playerBleft" stroke= "{{branch.colorBL}}" stroke-width= "{{branch.widthBL}}" fill = "{{branch.colorBL}}">
-					<path d= "M500, 240L400, 340"></path>
-					<text x="400" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
-					<text x="400" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
-					<text x="405" y="300" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
-				</g>
-				<g class="playerBright" stroke= "{{branch.colorBR}}" stroke-width= "{{branch.widthBR}}" fill = "{{branch.colorBR}}">
-					<path d= "M500, 240L600, 340"></path>
-					<text x="600" y="370" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
-					<text x="600" y="400" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
-					<text x="605" y="300" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
-				</g>
-			</svg>
-		</div>
+	<div class = "svg-container col-xs-8">
+		<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 450 345" class= "svg-content-responsive">
+			<text x = "205" y="25" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
+			<g class="playerAleft" stroke= "{{branch.colorAL}}" stroke-width= "{{branch.widthAL}}" fill = "{{branch.colorAL}}">
+				<path d= "M205 35 L105 135"></path>
+				<text x="105" y="165" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
+				<text x="105" y="195" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
+				<text x="115" y="85" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
+			</g>
+			<g class ="playerAright" stroke= "{{branch.colorAR}}" stroke-width= "{{branch.widthAR}}" fill = "{{branch.colorAR}}">
+				<path d= "M205 35 L305 135"></path>
+				<text x="305" y="165" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
+				<text x="300" y="85" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
+			</g>
+			<g class="playerBleft" stroke= "{{branch.colorBL}}" stroke-width= "{{branch.widthBL}}" fill = "{{branch.colorBL}}">
+				<path d= "M305 175 L205 275"></path>
+				<text x="205" y="305" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
+				<text x="205" y="335" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
+				<text x="210" y="235" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
+			</g>
+			<g class="playerBright" stroke= "{{branch.colorBR}}" stroke-width= "{{branch.widthBR}}" fill = "{{branch.colorBR}}">
+				<path d= "M305 175 L405 275"></path>
+				<text x="405" y="305" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
+				<text x="405" y="335" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
+				<text x="410" y="235" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
+			</g>
+		</svg>
 	</div>
 </template>
 

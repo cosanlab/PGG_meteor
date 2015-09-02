@@ -6,6 +6,57 @@ img {
     height: 100%;
 }
 
+.well-text{
+  font-size:18px;
+}
+
+/* To handle long continous strings of text that extend outside a div */
+#message{
+  white-space: pre;           /* CSS 2.0 */
+  white-space: pre-wrap;      /* CSS 2.1 */
+  white-space: pre-line;      /* CSS 3.0 */
+  white-space: -pre-wrap;     /* Opera 4-6 */
+  white-space: -o-pre-wrap;   /* Opera 7 */
+  white-space: -moz-pre-wrap; /* Mozilla */
+  white-space: -hp-pre-wrap;  /* HP Printers */
+  word-wrap: break-word;      /* IE 5+ */
+}
+blockquote{
+  margin-bottom:0px;
+  font-size:16px;
+}
+
+.bubble{
+position: relative;
+min-height: 40px;
+width: 75%;
+height: 100%;
+padding: 10px;
+background: #99FFFF;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+}
+
+.bubble:after{
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 0 9px 12px;
+border-color: #99FFFF transparent;
+display: block;
+width: 0;
+z-index: 1;
+margin-left: -9px;
+top: -12px;
+left: 15%;
+}
+
+span.message-form:focus{
+  outline: 0px solid transparent;
+
+}
+
 .footer{
   position:fixed;
   width:100%;
@@ -77,16 +128,17 @@ img {
 .svg-container {
     display: inline-block;
     position: relative;
-    width: 100%;
-    padding-bottom: 39%; /* aspect ratio */
-    vertical-align: top;
+    height: 50%;
+    padding-bottom: 28%; /* aspect ratio */
+    vertical-align: middle;
     overflow: hidden;
 }
 .svg-content-responsive {
     display: inline-block;
+    width: 100%;
+    height: 100%;
     position: absolute;
-    top: -15%;
-    left: 10%;
+    margin: auto;
 }
 
 .hover{

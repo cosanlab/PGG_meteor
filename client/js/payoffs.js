@@ -3,8 +3,8 @@ Template.payoffs.helpers({
 		var game = Games.findOne();
 		if(game.PlayerAChoice == 'Left'){
 			return {
-				playerA: '1',
-				playerB: '3',
+				playerA: '0.10',
+				playerB: '0.30',
 			};
 		} else if(game.PlayerBChoice == 'Left'){
 			return {
