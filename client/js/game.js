@@ -28,18 +28,6 @@ Template.game.helpers({
 	}
 });
 
-Template.game.events({
-	'click #message-gameTree': function(event){
-		event.preventDefault();
-		if(event.target != this){
-			return;
-		} else if($('.message-form').text() == ""){
-			$('.message-form').text('Type a message here and press Enter to send...');
-		}
-	},
-});
-
-
 //Set the game tree colors dynamically based on player choices
 Template.gameTree.helpers({
 	branch: function(){
