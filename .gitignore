@@ -1,2 +1,4 @@
 #SSL certificate
 ssl.pem
+#AWS credentials
+settings.json
