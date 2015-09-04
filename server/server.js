@@ -151,8 +151,8 @@ Meteor.methods({
 
 		//Update game status to playing if both player statuses are ready
 		//Make sure we take game condition into account
-		//Also record the time the experiment started to calculate RTs later
-		game = Games.findOne(); //Re-query the db after the update
+		//Also record the time the experiment started to calculate RTs
+		game = Games.findOne({_id:gameId}); //Re-query the db after the update
 
 		if(game.playerAReady && game.playerBReady && game.condition == 'withMessaging'){
 			return Games.update(gameId, {$set: {'state':"playerBmessaging", 'GameStart': Date.now()}});
@@ -164,6 +164,19 @@ Meteor.methods({
 	'addMessage':function(gameId, message){
 		Games.update(gameId, {$set:
 			{'message':message, 'messageRT':Date.now()}});
+	},
+	'addPlayerFeedback': function(playerId, feedback){
+		var game = Games.findOne({"$or": [{"playerA":playerId},{"playerB":playerId}]});
+		var gameId = game._id;
+		if(playerId == game.PlayerA){
+			Partitioner.bindUserGroup(playerId,function(){
+				Games.update(gameId,{$set:{'playerAfeedback': feedback}});
+			});
+		}
+		else if(playerId == game.PlayerB){
+			Partitioner.bindUserGroup(playerId,function(){
+				Games.update(gameId,{$set:{'playerBfeedback': feedback}});
+			});		}
 	},
 
 	//TURKSERVER METHODS
