@@ -18,7 +18,33 @@ Meteor.startup(function(){
 	}
 });
 
+//User connection functions
+/*
+var endGame = false;
+UserStatus.events.on('connectionLogin', function(fields){
+	console.log(fields);
+	//var reconnUser = fields.userId;
+});
+UserStatus.events.on('connectionLogout', function(fields){
+	console.log(fields);
+	//var reconnUser = fields.userId;
+});
+//If any user ever disconnects 
 
+UserStatus.events.on('connectionLogout', function(fields){
+	//Find out who they are
+	var disconUser = fields.userId;
+	//And the game they belong to
+	var game = Partitioner.bindUserGroup(disconUser,function(){
+		return Games.find({"$or": [{"playerA":disconUser},{"playerB":disconUser}]});
+	});
+	//If that game hasn't ended return the start timeout flag
+	if (game.state != 'ended'){
+		return true;
+	}
+});
+
+*/
 
 ///Subjects DB
 Meteor.publish('Players', function(){

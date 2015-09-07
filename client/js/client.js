@@ -29,9 +29,14 @@ Tracker.autorun(function(){
     Meteor.subscribe('Players');
     Meteor.subscribe('Games',group);
 });
- 
 
 
+//Keep tabs on the other user being played with
+/*
+Tracker.autorun(function(){
+    var group = Turkserver.group();
+});
+*/
 
 //New Spacebars function that should work on all templates
 Template.registerHelper("equals", function(a,b){
