@@ -40,7 +40,6 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
         asst = lobbyUsers[i];
         this.lobby.pluckUsers([asst.userId]);
         Meteor.call('updatePlayerState', asst.userId,'instructions');
-        Meteor.call('resetPlayerRematch',asst.userId);
         results.push(this.instance.addAssignment(asst));
         playerIds.push(asst.userId);
       }

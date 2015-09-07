@@ -129,13 +129,18 @@ Meteor.methods({
 		} else {
 			cond = 'noMessaging';
 		}
+		//Find out if any players have been matched before
+		var clientRematched = Players.findOne(clientId).needRematch;
+		var partnerRematched = Players.findOne(partnerId).needRematch;
 		// Randomize role
 		var isPlayerA = Math.random() > 0.5;
 		var data;
 		if(isPlayerA){
 			data = {
 				playerA: clientId,
+				playerArematched: clientRematched,
 				playerB: partnerId,
+				playerBrematched: partnerRematched,
 				state: "instructions",
 				playerAReady:false,
 				playerBReady:false,
@@ -144,7 +149,9 @@ Meteor.methods({
 		} else {
 			data = {
 				playerA: partnerId,
+				playerArematched: partnerRematched,
 				playerB: clientId,
+				playerBrematched: clientRematched,
 				state: "instructions",
 				playerAReady:false,
 				playerBReady:false,
@@ -155,7 +162,8 @@ Meteor.methods({
 		Partitioner.bindUserGroup(clientId,function(){
 			Games.insert(data);
 		});
-		return;
+		Meteor.call('resetPlayerRematch', clientId);
+		Meteor.call('resetPlayerRematch', partnerId);
 	},
 
 	'updateGameState': function(gameId, state) {
