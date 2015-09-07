@@ -10,6 +10,24 @@ img {
   font-size:18px;
 }
 
+.correctQuiz{
+  color: #00CC00;
+  font-weight: bold;
+  font-size: 20px;
+  visibility:visible;
+}
+
+.incorrectQuiz{
+  color: #FF0000;
+  font-weight: bold;
+  font-size: 20px;
+  visibility:visible;
+}
+
+.noresponseQuiz{
+  visibility: hidden;
+}
+
 /* To handle long continous strings of text that extend outside a div */
 #message{
   white-space: pre;           /* CSS 2.0 */

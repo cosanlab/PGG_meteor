@@ -71,9 +71,10 @@ var tutorialSteps = [
 	},
 
 ];
-//Quiz global vars
+//Global event emitter for quiz
 var emitter = new EventEmitter();
 
+//Setup interactive instructions logic
 Template.instructionsInteractive.helpers({
 	options: {
 		steps: tutorialSteps,
@@ -86,6 +87,49 @@ Template.instructionsInteractive.helpers({
 	}
 });
 
+Template.quiz.helpers({
+	feedback: function(){
+		var currentUser = Meteor.userId();
+		var player = Players.findOne(currentUser);
+		var gameId = Games.findOne()._id;
+		var text;
+		var dispClass;
+		if(player.passedQuiz){
+			text = "Correct!";
+			dispClass = 'correctQuiz';
+		} else if(!player.passQuiz){
+			if(player.quizAttempts == 0){
+				text = "Placehodler";
+				dispClass = 'noresponseQuiz';
+			}
+			if(player.quizAttempts > 0 && player.quizAttempts < 2){
+				text = "Incorrect. One try remaining";
+				dispClass = 'incorrectQuiz';
+			} else if(player.quizAttempts == 2){
+				Meteor.call('failedQuiz',currentUser,gameId);
+			}
+		}
+		return{
+			text: text,
+			dispClass: dispClass
+		};
+	}
+});
+//Event handler for quiz during instructions
+	Template.quiz.events({
+	'click #correct':function(event){
+		event.stopPropagation();
+		var currentUser = Meteor.userId();
+		Meteor.call('passedQuiz', currentUser);
+		emitter.emit('correctAnswer');
+	},
+	'click #incorrect':function(event){
+		event.stopPropagation();
+		var currentUser = Meteor.userId();
+		Meteor.call('incQuizAttempts',currentUser);
+	},
+});
+//Assignment logic based on player role and condition
 Template.assignment.helpers({
 	game: function(){
 		var game= Games.findOne();
@@ -103,25 +147,3 @@ Template.assignment.helpers({
 		}
 	}
 });
-
-//Only give clients 2 tries
-var tries = 2;
-Template.quiz.events({
-	'click #correct':function(event){
-		$('.quiz-answer').css({'visibility':'visible', 'color':'#00CC00', 'font-weight':'bold'}).text('Correct!');
-		
-		emitter.emit('correctAnswer');
-	},
-	'click #incorrect':function(event){
-		tries --;
-		if(tries > 0){
-			$('.quiz-answer').css({'visibility':'visible', 'color':'#FF0000', 'font-weight': 'bold'}).text('Incorrect. One try remaining.');		
-			emitter.emit('incorrectAnswer');
-		} else{
-			Meteor.call('notEligible', Meteor.userId());
-		}
-	},
-
-
-});
-

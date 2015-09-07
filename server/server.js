@@ -48,7 +48,7 @@ UserStatus.events.on('connectionLogout', function(fields){
 
 ///Subjects DB
 Meteor.publish('Players', function(){
-	return Players.find({},{fields: {name:1, enterTime:1, status:1}});
+	return Players.find({},{fields: {name:1, enterTime:1, status:1, quizAttempts:1, passedQuiz:1,needRematch:1}});
 });
 
 //Games DB
@@ -61,19 +61,28 @@ Meteor.publish('Games', function(){
 
 
 Meteor.methods({
-	
+
 	//PLAYERS DB METHODS
 	'addPlayer': function(currentUser){
 		var data = {
 			_id: currentUser,
 			name: currentUser,
 			enterTime: new Date(),
-			status: 'waiting'
+			status: 'waiting',
+			quizAttempts: 0,
+			passedQuiz: false,
+			needRematch: false,
 		};
 		if(!currentUser){
 			throw new Meteor.Error("not-logged-in", "You're not logged in.");
 		}
 		Players.insert(data);
+	},
+	'passedQuiz':function(currentUser){
+		Players.update(currentUser, {$set: {passedQuiz: true}}, {$inc: {quizAttempts: 1}});
+	},
+	'incQuizAttempts':function(currentUser){
+		return Players.update(currentUser, {$inc: {quizAttempts: 1}});
 	},
 	'removePlayer': function(currentUser){
 		var data = {
@@ -84,7 +93,7 @@ Meteor.methods({
 		}
 		return Players.remove(data);
 	},
-	'updatePlayer': function(playerId, state){
+	'updatePlayerState': function(playerId, state){
 		check(state,String);
 		return Players.update(playerId, {$set: {status: state}});
 	},
@@ -94,7 +103,7 @@ Meteor.methods({
 		//in the game they were playing. If both are finished, change the game
 		//status to ended
 		var currentUser = Meteor.userId();
-		Meteor.call('updatePlayer', currentUser,'finished');
+		Meteor.call('updatePlayerState', currentUser,'finished');
 		var game = Games.findOne({_id:gameId});
 		var playerAstatus = Players.findOne({_id:game.playerA}).status;
 		var playerBstatus = Players.findOne({_id:game.playerB}).status;
@@ -102,6 +111,10 @@ Meteor.methods({
 		if(playerAstatus == 'finished' && playerBstatus == 'finished'){
 			Meteor.call('updateGameState',game._id,'ended');
 		}		
+	},
+	//When a player is matched in the lobby ensure their rematch state is reset
+	'resetPlayerRematch':function(playerId){
+		return Players.update(playerId, {$set: {'needRematch':false}});
 	},	
 
 	//GAMES DB METHODS
@@ -236,11 +249,12 @@ Meteor.methods({
 		var exp = TurkServer.Instance.currentInstance();
 		if (exp != null){
 			exp.teardown(returnToLobby = false);	
+		} else{
+			console.log("Could not teardown instance. Does not exist!");
 		}
 	},
 
 	//Send a user back to the lobby
-	//Currently not in use
 	goToLobby: function(currentUser){
 		var inst = TurkServer.Instance.currentInstance();
 		if (inst == null){
@@ -250,10 +264,25 @@ Meteor.methods({
 		inst.sendUserToLobby(currentUser);
 	},
 
-	//Rather than have the assigner send clients to the exit survey if they enter the lobby for a second time just have a client call it on themselves
-	sendToExitSurvey: function(currentUser){
+	//If a user fails the quiz set the game status to failed, send the user to the alternate exit survey, and send the other user back to the lobby with a rematch needed flag
+	failedQuiz: function(currentUser,gameId){
+		Games.update(gameId,{$set:{'state': 'failedQuiz'}});
+		var game = Games.findOne(gameId);
+		var partner;
+		if(currentUser == game.playerA){
+			partner = game.playerB;
+		} else{
+			partner = game.playerA;
+		}
+		Players.update(partner,{$set:{'status':'waiting','quizAttempts':0,'passedQuiz':false, 'needRematch':true}});
+		Meteor.call('goToLobby', partner);
+
+		Players.update(currentUser,{$set:{'status':'failedQuiz'}});
 		asst = TurkServer.Assignment.currentAssignment();
 		asst.showExitSurvey();
+		Meteor.call('endExperiment');
+
+
 	}
 });
 

@@ -21,7 +21,11 @@ Router.route('/lobbyUG',{
     Meteor.subscribe('Players');
   },
   action: function(){
+    if(Players.findOne(Meteor.userId()).needRematch){
+      this.render('altLobbyUG');
+    } else{
       this.render('lobbyUG');
+    }
   },
   onBeforeAction: function() {
     if (!Meteor.user()) {
@@ -36,7 +40,7 @@ Router.route('/lobbyUG',{
 //Instructions template, that sends players to the game if the game state is ready
 Router.route('/instructionsInteractive',{
   waitOn: function(){
-    return Meteor.subscribe('Games');
+    return [Meteor.subscribe('Games'), Meteor.subscribe('Players')];
   },
   action: function(){
       var gameState = Games.findOne().state;
@@ -44,11 +48,11 @@ Router.route('/instructionsInteractive',{
         this.render('instructionsInteractive');
         console.log('Game not ready');
       }
-      else{
+      else if(gameState != 'failedQuiz'){
         console.log('Game ready');
         Router.go('game');
         //Each client updates their own status
-        Meteor.call('updatePlayer', Meteor.userId(),'playing');
+        Meteor.call('updatePlayerState', Meteor.userId(),'playing');
       }
   }
 }); 
@@ -90,9 +94,22 @@ Router.route('/payoffs',{
 
 //End survey
 Router.route('/endSurvey',{
-
   name: 'endSurvey',
-  template: 'endSurvey'
+  template: 'endSurvey',
+  
+  waitOn: function(){
+    return Meteor.subscribe('Players');
+  },
+  action: function(){
+    var playerStatus = Players.findOne(Meteor.userId()).status;
+    if(playerStatus=='failedQuiz'){
+      this.render('altEndSurvey');
+    }else{
+      this.render('endSurvey');
+    }
+  }
+
+
 });
 
 
