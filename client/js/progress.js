@@ -4,7 +4,6 @@ Template.progress.helpers({
 		if(!game){
 			return false;
 		} else{ 
-			var instr = ""; 
 			var mess = "";
 			var pA = "";
 			var pB = "";
@@ -12,9 +11,6 @@ Template.progress.helpers({
 			var summ = "";
 
 			switch(game.state){
-				case 'instructions':
-					instr = "active";
-					break;
 				case 'playerBmessaging':
 					mess = 'active';
 					break;
@@ -34,7 +30,6 @@ Template.progress.helpers({
 			return {
 				state: game.state,
 				condition: game.condition,
-				instr: instr,
 				mess: mess,
 				pA: pA,
 				pB: pB,
