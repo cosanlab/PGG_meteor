@@ -16,30 +16,55 @@
 </template>
 
 <template name="step3">
-<p>Player A will first decide how they would like to split $4 by selecting from two possible options. </p> 
+	<p>Player A will first decide how they would like to split $4 by selecting from two possible options. </p> 
 </template>
 
 <template name="step4">
-<p>If Player A selects the 'Left' option, they will keep $1 for themselves, give $3 to Player B and the game will end.</p>
+	<p>If Player A selects the 'Left' option, they will keep $1 for themselves, give $3 to Player B and the game will end.</p>
 </template>
 
 <template name="step5">
-<p>If Player A select the 'Right' option, the money will be split evenly so that both Player A and Player B receive $2.</p>
+	<p>If Player A select the 'Right' option, the money will be split evenly so that both Player A and Player B receive $2.</p>
 </template>
 
 <template name="step6">
-<p>However, Player B will have the opportunity to veto this decision.</p>
+	<p>However, Player B will have the opportunity to veto this decision.</p>
 </template>
 
 <template name="step7">
-<p>If Player B chooses to veto this decision by selecting 'Left,' Player A will receive $0 and Player B will receive $1.</p>
+	<p>If Player B chooses to veto this decision by selecting 'Left,' Player A will receive $0 and Player B will receive $1.</p>
 </template>
 
 <template name="step8">
-<p>If Player B chooses to accept this decision by selecting 'Right,' both Player A and Player B will receive $2.</p>
+	<p>If Player B chooses to accept this decision by selecting 'Right,' both Player A and Player B will receive $2.</p>
 </template>
 
-<template name="step9">
+<template name = "step9">
+	<h4 align = "center">Please ensure you understand these instructions before proceeding</h4>
+	<h4 align = "center">On the next page we will ask you a question to make sure you understand the game</h4>
+</template>
+
+<template name ="quiz">
+	<h5 align="center"> Please answer the following question so we can ensure you understand the game.</h5>
+	<p align = "center"><i>You must respond correctly within two tries to be eligible to participate</i></p>
+	<p>If Player A chooses right and player B chooses left how much money will each player earn?</p>
+	<form role = "form">
+		<div class="radio" id = "incorrect">
+    		<label><input type="radio" name="optradio">Player A will earn $1 and Player B will earn $3</label>
+		</div>
+		<div class="radio" id = "correct">
+      		<label><input type="radio" name="optradio">Player A will earn $0 and Player B will earn $1</label>
+		</div>
+		<div class="radio" id  = "incorrect">
+    		<label><input type="radio" name="optradio">Player A will earn $2 and Player B will earn $2</label>
+		</div>
+	</form>
+	<div class = "row">
+		<p  align = "center" class = "quiz-answer" style  = "font-size:20px; visibility:hidden"></p>
+	</div>
+</template>
+
+<template name="assignment">
 {{#if equals game.player 'Player A'}}
 	<h3 align="center">You have been assigned the role of <strong>{{game.player}}</strong>. </h3>
 	<blockquote>

@@ -53,18 +53,31 @@ var tutorialSteps = [
 		template: "step8",
 		spot: ".playerBright",
 	},
+	{
+		template: "step9"
+	},
+	{
+		template: "quiz",
+		spot:"body",
+		require: {
+			event: 'correctAnswer'
+		}
+	},
 	{	
-		template: "step9",
+		template: "assignment",
 		onLoad: function(){
 			$(".action-tutorial-finish").text("I'm Ready!");
 		}
 	},
 
 ];
+//Quiz global vars
+var emitter = new EventEmitter();
 
 Template.instructionsInteractive.helpers({
 	options: {
 		steps: tutorialSteps,
+		emitter: emitter,
 		onFinish: function(){
 			var gameId = Games.findOne()._id;
 			var currentUser = Meteor.userId();
@@ -73,8 +86,7 @@ Template.instructionsInteractive.helpers({
 	}
 });
 
-Template.step9.helpers({
-
+Template.assignment.helpers({
 	game: function(){
 		var game= Games.findOne();
 		var currentUser = Meteor.userId();
@@ -90,5 +102,26 @@ Template.step9.helpers({
 			};
 		}
 	}
+});
+
+//Only give clients 2 tries
+var tries = 2;
+Template.quiz.events({
+	'click #correct':function(event){
+		$('.quiz-answer').css({'visibility':'visible', 'color':'#00CC00', 'font-weight':'bold'}).text('Correct!');
+		
+		emitter.emit('correctAnswer');
+	},
+	'click #incorrect':function(event){
+		tries --;
+		if(tries > 0){
+			$('.quiz-answer').css({'visibility':'visible', 'color':'#FF0000', 'font-weight': 'bold'}).text('Incorrect. One try remaining.');		
+			emitter.emit('incorrectAnswer');
+		} else{
+			Meteor.call('notEligible', Meteor.userId());
+		}
+	},
+
+
 });
 
