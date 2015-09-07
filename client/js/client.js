@@ -42,6 +42,9 @@ Tracker.autorun(function(){
 Template.registerHelper("equals", function(a,b){
     return (a==b);
 });
+Template.registerHelper("notequals", function(a,b){
+    return (a!=b);
+});
 
 // Login validation
 $.validator.setDefaults({

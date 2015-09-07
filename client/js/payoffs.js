@@ -28,8 +28,6 @@ Template.payoffs.onRendered(function(){
 	//Wait 5 seconds to send a user back to the lobby
 	Meteor.setTimeout(function(){
 		Meteor.call('goToLobby', currentUser);
-		//Meteor.call('sendToExitSurvey', currentUser);
-
 	},5000);
     
 });

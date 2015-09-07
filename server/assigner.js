@@ -17,18 +17,14 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
   };
 
   UGAssigner.prototype.userJoined = function(asst){
-    //Add a player to the players db once they hit the lobby
-    //Meteor.call('addPlayer', asst.userId);
-    
-
-    //If a user has been in the lobby before send them to the exit survey
+    //If a user has been in an experiment before check to see if they need to be rematched, if so leave them in the lobby otherwise take them to the exit survey
     if(asst.getInstances().length > 0){
-      this.lobby.pluckUsers([asst.userId]);
-      return asst.showExitSurvey();
-    } 
-    //Otherwise add them to the players db
-    else {  
-        Meteor.call('addPlayer',asst.userId);
+      if(!Players.findOne(asst.userId).needRematch){
+        this.lobby.pluckUsers([asst.userId]);
+        return asst.showExitSurvey();
+      }
+    } else{
+      Meteor.call('addPlayer', asst.userId);
     }
 
     //If there are 2 people in the lobby create a new instance and send both players there
@@ -43,7 +39,8 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
       for (i = 0, len = lobbyUsers.length; i < len; i++) {
         asst = lobbyUsers[i];
         this.lobby.pluckUsers([asst.userId]);
-        Meteor.call('updatePlayer', asst.userId,'instructions');
+        Meteor.call('updatePlayerState', asst.userId,'instructions');
+        Meteor.call('resetPlayerRematch',asst.userId);
         results.push(this.instance.addAssignment(asst));
         playerIds.push(asst.userId);
       }
