@@ -66,37 +66,3 @@
 		<p align = "center" style = '{{feedback.promptDisp}}'><b>Click Finish below to complete these instructions and wait for the other player. You can also go back and review if you like.</b></p>
 	</div>
 </template>
-
-<template name = "gameTreeinstr">
-	<div class = "row" id="tree">
-		<br><br>
-		<div class = "svg-container col-xs-8 col-xs-offset-4">
-			<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 450 345" class= "svg-content-responsive">
-				<text class = "playerAleft playerAright" x = "205" y="25" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
-				<g stroke= "black" stroke-width= "3" fill = "black">
-					<path id = "playerAleft" d= "M205 35 L105 135"></path>
-					<text class = "playerAleft" x="105" y="165" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
-					<text class = "playerAleft" x="105" y="195" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
-					<text class = "playerAleft" x="115" y="85" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
-				</g>
-				<g stroke= "black" stroke-width= "3" fill = "black">
-					<path id = "playerAright" d= "M205 35 L305 135"></path>
-					<text class= "playerAright playerBleft playerBright" x="305" y="165" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
-					<text class= "playerAright" x="300" y="85" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
-				</g>
-				<g stroke= "black" stroke-width= "3" fill = "black">
-					<path id = "playerBleft" d= "M305 175 L205 275"></path>
-					<text class = "playerBleft" x="205" y="305" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
-					<text class = "playerBleft" x="205" y="335" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
-					<text class = "playerBleft" x="210" y="235" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
-				</g>
-				<g stroke= "black" stroke-width= "3" fill = "black">
-					<path id = "playerBright" d= "M305 175 L405 275"></path>
-					<text class = "playerBright" x="405" y="305" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
-					<text class = "playerBright" x="405" y="335" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
-					<text class = "playerBright" x="410" y="235" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
-				</g>
-			</svg>
-		</div>
-	</div>		
-</template>

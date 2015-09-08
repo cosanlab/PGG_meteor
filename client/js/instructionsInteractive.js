@@ -114,19 +114,23 @@ Template.quiz.helpers({
 });
 //Event handler for quiz during instructions
 	Template.quiz.events({
-	'click #B':function(event){
+	'change #B':function(event){
 		event.stopPropagation();
 		event.preventDefault();
-		$("#B").prop("checked",true);
 		var currentUser = Meteor.userId();
 		Meteor.call('passedQuiz', currentUser);
 		emitter.emit('correctAnswer');
 	},
-	'click #A':function(event){
+	'change #A':function(event){
 		event.stopPropagation();
 		event.preventDefault();
-		$("#A").prop("checked",true);
 		var currentUser = Meteor.userId();
 		Meteor.call('incQuizAttempts',currentUser);
 	},
+	'change #C':function(event){
+		event.stopPropagation();
+		event.preventDefault();
+		var currentUser = Meteor.userId();
+		Meteor.call('incQuizAttempts',currentUser);
+	}
 });
