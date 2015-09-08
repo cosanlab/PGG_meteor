@@ -59,9 +59,7 @@ Meteor.publish('Games', function(){
 });
 
 
-
 Meteor.methods({
-
 	//PLAYERS DB METHODS
 	'addPlayer': function(currentUser){
 		var data = {
@@ -98,10 +96,7 @@ Meteor.methods({
 		return Players.update(playerId, {$set: {status: state}});
 	},
 	'playerFinished': function(gameId){
-		//Update the clients's status in the Players DB
-		//then check both players status in the Players DB based on player ids 
-		//in the game they were playing. If both are finished, change the game
-		//status to ended
+	//Update the clients's status in the Players DB then check both players status in the Players DB based on player ids in the game they were playing. If both are finished, change the game status to ended
 		var currentUser = Meteor.userId();
 		Meteor.call('updatePlayerState', currentUser,'finished');
 		var game = Games.findOne({_id:gameId});
@@ -112,8 +107,9 @@ Meteor.methods({
 			Meteor.call('updateGameState',game._id,'ended');
 		}		
 	},
-	//When a player is matched in the lobby ensure their rematch state is reset
+	
 	'resetPlayerRematch':function(playerId){
+	//When a player is matched in the lobby ensure their rematch state is reset
 		return Players.update(playerId, {$set: {'needRematch':false}});
 	},	
 
@@ -180,6 +176,29 @@ Meteor.methods({
 		} else {
 			throw new Meteor.error ('playerError','Unrecognized player. Games not updated with player decision!');
 		}
+	},
+	'playerInstrComplete':function(gameId, currentUser){
+	//Update players status in Games db if they passed the quiz and if both have change game state to assignment
+		var game = Games.findOne(gameId);
+		if(currentUser == game.playerA){
+			data = {
+				playerAInstrComp: true
+			};
+		}
+		else if(currentUser == game.playerB){
+			data= {
+				playerBInstrComp: true
+			};
+		}
+		Games.update(gameId, {$set: data});
+
+		//Update game status to assignment if both players have passed the quiz 
+		game = Games.findOne({_id:gameId}); //Re-query the db after the update
+
+		if(game.playerAInstrComp && game.playerBInstrComp){
+			return Games.update(gameId, {$set: {'state':"assignment"}});
+		} 
+
 	},
 	'playerReady': function(gameId, currentUser){
 		// update player status to ready for games matching gameId
@@ -253,7 +272,7 @@ Meteor.methods({
 	},
 
 	'endExperiment': function(){
-		//Shut down experiment instance
+	//Shut down experiment instance
 		var exp = TurkServer.Instance.currentInstance();
 		if (exp != null){
 			exp.teardown(returnToLobby = false);	
@@ -262,8 +281,8 @@ Meteor.methods({
 		}
 	},
 
-	//Send a user back to the lobby
 	goToLobby: function(currentUser){
+	//Send a user back to the lobby
 		var inst = TurkServer.Instance.currentInstance();
 		if (inst == null){
 			console.log('No instance for ' + currentUser + '. User not sent to lobby!');
@@ -272,8 +291,8 @@ Meteor.methods({
 		inst.sendUserToLobby(currentUser);
 	},
 
-	//If a user fails the quiz set the game status to failed, send the user to the alternate exit survey, and send the other user back to the lobby with a rematch needed flag
 	failedQuiz: function(currentUser,gameId){
+	//If a user fails the quiz set the game status to failed, send the user to the alternate exit survey, and send the other user back to the lobby with a rematch needed flag
 		Games.update(gameId,{$set:{'state': 'failedQuiz'}});
 		var game = Games.findOne(gameId);
 		var partner;
