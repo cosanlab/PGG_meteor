@@ -63,12 +63,6 @@ var tutorialSteps = [
 			event: 'correctAnswer'
 		}
 	},
-	{	
-		template: "assignment",
-		onLoad: function(){
-			$(".action-tutorial-finish").text("I'm Ready!");
-		}
-	},
 
 ];
 //Global event emitter for quiz
@@ -82,7 +76,7 @@ Template.instructionsInteractive.helpers({
 		onFinish: function(){
 			var gameId = Games.findOne()._id;
 			var currentUser = Meteor.userId();
-    		Meteor.call('playerReady',gameId, currentUser);
+    		Meteor.call('playerInstrComplete',gameId, currentUser);
 		}
 	}
 });
@@ -94,9 +88,11 @@ Template.quiz.helpers({
 		var gameId = Games.findOne()._id;
 		var text;
 		var dispClass;
+		var promptDisp = 'visibility:hidden';
 		if(player.passedQuiz){
 			text = "Correct!";
 			dispClass = 'correctQuiz';
+			promptDisp = "";
 		} else if(!player.passQuiz){
 			if(player.quizAttempts == 0){
 				text = "Placehodler";
@@ -111,39 +107,24 @@ Template.quiz.helpers({
 		}
 		return{
 			text: text,
-			dispClass: dispClass
+			dispClass: dispClass,
+			promptDisp: promptDisp
 		};
 	}
 });
 //Event handler for quiz during instructions
 	Template.quiz.events({
-	'click #correct':function(event){
+	'click .correct':function(event){
 		event.stopPropagation();
+		event.preventDefault();
 		var currentUser = Meteor.userId();
 		Meteor.call('passedQuiz', currentUser);
 		emitter.emit('correctAnswer');
 	},
-	'click #incorrect':function(event){
+	'click .incorrect':function(event){
 		event.stopPropagation();
+		event.preventDefault();
 		var currentUser = Meteor.userId();
 		Meteor.call('incQuizAttempts',currentUser);
 	},
-});
-//Assignment logic based on player role and condition
-Template.assignment.helpers({
-	game: function(){
-		var game= Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA){
-			return {
-				player: 'Player A',
-				condition: game.condition
-			};
-		} else if(currentUser == game.playerB){
-			return {
-				player: 'Player B',
-				condition: game.condition
-			};
-		}
-	}
 });

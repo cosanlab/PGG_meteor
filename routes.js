@@ -4,16 +4,16 @@ Router.configure({
   loadingTemplate: 'loading'
 });
 
-Router.route('/register');
-Router.route('/login');
+//Router.route('/register');
+//Router.route('/login');
 
-//Home template, no data requires
+//Home template, no data required
 Router.route('/', {
   name: 'home',
   template: 'home',
 });
 
-//Lobby template, make sure we see the players db for matching
+//Handles which version of lobby players should see based on rematch status
 Router.route('/lobbyUG',{
   name: 'lobbyUG',
   template: 'lobbyUG',
@@ -46,9 +46,12 @@ Router.route('/instructionsInteractive',{
       var gameState = Games.findOne().state;
       if(gameState== 'instructions'){
         this.render('instructionsInteractive');
-        console.log('Game not ready');
       }
-      else if(gameState != 'failedQuiz'){
+      else if(gameState == 'assignment'){
+        this.render('assignmentInteractive');
+        Meteor.call('updatePlayerState', Meteor.userId(), 'roleAssignment');
+      }
+      else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding'){
         console.log('Game ready');
         Router.go('game');
         //Each client updates their own status
