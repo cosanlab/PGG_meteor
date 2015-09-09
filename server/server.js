@@ -18,34 +18,6 @@ Meteor.startup(function(){
 	}
 });
 
-//User connection functions
-/*
-var endGame = false;
-UserStatus.events.on('connectionLogin', function(fields){
-	console.log(fields);
-	//var reconnUser = fields.userId;
-});
-UserStatus.events.on('connectionLogout', function(fields){
-	console.log(fields);
-	//var reconnUser = fields.userId;
-});
-//If any user ever disconnects 
-
-UserStatus.events.on('connectionLogout', function(fields){
-	//Find out who they are
-	var disconUser = fields.userId;
-	//And the game they belong to
-	var game = Partitioner.bindUserGroup(disconUser,function(){
-		return Games.find({"$or": [{"playerA":disconUser},{"playerB":disconUser}]});
-	});
-	//If that game hasn't ended return the start timeout flag
-	if (game.state != 'ended'){
-		return true;
-	}
-});
-
-*/
-
 ///Subjects DB
 Meteor.publish('Players', function(){
 	return Players.find({},{fields: {name:1, enterTime:1, status:1, quizAttempts:1, passedQuiz:1,needRematch:1}});
@@ -56,6 +28,11 @@ Meteor.publish('Games', function(){
     // Security
     var currentUser = this.userId;		
 	return Games.find({"$or": [{"playerA":currentUser},{"playerB":currentUser}]});
+});
+
+//Users for disconnection
+Meteor.publish('userStatus',function(){
+	return Meteor.users.find({"status.online":true});
 });
 
 
@@ -289,6 +266,21 @@ Meteor.methods({
 			return;
 		}
 		inst.sendUserToLobby(currentUser);
+	},
+
+	partnerDisconnected: function(rematch, currentUser, gameId){
+		Games.update(gameId,{$set:{'state': 'connectionLost'}});
+		var exp = TurkServer.Instance.currentInstance();
+
+		if(rematch){
+			Players.update(currentUser,{$set:{'status':'waiting','quizAttempts':0,'passedQuiz':false, 'needRematch':true}});
+		}
+        //Teardown the experiment sending the user back to the lobby
+		if (exp != null){
+			exp.teardown();	
+		} else{
+			console.log("Could not teardown instance. Does not exist!");
+		}
 	},
 
 	failedQuiz: function(currentUser,gameId){

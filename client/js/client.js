@@ -10,7 +10,14 @@ Meteor.startup(function(){
                 Router.go('lobbyUG');
             }
             else if (TurkServer.inExperiment()){
-                Router.go('instructionsInteractive');
+                if(Meteor.users.findOne({_id: {$ne:Meteor.userId()}}) == undefined){
+                    Router.go('userDisconnect');
+                } else {
+                    if(endGameTimer){
+                        Meteor.clearTimeout(endGameTimer);
+                    } 
+                    Router.go('instructionsInteractive');
+                }
             } 
             //If in the experiment has ended take them to the exit survey
             else if (TurkServer.inExitSurvey()){
@@ -20,7 +27,8 @@ Meteor.startup(function(){
     });
 });
 
-//Reactively subscribe to the partitioned databases
+//Reactively subscribe to the partitioned databases\
+
 Tracker.autorun(function(){
     var group = TurkServer.group();
     if (group == null){
@@ -28,11 +36,21 @@ Tracker.autorun(function(){
     }
     Meteor.subscribe('Players');
     Meteor.subscribe('Games',group);
+    Meteor.subscribe('userStatus');
 });
 
 
-//Keep tabs on the other user being played with
 /*
+//When a player joins a game start a reactive computation monitoring their partner's connection status
+if(Players.findOne(Meteor.userId()).status != 'waiting'){
+    Tracker.autorun(function(){
+
+
+    });
+
+}
+//Keep tabs on the other user being played with
+
 Tracker.autorun(function(){
     var group = Turkserver.group();
 });

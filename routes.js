@@ -13,12 +13,37 @@ Router.route('/', {
   template: 'home',
 });
 
+//Disconnect template
+Router.route('/userDisconnect',{
+  name: 'userDisconnect',
+  template: 'userDisconnect',
+  waitOn: function(){
+return [Meteor.subscribe('Games'), Meteor.subscribe('userStatus')];
+  },
+  action:function(){
+    this.render('userDisconnect');
+    Meteor.call('updatePlayerState', Meteor.userId(), 'partnerDisconnect');
+    var game = Games.findOne();
+    var currentUser = Meteor.userId();
+    var rematch;
+    endGameTimer = Meteor.setTimeout(function(){
+      if(game.state == 'instructions'){
+        rematch = true;    
+      } else {
+        rematch = false;
+      }
+      Meteor.call('partnerDisconnected',rematch, currentUser, game._id);
+    },10000);
+    this.next();
+  }
+});
+
 //Handles which version of lobby players should see based on rematch status
 Router.route('/lobbyUG',{
   name: 'lobbyUG',
   template: 'lobbyUG',
   waitOn: function(){
-    Meteor.subscribe('Players');
+    return Meteor.subscribe('Players');
   },
   action: function(){
     if(Players.findOne(Meteor.userId()).needRematch){
@@ -51,7 +76,7 @@ Router.route('/instructionsInteractive',{
         this.render('assignmentInteractive');
         Meteor.call('updatePlayerState', Meteor.userId(), 'roleAssignment');
       }
-      else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding'){
+      else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding' || gameState == 'playerBdeciding'){
         console.log('Game ready');
         Router.go('game');
         //Each client updates their own status
@@ -106,8 +131,11 @@ Router.route('/endSurvey',{
   action: function(){
     var playerStatus = Players.findOne(Meteor.userId()).status;
     if(playerStatus=='failedQuiz'){
-      this.render('altEndSurvey');
-    }else{
+      this.render('endSurveyFailedQuiz');
+    } else if(playerStatus == 'partnerDisconnect'){
+      this.render('endSurveyDisconnect');
+    }
+    else{
       this.render('endSurvey');
     }
   }
