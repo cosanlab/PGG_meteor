@@ -1,3 +1,14 @@
+//Start tracking a user's connection status now
+Template.instructionsInteractive.onRendered(function(){
+	UserStatus.startMonitor(
+		{
+			'threshold': 10000,
+			'interval': 5000,
+			'idleOnBlur': false
+		});
+
+});
+
 var tutorialSteps = [
 	{
 		template: "step1",
