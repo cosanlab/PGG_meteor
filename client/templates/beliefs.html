@@ -1,0 +1,7 @@
+<template name = "beliefs">
+
+        <div class = "col-xs-5 col-xs-offset-4">
+        <label for="limit">How much do you believe?</label>
+        <input type="range" name="limit" id="limit" class="form-control" value="{{limit}}" min="1" max="100" onchange="rangevalue.value=value"> <output id="rangevalue">{{limit}}</output>
+        </div>
+</template>
