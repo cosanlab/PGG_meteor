@@ -180,7 +180,7 @@ Template.messageForm.events({
         	var message = $('.message-form').text();
         	var gameId = Games.findOne()._id;
         	Meteor.call('addMessage',gameId, message);
-        	Meteor.call('updateGameState',gameId, 'playerAdeciding');
+        	Meteor.call('updateGameState',gameId, 'beliefs');
         	event.target.value = "";
     	}
 	}

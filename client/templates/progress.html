@@ -5,9 +5,12 @@
 		{{#if notequals game.state 'instructions'}}
 			<div>
 				<ul class="nav nav-pills nav-wizard">
-					{{#if equals game.condition 'withMessaging'}} 
-						<li class = "{{game.mess}}"><a>Player B Messaging</a></li>
-					{{/if}}
+				{{#if equals game.condition 'withMessaging'}} 
+					<li class = "{{game.mess}}"><a>Player B Messaging</a></li>
+					<li class = '{{game.beliefs}}'><a>Questionnaire</a></li>
+				{{else}}
+					<li class = '{{game.beliefs}}'><a>Questionnaire</a></li>
+				{{/if}}
 					<li class = '{{game.pA}}'><a>Player A Deciding</a></li>
 					<li class = '{{game.pB}}'><a>Player B Deciding</a></li>
 					<li class = '{{game.over}}'><a>Game Over</a></li>

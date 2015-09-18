@@ -5,12 +5,16 @@ Template.progress.helpers({
 			return false;
 		} else{ 
 			var mess = "";
+			var beliefs = "";
 			var pA = "";
 			var pB = "";
 			var over = ""; 
 			var summ = "";
 
 			switch(game.state){
+				case 'beliefs':
+					beliefs = 'active';
+					break;
 				case 'playerBmessaging':
 					mess = 'active';
 					break;
@@ -30,6 +34,7 @@ Template.progress.helpers({
 			return {
 				state: game.state,
 				condition: game.condition,
+				beliefs: beliefs,
 				mess: mess,
 				pA: pA,
 				pB: pB,
