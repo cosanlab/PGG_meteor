@@ -18,22 +18,21 @@ Router.route('/userDisconnect',{
   name: 'userDisconnect',
   template: 'userDisconnect',
   waitOn: function(){
-return [Meteor.subscribe('Games'), Meteor.subscribe('userStatus')];
+    return Meteor.subscribe('Games');
   },
   action:function(){
     this.render('userDisconnect');
-    Meteor.call('updatePlayerState', Meteor.userId(), 'partnerDisconnect');
     var game = Games.findOne();
     var currentUser = Meteor.userId();
     var rematch;
-    endGameTimer = Meteor.setTimeout(function(){
-      if(game.state == 'instructions'){
+    if(game.state == 'instructions'){
         rematch = true;    
-      } else {
+    } else {
         rematch = false;
-      }
+    }
+    endGameTimer = Meteor.setTimeout(function(){
       Meteor.call('partnerDisconnected',rematch, currentUser, game._id);
-    },10000);
+    },5000);
     this.next();
   }
 });
@@ -76,10 +75,7 @@ Router.route('/instructionsInteractive',{
         this.render('assignmentInteractive');
         Meteor.call('updatePlayerState', Meteor.userId(), 'roleAssignment');
       }
-      else if(gameState == 'beliefs'){
-        this.render('beliefs');
-      }
-      else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding' || gameState == 'playerBdeciding'){
+      else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding' || gameState == 'playerBdeciding' || gameState == 'beliefs'){
         console.log('Game ready');
         Router.go('game');
         //Each client updates their own status
@@ -97,7 +93,10 @@ Router.route('/game',{
 
   action: function(){
     var game = Games.findOne();
-    if (game.state== 'finalChoices'){
+    if (game.state == 'beliefs'){
+      this.render('beliefsPopup');
+    }
+    else if (game.state== 'finalChoices'){
         setTimeout(function(){
           Router.go('payoffs');
           //Update all client statuses

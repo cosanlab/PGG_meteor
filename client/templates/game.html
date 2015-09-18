@@ -1,6 +1,5 @@
 <template name="game">
 <div class= "container-fluid">
-
 	<div class = "row" id = "gameState Label">
 		<div class= "col-xs-5 col-xs-offset-4">
 		{{#if equals game.state 'playerBmessaging'}}		
@@ -19,6 +18,11 @@
 			<div class="well well-sm well-text" align="center" style="visibility:hidden">
 				<b>Invisible spacing text </b>
 			</div>
+		{{else}} {{#if equals game.state 'beliefs'}}
+			<div class="well well-sm well-text" align="center" style="visibility:hidden">
+				<b>Invisible spacing text </b>
+			</div>
+		{{/if}}
 		{{/if}}
 		{{/if}}
 		{{/if}}

@@ -1,3 +1,29 @@
+var beliefs = [
+{
+	template: 'beliefs',
+	spot: 'body'
+}];
+
+Template.beliefsPopup.helpers({
+	options: {
+		steps: beliefs,
+		onFinish: function(){
+			var game = Games.findOne();
+			var currentUser = Meteor.userId();
+			var playerBelief = $("#beliefRating").val();
+			console.log(playerBelief);
+			$('.action-tutorial-finish').text(" ");
+			Meteor.call('updatePlayerBelief', game._id,currentUser,playerBelief);
+
+		}
+	}
+});
+
+//Change belief submit button text
+Template.beliefs.onRendered(function(){
+	$(".action-tutorial-finish").text("Continue");
+});
+
 Template.beliefs.helpers({
 	beliefs: function(){
 		var game = Games.findOne();
@@ -21,15 +47,3 @@ Template.beliefs.helpers({
       return "50";
     }
   });
-
-Template.beliefs.events({
-	'click #beliefSubmit': function(event){
-		event.preventDefault();
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		var playerBelief = $("#beliefRating").val();
-		console.log(playerBelief);
-		$('#beliefSubmit').removeClass('btn-primary').addClass('btn-warning').text('Wating for other player...').prop('disabled',true);
-		Meteor.call('updatePlayerBelief', game._id,currentUser,playerBelief);
-	}
-});

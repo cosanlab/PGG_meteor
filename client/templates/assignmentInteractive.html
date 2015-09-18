@@ -1,5 +1,5 @@
 <template name="assignmentInteractive">
-<div class = "contained-fluid">
+<div class = "container-fluid">
 {{> gameTreeinstr}}
 {{> tutorial options}}
 </div>
@@ -25,7 +25,7 @@
 	<h3 align="center">You have been assigned the role of <strong>{{game.player}}</strong></h3>
 	<blockquote>
 	{{#if equals game.condition 'withMessaging'}} 
-		The game will begin with you having the opportunity to send a personal message to Player A and influence their decision. There will be a chat box above the game tree when the game begins. Simply type your message into that box and press Enter. Player A will then choose an option after reading your message. You will be able to see the choice they make highlighted on the tree in blue.
+		The game will begin with you having the opportunity to send a personal message to Player A and influence their decision. There will be a chat box to the left of the game tree when the game begins. Simply type your message into that box and press Enter. Player A will then choose an option after reading your message. You will be able to see the choice they make highlighted on the tree in blue.
 	{{/if}}
 
 	{{#if equals game.condition 'noMessaging'}} 
