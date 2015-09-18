@@ -1,7 +1,23 @@
 <template name = "beliefs">
-
-        <div class = "col-xs-5 col-xs-offset-4">
-        <label for="limit">How much do you believe?</label>
-        <input type="range" name="limit" id="limit" class="form-control" value="{{limit}}" min="1" max="100" onchange="rangevalue.value=value"> <output id="rangevalue">{{limit}}</output>
-        </div>
+	<div class = "container-fluid">
+		<div class = "row">
+			<div class = "col-xs-6 col-xs-offset-3">
+				<div class="well well-sm well-text" align="center">
+					<b>{{beliefs.playerId}}</b>{{beliefs.question}}
+				</div>
+			</div>
+		</div>
+		<div class = "row">
+			<div class = "col-xs-4">
+				<p style = "text-align:right; font-size:18px"><b>0%</b></p>
+			</div>
+			<div class = "col-xs-4">        		
+        		<input type="range" id="beliefRating" value="{{limit}}" min="0" max="100">
+			</div>
+			<div class = "col-xs-4">
+				<p style = "font-size:18px"><b>100%</b></p>
+    		</div>
+		</div>
+		<button type="button" class="btn btn-primary btn-lg" id = "beliefSubmit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block">Continue</button>
+	</div>
 </template>
