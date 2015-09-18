@@ -76,6 +76,9 @@ Router.route('/instructionsInteractive',{
         this.render('assignmentInteractive');
         Meteor.call('updatePlayerState', Meteor.userId(), 'roleAssignment');
       }
+      else if(gameState == 'beliefs'){
+        this.render('beliefs');
+      }
       else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding' || gameState == 'playerBdeciding'){
         console.log('Game ready');
         Router.go('game');
@@ -142,6 +145,3 @@ Router.route('/endSurvey',{
 
 
 });
-
-
-

@@ -54,7 +54,7 @@ Meteor.methods({
 		Players.insert(data);
 	},
 	'passedQuiz':function(currentUser){
-		Players.update(currentUser, {$set: {passedQuiz: true}}, {$inc: {quizAttempts: 1}});
+		return Players.update(currentUser, {$set: {passedQuiz: true}}, {$inc: {quizAttempts: 1}});
 	},
 	'incQuizAttempts':function(currentUser){
 		return Players.update(currentUser, {$inc: {quizAttempts: 1}});
@@ -154,6 +154,30 @@ Meteor.methods({
 			throw new Meteor.error ('playerError','Unrecognized player. Games not updated with player decision!');
 		}
 	},
+	'updatePlayerBelief':function(gameId,currentUser,belief){
+		var game = Games.findOne({_id:gameId});
+		if(currentUser == game.playerA){
+			data = {
+				playerABelief:belief,
+				playerABeliefRT: Date.now()
+			};
+		}
+		else if (currentUser == game.playerB) {
+			data = {
+				playerBBelief:belief,
+				playerBBeliefRT: Date.now()
+			};
+		}
+		Games.update(gameId, {$set: data});
+		//Update game status when both players have submitted beliefs
+		//Make sure we take game condition into account
+		//Also record the time the experiment started to calculate RTs
+		game = Games.findOne({_id:gameId}); //Re-query the db after the update
+
+		if(game.playerABelief && game.playerBBelief){
+			return Games.update(gameId, {$set: {'state':"playerAdeciding"}});
+		} 
+	},
 	'playerInstrComplete':function(gameId, currentUser){
 	//Update players status in Games db if they passed the quiz and if both have change game state to assignment
 		var game = Games.findOne(gameId);
@@ -192,16 +216,13 @@ Meteor.methods({
 		}
 		Games.update(gameId, {$set: data});
 
-		//Update game status to playing if both player statuses are ready
-		//Make sure we take game condition into account
-		//Also record the time the experiment started to calculate RTs
+		//Update game status to beliefs if both players are ready and it's the no message condition otherwise go to the player B messaging
 		game = Games.findOne({_id:gameId}); //Re-query the db after the update
 
-		if(game.playerAReady && game.playerBReady && game.condition == 'withMessaging'){
+		if(game.playerAReady&& game.playerBReady && game.condition == 'noMessaging'){
+			return Games.update(gameId, {$set: {'state':"beliefs", 'GameStart': Date.now()}});
+		} else if(game.playerAReady && game.playerBReady && game.condition == 'withMessaging'){
 			return Games.update(gameId, {$set: {'state':"playerBmessaging", 'GameStart': Date.now()}});
-			//Meteor.call('updateGameState',game._id, "playerBmessaging");
-		} else if(game.playerAReady && game.playerBReady && game.condition == 'noMessaging'){
-			return Games.update(gameId, {$set: {'state':"playerAdeciding", 'GameStart': Date.now()}});
 		}
 	},
 	'addMessage':function(gameId, message){
