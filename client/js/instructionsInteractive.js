@@ -1,4 +1,5 @@
 //Start tracking a user's connection status now
+/*
 Template.instructionsInteractive.onRendered(function(){
 	UserStatus.startMonitor(
 		{
@@ -7,7 +8,7 @@ Template.instructionsInteractive.onRendered(function(){
 			'idleOnBlur': false
 		});
 
-});
+}); */
 
 var tutorialSteps = [
 	{

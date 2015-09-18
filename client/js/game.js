@@ -14,7 +14,7 @@ Template.game.helpers({
 			}
 			Bdecide = "";
 		}
-		if(game.condition == 'withMessaging' && game.state=='playerAdeciding'){
+		if(game.condition == 'withMessaging' && (game.state=='playerAdeciding' || game.state == 'beliefs')){
 			messageDisplay = "";
 		}
 		return {
@@ -180,7 +180,10 @@ Template.messageForm.events({
         	var message = $('.message-form').text();
         	var gameId = Games.findOne()._id;
         	Meteor.call('addMessage',gameId, message);
-        	Meteor.call('updateGameState',gameId, 'beliefs');
+        	Meteor.call('updateGameState', gameId, 'beliefs');
+        //	Meteor.setTimeout(function(){
+      	//		Meteor.call('updateGameState',gameId, 'beliefs');
+    	//	},10000);
         	event.target.value = "";
     	}
 	}

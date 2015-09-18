@@ -296,6 +296,9 @@ Meteor.methods({
 		if(rematch){
 			Players.update(currentUser,{$set:{'status':'waiting','quizAttempts':0,'passedQuiz':false, 'needRematch':true}});
 		}
+		else {
+			Players.update(currentUser,{$set:{'status':'partnerDisconnected'}});
+		}
         //Teardown the experiment sending the user back to the lobby
 		if (exp != null){
 			exp.teardown();	

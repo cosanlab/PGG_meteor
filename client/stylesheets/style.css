@@ -67,7 +67,7 @@ display: block;
 width: 0;
 z-index: 1;
 margin-left: -9px;
-top: -12px;
+top: -10px;
 left: 15%;
 }
 p.message-form:focus{
