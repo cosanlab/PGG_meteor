@@ -54,7 +54,7 @@ Meteor.methods({
 		Players.insert(data);
 	},
 	'passedQuiz':function(currentUser){
-		return Players.update(currentUser, {$set: {passedQuiz: true}}, {$inc: {quizAttempts: 1}});
+		return Players.update(currentUser, {$set: {passedQuiz: true}, $inc: {quizAttempts: 1}});
 	},
 	'incQuizAttempts':function(currentUser){
 		return Players.update(currentUser, {$inc: {quizAttempts: 1}});
