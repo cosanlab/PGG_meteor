@@ -2,16 +2,32 @@
 	<div class="jumbotron container-fluid">
         <div class="row well well-xs">
             <div class="col-md-6 col-md-offset-3">
-                <h2 align="center">Thank you for participating!</h2>
-                <br>
+                {{#if player.failedQuiz}}
+                    <h2 align="center">You are not eligible for this HIT</h2>
+                    <br>
+                    <br>
+                    <p align="center">It appears that you did not pass our comprehension quiz and therefore cannot partcipate.</p>
+                    <p align = "center">Please return this HIT.</p>
+                {{else}}
+                    <h2 align="center">Thank you for participating!</h2>
+                    {{#if player.partnerDisconnected}}
+                        <br>
+                        <p align="center">It appears as though we could not reconnect you with your partner.</p>
+                        <br>
+                        <p align="center">Please rest assured that you will still be paid for accepting this HIT.</p>
+                    {{/if}}
+                    <br>
                     <label style= "display:block; text-align:center" for="feedback">Please enter any feedback, including problems you encountered in the box below </label>
                     <textarea class= "form-control" id ="feedback" rows = "3" ></textarea>
                     <p align="center"> Click the button below to submit the HIT.</p>
-                    <p align="center"> Your bonus payment will be added automatically.</p>
+                    {{#unless player.partnerDisconnected}}
+                        <p align="center"> Your bonus payment will be added automatically.</p>
+                    {{/unless}}
                     <br>
                     <br>
                     <br>
-				    <button type="button" class="btn btn-primary btn-lg" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>Submit HIT</button>	
+				    <button type="button" class="btn btn-primary btn-lg" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>Submit HIT</button>
+                {{/if}}	
             </div>
         </div>
     </div>

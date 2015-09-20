@@ -4,6 +4,8 @@ Router.configure({
   loadingTemplate: 'loading'
 });
 
+//Loading template hook
+Router.onBeforeAction('loading');
 //Home template, no data required
 Router.route('/', {
   name: 'home',
@@ -79,11 +81,8 @@ Router.route('/game',{
     }
     else if (game.state== 'finalChoices'){
         setTimeout(function(){
-          Router.go('payoffs');
-          //Update all client statuses
-          Meteor.call('playerFinished', game._id); 
-        },  
-        5000);
+          Router.go('payoffs'); 
+        },5000);
         this.next();
                 
       }
@@ -112,16 +111,6 @@ Router.route('/endSurvey',{
     return Meteor.subscribe('Players');
   },
   action: function(){
-    var playerStatus = Players.findOne(Meteor.userId()).status;
-    if(playerStatus=='failedQuiz'){
-      this.render('endSurveyFailedQuiz');
-    } else if(playerStatus == 'partnerDisconnect'){
-      this.render('endSurveyDisconnect');
-    }
-    else{
       this.render('endSurvey');
-    }
   }
-
-
 });
