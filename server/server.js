@@ -289,9 +289,11 @@ Meteor.methods({
 		inst.sendUserToLobby(currentUser);
 	},
 
-	partnerDisconnected: function(rematch, currentUser, gameId){
+	partnerDisconnected: function(rematch, currentUser, userInst, gameId){
+		//Gets called after a specified delay. If the disconnection occurred during the instructions then send the user back to the lobby to get rematched. Otherwise send them back to the lobby and the assigner should push them to the exit survey. Tear down the experiment too.
 		Games.update(gameId,{$set:{'state': 'connectionLost'}});
-		var exp = TurkServer.Instance.currentInstance();
+		var exp = TurkServer.Instance.getInstance(userInst);
+		console.log(exp);
 
 		if(rematch){
 			Players.update(currentUser,{$set:{'status':'waiting','quizAttempts':0,'passedQuiz':false, 'needRematch':true}});
@@ -301,7 +303,10 @@ Meteor.methods({
 		}
         //Teardown the experiment sending the user back to the lobby
 		if (exp != null){
-			exp.teardown();	
+			exp.teardown(returnToLobby = false);
+			console.log('Disconnected experiment successfully ended!');
+			exp.sendUserToLobby(currentUser);	
+			console.log('Connected user sent to lobby for rematching!');
 		} else{
 			console.log("Could not teardown instance. Does not exist!");
 		}
