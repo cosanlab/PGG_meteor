@@ -4,9 +4,6 @@ Router.configure({
   loadingTemplate: 'loading'
 });
 
-//Router.route('/register');
-//Router.route('/login');
-
 //Home template, no data required
 Router.route('/', {
   name: 'home',
@@ -21,19 +18,7 @@ Router.route('/userDisconnect',{
     return Meteor.subscribe('Games');
   },
   action:function(){
-    this.render('userDisconnect');
-    var game = Games.findOne();
-    var currentUser = Meteor.userId();
-    var rematch;
-    if(game.state == 'instructions'){
-        rematch = true;    
-    } else {
-        rematch = false;
-    }
-    endGameTimer = Meteor.setTimeout(function(){
-      Meteor.call('partnerDisconnected',rematch, currentUser, game._id);
-    },5000);
-    this.next();
+      this.render('userDisconnect');
   }
 });
 
@@ -45,11 +30,7 @@ Router.route('/lobbyUG',{
     return Meteor.subscribe('Players');
   },
   action: function(){
-    if(Players.findOne(Meteor.userId()).needRematch){
-      this.render('altLobbyUG');
-    } else{
       this.render('lobbyUG');
-    }
   },
   onBeforeAction: function() {
     if (!Meteor.user()) {

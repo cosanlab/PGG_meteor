@@ -1,12 +1,9 @@
 Template.lobbyUG.helpers({
   
-  lobby:function(){
-    var lobby = LobbyStatus.find();
-    return{
-      count: lobby.count(),
-      info: lobby
-    };
+  rematch:function(){
+    return Players.findOne(Meteor.userId()).needRematch;
   },
+  
   //Scope of this is lobbyinfo
   identifier: function() {
     var user = Meteor.users.findOne(this._id);
