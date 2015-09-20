@@ -21,6 +21,9 @@ Meteor.startup(function(){
             } 
             //If in the experiment has ended take them to the exit survey
             else if (TurkServer.inExitSurvey()){
+                if(endGameTimer){
+                        Meteor.clearTimeout(endGameTimer);
+                    }
                 Router.go('endSurvey');
             }
         });

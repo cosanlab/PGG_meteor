@@ -24,7 +24,12 @@ Template.payoffs.helpers({
 Template.payoffs.onRendered(function(){
 	var currentUser = Meteor.userId();
 	var gameId = Games.findOne()._id;
+	//Update player status
+    Meteor.call('playerFinished', currentUser, gameId);
+
+	//Calculate the payoff bonuses and tear down the experiment instance
 	Meteor.call('calcBonuses', gameId, currentUser);
+	
 	//Wait 5 seconds to send a user back to the lobby
 	Meteor.setTimeout(function(){
 		Meteor.call('goToLobby', currentUser);

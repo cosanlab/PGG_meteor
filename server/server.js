@@ -72,9 +72,8 @@ Meteor.methods({
 		check(state,String);
 		return Players.update(playerId, {$set: {status: state}});
 	},
-	'playerFinished': function(gameId){
+	'playerFinished': function(currentUser, gameId){
 	//Update the clients's status in the Players DB then check both players status in the Players DB based on player ids in the game they were playing. If both are finished, change the game status to ended
-		var currentUser = Meteor.userId();
 		Meteor.call('updatePlayerState', currentUser,'finished');
 		var game = Games.findOne({_id:gameId});
 		var playerAstatus = Players.findOne({_id:game.playerA}).status;
@@ -245,10 +244,10 @@ Meteor.methods({
 
 	//TURKSERVER METHODS
 
-	//Calculate bonuses and shut down the instance, which both users won't be in anymore because this only gets call from the exit survey
+	//Calculate bonuses and shut down the instance, which both users won't be in anymore because this only gets called from the exit survey
 	'calcBonuses': function(gameId, currentUser){
 		//First calculate bonuses
-		var asst = TurkServer.Assignment.currentAssignment();
+		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var game = Games.findOne({_id:gameId});
 		if(game.PlayerAChoice == 'Left'){
 			Abonus = 0.10;
@@ -292,8 +291,10 @@ Meteor.methods({
 	partnerDisconnected: function(rematch, currentUser, userInst, gameId){
 		//Gets called after a specified delay. If the disconnection occurred during the instructions then send the user back to the lobby to get rematched. Otherwise send them back to the lobby and the assigner should push them to the exit survey. Tear down the experiment too.
 		Games.update(gameId,{$set:{'state': 'connectionLost'}});
+		var game = Partitioner.bindUserGroup(currentUser,function(gameId){
+				return Games.findOne(gameId);
+			});
 		var exp = TurkServer.Instance.getInstance(userInst);
-		console.log(exp);
 
 		if(rematch){
 			Players.update(currentUser,{$set:{'status':'waiting','quizAttempts':0,'passedQuiz':false, 'needRematch':true}});
@@ -310,6 +311,23 @@ Meteor.methods({
 		} else{
 			console.log("Could not teardown instance. Does not exist!");
 		}
+		//Remove the disconnected user from the experiment in case they reconnect (i.e. equivalent to cancelling disconnected assignment from TurkServer admin menu)
+		var partner;
+		if(currentUser == game.playerA){
+			partner = game.playerB;
+		} else{
+			partner = game.playerA;
+		}
+		var partnerAsst = TurkServer.Assignment.getCurrentUserAssignment(partner);
+		//Modified from Andrews button click code
+		partnerAsst.setReturned();
+      	if ((userGroup = Partitioner.getUserGroup(partner)) != null) {
+        partnerAsst._leaveInstance(userGroup);
+        Partitioner.clearUserGroup(partner);
+        console.log('Disconnected user assignment canceled successfully!');    
+      } else{
+      	console.log("Problem cancelling disconnected user assignment!");
+      }
 	},
 
 	failedQuiz: function(currentUser,gameId){
@@ -326,7 +344,7 @@ Meteor.methods({
 		Meteor.call('goToLobby', partner);
 
 		Players.update(currentUser,{$set:{'status':'failedQuiz'}});
-		asst = TurkServer.Assignment.currentAssignment();
+		asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		asst.showExitSurvey();
 		Meteor.call('endExperiment');
 
