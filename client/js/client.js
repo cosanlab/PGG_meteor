@@ -1,9 +1,8 @@
-//Setup up a reactive computation that monitors when clients' states
+//Setup up a reactive computation that monitors when clients' states changes
 Meteor.startup(function(){
     Meteor.defer(function(){
         Tracker.autorun(function(){
-            //Just use TS's default lobby and let the Assigner handle matching
-            //If in experiment add to players db and send to instructions
+            //When a user is in the lobby clear any experiment-ending timers, make sure they have access to the lobby db, and show them the lobby template
             if(TurkServer.inLobby()){
                 if(endGameTimer){
                         Meteor.clearTimeout(endGameTimer);
@@ -12,6 +11,7 @@ Meteor.startup(function(){
                 Meteor.subscribe('lobby', batch && batch._id);
                 Router.go('lobbyUG');
             }
+            //When a user is in an experiment, if their partner has disconnected show them the disconnection template and start a timer that will eventually end the experiment. Otherwise, clear any experiment-ending timers (e.g. if everyone reconnects) and show them the instructions template which has it's own logic about which state of the game they should see
             else if (TurkServer.inExperiment()){
                 if(Meteor.users.findOne({_id: {$ne:Meteor.userId()}}) == undefined){
                     Router.go('userDisconnect');
@@ -22,7 +22,7 @@ Meteor.startup(function(){
                     Router.go('instructionsInteractive');
                 }
             } 
-            //If in the experiment has ended take them to the exit survey
+            //If a user is in the exit survey clear any experiment-ending times and render the end survey template
             else if (TurkServer.inExitSurvey()){
                 if(endGameTimer){
                         Meteor.clearTimeout(endGameTimer);

@@ -51,12 +51,13 @@ Router.route('/instructionsInteractive',{
   },
   action: function(){
       var gameState = Games.findOne().state;
+      var currentUser = Meteor.userId();
       if(gameState== 'instructions'){
         this.render('instructionsInteractive');
       }
       else if(gameState == 'assignment'){
         this.render('assignmentInteractive');
-        Meteor.call('updatePlayerState', Meteor.userId(), 'roleAssignment');
+        Meteor.call('updatePlayerState', currentUser, 'roleAssignment');
       }
       else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding' || gameState == 'playerBdeciding' || gameState == 'beliefs'){
         console.log('Game ready');
