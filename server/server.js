@@ -249,7 +249,7 @@ Meteor.methods({
 	//TURKSERVER METHODS
 
 	//Calculate bonuses and shut down the instance, which both users won't be in anymore because this only gets called from the exit survey
-	'calcBonuses': function(gameId, currentUser){
+	'calcBonuses': function(gameId, currentUser, userInst){
 		//First calculate bonuses
 		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var game = Games.findOne({_id:gameId});
@@ -269,7 +269,7 @@ Meteor.methods({
 			asst.addPayment(Bbonus);
 		}
 
-		Meteor.call('endExperiment');
+		Meteor.call('endExperiment', userInst);
 	},
 
 	'endExperiment': function(inst){
@@ -346,9 +346,9 @@ Meteor.methods({
 		} else{
 			partner = game.playerA;
 		}
-		//Send partner to lobby for rematching
+		//Set partner up for rematching. They will send themselves to lobby
 		Players.update(partner,{$set:{'status':'waiting','quizAttempts':0,'passedQuiz':false, 'needRematch':true}});
-		Meteor.call('goToLobby', partner, userInst);
+		//Meteor.call('goToLobby', partner, userInst);
 
 		//Send user to exit survey
 		Players.update(currentUser,{$set:{'status':'failedQuiz'}});
