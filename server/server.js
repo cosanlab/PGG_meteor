@@ -56,8 +56,12 @@ Meteor.methods({
 	'passedQuiz':function(currentUser){
 		return Players.update(currentUser, {$set: {passedQuiz: true}, $inc: {quizAttempts: 1}});
 	},
-	'incQuizAttempts':function(currentUser){
-		return Players.update(currentUser, {$inc: {quizAttempts: 1}});
+	'incQuizAttempts':function(currentUser, gameId, userInst){
+		Players.update(currentUser, {$inc: {quizAttempts: 1}});
+		var quizAttempts = Players.findOne(currentUser).quizAttempts;
+		if (quizAttempts == 2){
+			Meteor.call('failedQuiz', currentUser, gameId, userInst);
+		}
 	},
 	'removePlayer': function(currentUser){
 		var data = {
@@ -193,7 +197,7 @@ Meteor.methods({
 		Games.update(gameId, {$set: data});
 
 		//Update game status to assignment if both players have passed the quiz 
-		game = Games.findOne({_id:gameId}); //Re-query the db after the update
+		game = Games.findOne(gameId); //Re-query the db after the update
 
 		if(game.playerAInstrComp && game.playerBInstrComp){
 			return Games.update(gameId, {$set: {'state':"assignment"}});
@@ -268,9 +272,9 @@ Meteor.methods({
 		Meteor.call('endExperiment');
 	},
 
-	'endExperiment': function(){
+	'endExperiment': function(inst){
 	//Shut down experiment instance
-		var exp = TurkServer.Instance.currentInstance();
+		var exp = TurkServer.Instance.getInstance(inst);
 		if (exp != null){
 			exp.teardown(returnToLobby = false);	
 		} else{
@@ -278,14 +282,14 @@ Meteor.methods({
 		}
 	},
 
-	goToLobby: function(currentUser){
+	goToLobby: function(currentUser,inst){
 	//Send a user back to the lobby
-		var inst = TurkServer.Instance.currentInstance();
-		if (inst == null){
+		var exp = TurkServer.Instance.getInstance(inst);
+		if (exp == null){
 			console.log('No instance for ' + currentUser + '. User not sent to lobby!');
 			return;
 		}
-		inst.sendUserToLobby(currentUser);
+		exp.sendUserToLobby(currentUser);
 	},
 
 	partnerDisconnected: function(rematch, currentUser, userInst, gameId){
@@ -303,7 +307,9 @@ Meteor.methods({
 			Players.update(currentUser,{$set:{'status':'partnerDisconnected'}});
 		}
         //Teardown the experiment sending the user back to the lobby
+        //Could probably modify and call 'endExperiment' method here
 		if (exp != null){
+			//Return to lobby arg is false because instance teardown should not send both users to lobby, instead call manually on a single user below
 			exp.teardown(returnToLobby = false);
 			console.log('Disconnected experiment successfully ended!');
 			exp.sendUserToLobby(currentUser);	
@@ -330,8 +336,8 @@ Meteor.methods({
       }
 	},
 
-	failedQuiz: function(currentUser,gameId){
-	//If a user fails the quiz set the game status to failed, send the user to the alternate exit survey, and send the other user back to the lobby with a rematch needed flag
+	failedQuiz: function(currentUser,gameId, userInst){
+	//If a user fails the quiz set the game status to failed, send the partner back to the lobby for rematching and send the user to the alternate exit survey
 		Games.update(gameId,{$set:{'state': 'failedQuiz'}});
 		var game = Games.findOne(gameId);
 		var partner;
@@ -340,13 +346,16 @@ Meteor.methods({
 		} else{
 			partner = game.playerA;
 		}
+		//Send partner to lobby for rematching
 		Players.update(partner,{$set:{'status':'waiting','quizAttempts':0,'passedQuiz':false, 'needRematch':true}});
-		Meteor.call('goToLobby', partner);
+		Meteor.call('goToLobby', partner, userInst);
 
+		//Send user to exit survey
 		Players.update(currentUser,{$set:{'status':'failedQuiz'}});
 		asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		asst.showExitSurvey();
-		Meteor.call('endExperiment');
+		Meteor.call('endExperiment', userInst);
+		console.log('Failed quiz experiment ended successfully!');
 
 
 	}
