@@ -52,12 +52,16 @@ Router.route('/instructionsInteractive',{
   action: function(){
       var gameState = Games.findOne().state;
       var currentUser = Meteor.userId();
+      var needRematch = Players.findOne(currentUser).needRematch;
       if(gameState== 'instructions'){
         this.render('instructionsInteractive');
       }
       else if(gameState == 'assignment'){
         this.render('assignmentInteractive');
         Meteor.call('updatePlayerState', currentUser, 'roleAssignment');
+      }
+      else if(needRematch){
+        Router.go('failedQuiz');
       }
       else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding' || gameState == 'playerBdeciding' || gameState == 'beliefs'){
         console.log('Game ready');
@@ -101,6 +105,12 @@ Router.route('/payoffs',{
   action: function(){
     this.render('payoffs');
   }
+});
+
+//If partner fails quiz
+Router.route('/failedQuiz',{
+  name: 'failedQuiz',
+  template: 'partnerfailedQuiz'
 });
 
 //End survey
