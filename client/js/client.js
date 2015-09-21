@@ -5,6 +5,9 @@ Meteor.startup(function(){
             //Just use TS's default lobby and let the Assigner handle matching
             //If in experiment add to players db and send to instructions
             if(TurkServer.inLobby()){
+                if(endGameTimer){
+                        Meteor.clearTimeout(endGameTimer);
+                    }
                 var batch = TurkServer.batch();
                 Meteor.subscribe('lobby', batch && batch._id);
                 Router.go('lobbyUG');

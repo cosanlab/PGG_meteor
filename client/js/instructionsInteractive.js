@@ -97,7 +97,6 @@ Template.quiz.helpers({
 	feedback: function(){
 		var currentUser = Meteor.userId();
 		var player = Players.findOne(currentUser);
-		var gameId = Games.findOne()._id;
 		var text;
 		var dispClass;
 		var promptDisp = 'visibility:hidden';
@@ -110,12 +109,10 @@ Template.quiz.helpers({
 				text = "Placehodler";
 				dispClass = 'noresponseQuiz';
 			}
-			if(player.quizAttempts > 0 && player.quizAttempts < 2){
+			else if(player.quizAttempts > 0 && player.quizAttempts < 2){
 				text = "Incorrect. One try remaining";
 				dispClass = 'incorrectQuiz';
-			} else if(player.quizAttempts == 2){
-				Meteor.call('failedQuiz',currentUser,gameId);
-			}
+			} 
 		}
 		return{
 			text: text,
@@ -133,16 +130,12 @@ Template.quiz.helpers({
 		Meteor.call('passedQuiz', currentUser);
 		emitter.emit('correctAnswer');
 	},
-	'change #A':function(event){
+	'change #A, change #C':function(event){
 		event.stopPropagation();
 		event.preventDefault();
 		var currentUser = Meteor.userId();
-		Meteor.call('incQuizAttempts',currentUser);
-	},
-	'change #C':function(event){
-		event.stopPropagation();
-		event.preventDefault();
-		var currentUser = Meteor.userId();
-		Meteor.call('incQuizAttempts',currentUser);
+		var gameId = Games.findOne()._id;
+		var userInst = Meteor.users.findOne(currentUser).group; 
+		Meteor.call('incQuizAttempts',currentUser, gameId, userInst);
 	}
 });
