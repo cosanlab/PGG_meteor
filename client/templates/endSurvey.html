@@ -1,7 +1,7 @@
 <template name="endSurvey">
 	<div class="jumbotron container-fluid">
         <div class="row well well-xs">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-xs-10 col-xs-offset-1">
                 {{#if player.failedQuiz}}
                     <h2 align="center">You are not eligible for this HIT</h2>
                     <br>
@@ -11,20 +11,22 @@
                 {{else}}
                     <h2 align="center">Thank you for participating!</h2>
                     {{#if player.partnerDisconnected}}
-                        <br>
-                        <p align="center">It appears as though we could not reconnect you with your partner.</p>
-                        <br>
-                        <p align="center">Please rest assured that you will still be paid for accepting this HIT.</p>
+                        <p align="center" style = "font-size:18px">It appears as though we could not reconnect you with your partner.</p>
+                        <p align="center" style = "font-size:18px">Please rest assured that you will still be paid for accepting this HIT.</p>
                     {{/if}}
-                    <br>
+                       <h4 align = "center">Please provide your age and gender below</h4>
+                        <p align = "center" style="font-size:14px"> <i>You do not have to provide any information you feel uncomfortable with</i></p>
+                        <div align = "center">
+                            <label class = "exitSurvey">Age: <input type="text" class = "exitSurveyInput" id ="age" name="optradio" size = "5"></label>
+                            <label class = "exitSurvey"><input type="radio" class = "exitSurveyInput" id ="male" name="optradio">Male</label>
+                            <label class = "exitSurvey"><input class = "exitSurveyInput" type="radio" id = "female" name="optradio">Female</label>
+                        </div>                    
                     <label style= "display:block; text-align:center" for="feedback">Please enter any feedback, including problems you encountered in the box below </label>
                     <textarea class= "form-control" id ="feedback" rows = "3" ></textarea>
                     <p align="center"> Click the button below to submit the HIT.</p>
                     {{#unless player.partnerDisconnected}}
                         <p align="center"> Your bonus payment will be added automatically.</p>
                     {{/unless}}
-                    <br>
-                    <br>
                     <br>
 				    <button type="button" class="btn btn-primary btn-lg" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>Submit HIT</button>
                 {{/if}}	

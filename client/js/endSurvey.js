@@ -20,13 +20,27 @@ Template.endSurvey.helpers({
 Template.endSurvey.events({
 	'click button': function(event){
 		event.preventDefault();
-		//var currentUser = Meteor.userId();
+		var currentUser = Meteor.userId();
 		var feedback = $('#feedback').val();
 		var results = {Feedback: feedback};
-		//Meteor.call('addPlayerFeedback',currentUser,feedback);
+		var age = $('#age').val();
+		//For the sake no blank fields fill NAs if client doesn't complete exit survey
+		if(!feedback){
+			feedback = 'NA';
+		}
+		if (!age){
+			age = 'NA';
+		}
+		var gender;
+		if($('#male').is(':checked')){
+			gender = 'male';
+		} else if($('#female').is(':checked')){
+			gender = 'female';
+		} else{
+			gender = 'NA';
+		}
+		Meteor.call('addPlayerExitInfo',currentUser,feedback, age, gender);
 		TurkServer.submitExitSurvey(results);
-		//Need this once HIT is submitted
-		//Router.go('endExperiment');	
 	}
 });
 

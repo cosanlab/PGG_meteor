@@ -232,18 +232,16 @@ Meteor.methods({
 		Games.update(gameId, {$set:
 			{'message':message, 'messageRT':Date.now()}});
 	},
-	'addPlayerFeedback': function(playerId, feedback){
-		var game = Games.findOne({"$or": [{"playerA":playerId},{"playerB":playerId}]});
-		var gameId = game._id;
-		if(playerId == game.PlayerA){
-			Partitioner.bindUserGroup(playerId,function(){
-				Games.update(gameId,{$set:{'playerAfeedback': feedback}});
-			});
+	'addPlayerExitInfo':function(currentUser, feedback, age, gender, results){
+		Partitioner.directOperation(function(){
+		var game = Games.findOne({"$or": [{"playerA":currentUser},{"playerB":currentUser}]});
+		if (currentUser == game.playerA){
+			Games.update(game._id,{$set:{'playerAfeedback': feedback, 'playerAage': age, 'playerAgender': gender}});
+		} else if (currentUser == game.playerB){
+			Games.update(game._id,{$set:{'playerBfeedback': feedback, 'playerBage': age, 'playerBgender': gender}});
 		}
-		else if(playerId == game.PlayerB){
-			Partitioner.bindUserGroup(playerId,function(){
-				Games.update(gameId,{$set:{'playerBfeedback': feedback}});
-			});		}
+		});
+		
 	},
 
 	//TURKSERVER METHODS

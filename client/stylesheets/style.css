@@ -6,6 +6,14 @@ img {
     height: 100%;
 }
 
+/* Exit Survey form 
+.exitSurvey{
+  float: left;
+}
+.exitSurveyInput{
+  float:center;
+}
+*/
 /* Player prompts during game */
 .well-text{
   font-size:18px;
