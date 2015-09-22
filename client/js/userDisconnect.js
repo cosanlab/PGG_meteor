@@ -12,7 +12,7 @@ Template.userDisconnect.onRendered(function(){
     //After a delay end the experiment either rematching the user or not
     endGameTimer = Meteor.setTimeout(function(){
       Meteor.call('partnerDisconnected',rematch, currentUser, userInst, game._id);
-    },5000);
+    },60000);
 });
 
 //Tell user they will be rematched or sent to the submit HIT screen
