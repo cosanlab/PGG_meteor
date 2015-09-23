@@ -23,8 +23,8 @@ TurkServer.Assigners.UGAssigner = (function(superClass) {
         this.lobby.pluckUsers([asst.userId]);
         return asst.showExitSurvey();
       }
-    } else{
-      Meteor.call('addPlayer', asst.userId);
+    } else if(!Players.findOne(asst.userId)){
+        Meteor.call('addPlayer', asst.userId);
     }
 
     //If there are 2 people in the lobby create a new instance and send both players there
