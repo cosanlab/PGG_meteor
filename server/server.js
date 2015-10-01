@@ -235,10 +235,14 @@ Meteor.methods({
 	'addPlayerExitInfo':function(currentUser, feedback, age, gender, results){
 		Partitioner.directOperation(function(){
 		var game = Games.findOne({"$or": [{"playerA":currentUser},{"playerB":currentUser}]});
-		if (currentUser == game.playerA){
-			Games.update(game._id,{$set:{'playerAfeedback': feedback, 'playerAage': age, 'playerAgender': gender}});
-		} else if (currentUser == game.playerB){
-			Games.update(game._id,{$set:{'playerBfeedback': feedback, 'playerBage': age, 'playerBgender': gender}});
+		if(!game){
+			console.log("Could not find a game with user" + currentUser + "!");
+		} else{
+			if (currentUser == game.playerA){
+				Games.update(game._id,{$set:{'playerAfeedback': feedback, 'playerAage': age, 'playerAgender': gender}});
+			} else if (currentUser == game.playerB){
+				Games.update(game._id,{$set:{'playerBfeedback': feedback, 'playerBage': age, 'playerBgender': gender}});
+			}
 		}
 		});
 		
