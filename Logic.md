@@ -49,7 +49,7 @@ Games:
 - Condition: high/med/low + gossip/nogossip
 - Game start
 - Round
-- State
+- State: initialized/
 - Players
     + Player A:
         * name: meteorID
