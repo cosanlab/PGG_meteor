@@ -1,16 +1,20 @@
 ## Experiment Logic
 
 ###Assigner
-- Is user associate with an experiment?
+- ~~Is user associate with an experiment?~~
     + Yes: Does user need rematch?
         * Yes: Leave them in lobby, don't add to players db
         * No: Push them to exit survey
     + No: Add them to players db + leave them in lobby
-- Are there 5 people in the lobby?
+- ~~Are there 5 people in the lobby?~~
     + Yes: create a new experiment instance and add them all
     + No: do nothing
-- Start a lobby timer for the user
+- ~~Start a lobby timer for the user~~
     + If 5 minutes have passed send them to the exit survey
+- Has the user completed the instructions?
+    + Implement functionallity to have users complete the instructions before they get matched with other players
+    + If the successfully understand the game, i.e. pass the quizz, change their status and then try to match them
+
 
 ###Game Instructions
 - Explain game

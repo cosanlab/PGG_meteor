@@ -17,6 +17,26 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     PGGAssigner.__super__.initialize.apply(this, arguments);
   };
 
+//New Assigner
+//TODO: logic about presenting instructions, seeing their understand, then making them eligible to be matched and starting the wait timer 
+  PGGAssigner.prototype.userJoined = function(asst){
+    //If a user has been in an experiment before check to see if they need to be rematched, if so leave them in the lobby otherwise take them to the exit survey
+    //When leaving users in the lobby also start and store a 5 minute lobby timers
+    var asstId = asst.userId;
+    if(asst.getInstances().length > 0){
+      if(!Players.findOne(asstId).needRematch){
+        this.lobby.pluckUsers([asstId]);
+        return asst.showExitSurvey();
+      }
+    } else if(!Players.findOne(asstId)){
+        Meteor.call('addPlayer', asstId);
+        var userlobbyBomb = Meteor.setTimeout(function(){
+          Meteor.call('lobbyTimeBomb',asstId);
+    },300000);
+        this.lobbyTimers.push({asstId:userLobbyBomb});
+
+    }
+
   PGGAssigner.prototype.userJoined = function(asst){
     //If a user has been in an experiment before check to see if they need to be rematched, if so leave them in the lobby otherwise take them to the exit survey
     //When leaving users in the lobby also start and store a 5 minute lobby timers
