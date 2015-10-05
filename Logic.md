@@ -91,3 +91,8 @@ Games:
 - New pandas df for each player dict
 - Then concatenate them
 - Visualize player decisions correlations as similarity matrix per round (see Evernote)
+
+###Extra notes
+- use python letters equivalent for modularity of number of players
+- wait until last user has completed game before tearing down instance
+- When submitting instructions quiz, change assignment status to passed quiz

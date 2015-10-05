@@ -32,10 +32,10 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
         Meteor.call('addPlayer', asstId);
         var userlobbyBomb = Meteor.setTimeout(function(){
           Meteor.call('lobbyTimeBomb',asstId);
-    },300000);
+        },300000);
         this.lobbyTimers.push({asstId:userLobbyBomb});
-
     }
+  };
 
   PGGAssigner.prototype.userJoined = function(asst){
     //If a user has been in an experiment before check to see if they need to be rematched, if so leave them in the lobby otherwise take them to the exit survey
@@ -54,11 +54,12 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
         this.lobbyTimers.push({asstId:userLobbyBomb});
 
     }
-
-    //If there are 5 people in the lobby create a new instance and send both players there
+  };
+  PGGAssigner.prototype.userStatusChanged = function(){
+    //Check if there are 5 people in the lobby who have passed the quiz if so create an experiment
     //Also change their status in the players db and create a game
     //Also clear their lobby timers 
-    var lobbyUsers = this.lobby.getAssignments();
+    var lobbyUsers = this.lobby.getAssignments({'status':'passedQuiz'});
     
     if (lobbyUsers.length == this.groupSize)  {
       this.instance = this.batch.createInstance([this.treatment]);

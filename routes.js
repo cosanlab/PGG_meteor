@@ -1,4 +1,4 @@
-// Routing Info
+// Router configuration
 Router.configure({
   layoutTemplate: 'main',
   loadingTemplate: 'loading'
@@ -12,6 +12,31 @@ Router.route('/', {
   template: 'home',
 });
 
+//When users accept the HIT they're either shown the instructions (if they haven't passed the quiz) or they are show the main lobby screen
+Router.route('/lobby',{
+  name: 'lobby',
+  template: 'lobby',
+  waitOn: function(){
+    return Meteor.subscribe('Players');
+  },
+  action: function(){
+    var currentUser = Players.findOne(Meteor.userId());
+    if (!currentUser.passedQuiz){
+      this.render('instructions');
+    } else{
+      this.render('lobby');
+    }
+  },
+  onBeforeAction: function() {
+    if (!Meteor.user()) {
+      return this.render("tsUserAccessDenied");
+    } else{
+      return this.next();
+    }
+
+  }
+}); 
+
 //Disconnect template
 Router.route('/userDisconnect',{
   name: 'userDisconnect',
@@ -24,25 +49,7 @@ Router.route('/userDisconnect',{
   }
 });
 
-//Handles which version of lobby players should see based on rematch status
-Router.route('/lobbyUG',{
-  name: 'lobbyUG',
-  template: 'lobbyUG',
-  waitOn: function(){
-    return Meteor.subscribe('Players');
-  },
-  action: function(){
-      this.render('lobbyUG');
-  },
-  onBeforeAction: function() {
-    if (!Meteor.user()) {
-      return this.render("tsUserAccessDenied");
-    } else{
-      return this.next();
-    }
 
-  }
-}); 
 
 //Instructions template, that sends players to the game if the game state is ready
 Router.route('/instructionsInteractive',{
