@@ -1,4 +1,4 @@
-<template name="lobbyUG">
+<template name="lobby">
 	<div class="jumbotron">
         <div class="row well well-lg">
             <div class="col-xs-10 col-xs-offset-1">
@@ -7,8 +7,10 @@
             	{{else}}
                 	<h3 align="center">For this particular experiment we need {{desiredNumPlayers}} participants.</h3>
                 {{/if}}
-                <h3 align="center">Just sit tight until another user arrives. It shouldn't be more than a few minutes!</h3>
+                <h3 align="center">There are currently {{numWaiting}} participants (including you) waiting for the game to start.
+                </h3>
                 <br>
+                <h3 align = "center">Please wait a few moments. If we can't find enough participants within 5 minutes we will end the HIT and pay you for your time.</h3>
             </div>
         </div>
     </div>

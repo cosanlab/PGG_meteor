@@ -6,6 +6,7 @@ Meteor.methods({
 			name: currentUser,
 			enterTime: new Date(),
 			status: 'waiting',
+			passedQuiz: false,
 			quizAttempts: 0,
 			needRematch: false,
 		};
@@ -16,6 +17,7 @@ Meteor.methods({
 		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var asstId = asst.asstId;
 		Assignments.update(asstId,{$set:{'passedQuiz':result}});
+		Meteor.call('updatePlayerInfo',currentUser,{'passedQuiz':true});
 		//Trigter match-players lobby event here maybe:
 		if(result){
 			console.log('Meteor ID: ' + currentUser + ' passed Quiz! Triggering lobby match event and starting timebomb.');
