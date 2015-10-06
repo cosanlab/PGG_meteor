@@ -32,8 +32,11 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
             playerIds.push(asst.userId);
           }
           Meteor.call('createGame',this.instance._id, playerIds, treatment);
+          console.log('Lobby event triggered and new game successfully started!');
           return results;
-        } 
+        } else {
+          console.log('Lobby event triggered but not enough users!');
+        }
       };
     })(this));
   };

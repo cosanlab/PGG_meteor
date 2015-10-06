@@ -9,7 +9,7 @@ Meteor.startup(function(){
 		//var batch = TurkServer.Batch.getBatchByName('Test_1');
 		//batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
 		 Batches.find().forEach(function(batch) {
-		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.UGAssigner(2));
+		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PGGAssigner(groupSize,'putGossipCondHere'));
     		});
 	} 
 	catch(e){
