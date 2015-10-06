@@ -96,3 +96,4 @@ Games:
 - use python letters equivalent for modularity of number of players
 - wait until last user has completed game before tearing down instance
 - When submitting instructions quiz, change assignment status to passed quiz
+- When a person drops, start the disconnection timer. If the timer goes off then ask the remaining players if they want to get re-matched or cash out.
