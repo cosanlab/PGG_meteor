@@ -18,6 +18,7 @@ Meteor.methods({
 		Assignments.update(asstId,{$set:{'passedQuiz':result}});
 		//Trigter match-players lobby event here maybe:
 		if(result){
+			console.log('Meteor ID: ' + currentUser + ' passed Quiz! Triggering lobby match event and starting timebomb.');
 			var userlobbyBomb = Meteor.setTimeout(function(){
           		Meteor.call('lobbyTimeBomb',asstId);
         		},300000);
@@ -43,5 +44,6 @@ Meteor.methods({
 		var asstId = asst.asstId;
 		Meteor.call('updatePlayerInfo',asstId,{'status':'lobbyTimeout'});
 		asst.showExitSurvey();
+		console.log('Meteor ID: ' + currentUser + ' sent to exit survey because lobby timer went off!');
 	}
 });
