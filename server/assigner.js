@@ -9,6 +9,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     this.groupSize = groupSize;
     this.treatment = treatment;
     this.lobbyTimers = [];
+    return PGGAssigner.__super__.constructor.apply(this, arguments);
   }
 
   PGGAssigner.prototype.initialize = function(){
