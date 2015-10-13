@@ -17,7 +17,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     PGGAssigner.__super__.initialize.apply(this, arguments);
     //Player matching occurs by a lobby event triggered by a client after they pass the comprehension quiz
     //This event puts users into a game with other users who have passed the quiz and clears their lobby timebombs, otherwise it does nothing
-    this.lobby.events.on("match-players", (function(_this){
+    /*this.lobby.events.on("match-players", (function(_this){
       return function() {
         var lobbyUsers = this.lobby.getAssignments({'passedQuiz':true});
         if (lobbyUsers.length == this.groupSize)  {
@@ -39,7 +39,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
           console.log('Lobby event triggered but not enough users!');
         }
       };
-    })(this));
+    })(this)); */
   };
 
   PGGAssigner.prototype.userJoined = function(asst){
