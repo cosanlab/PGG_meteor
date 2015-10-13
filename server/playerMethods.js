@@ -13,7 +13,7 @@ Meteor.methods({
 		Players.insert(data);
 	},
 	'updateQuiz': function(currentUser,result){
-		//Updates the Assignments db with a boolean about whether user passed the comprehension quiz. If so tells emits an event (which is tied to the current users's batch) that tells the assigner to try and match lobby users, otherwise shows them the exit survey 
+		//Updates the Assignments db with a boolean about whether user passed the comprehension quiz. If so emits an event (which is tied to the current users's batch) that tells the assigner to try and match lobby users, otherwise shows them the exit survey 
 		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var asstId = asst.asstId;
 		var batch = asst.batchId;

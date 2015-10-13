@@ -1,3 +1,4 @@
+/*
 Meteor.startup(function(){
 	try{
 		//Create a test batch for now and give it an assigner

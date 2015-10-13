@@ -97,3 +97,10 @@ Games:
 - wait until last user has completed game before tearing down instance
 - When submitting instructions quiz, change assignment status to passed quiz
 - When a person drops, start the disconnection timer. If the timer goes off then ask the remaining players if they want to get re-matched or cash out.
+
+###Changes
+- 6 people
+- People know num players but not network structure
+- See neighbors contributions, see everyone earned X, your total for this round was:
+- Then communication: 140 char question, followed by 140 char answer
+- New round

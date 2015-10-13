@@ -77,11 +77,27 @@ var tutorialSteps = [
 	},
 
 ];
+//Tutorial step helpers
+Template.step2.helpers({
+	numPlayers: function(){
+		return groupSize;
+	},
+	numRounds: function(){
+		return numRounds;
+	},
+	game: function(){
+		var game = Games.findOne();
+		return{
+			condition: game.condition,
+		};
+	}
+});
+
 //Global event emitter for quiz
 var emitter = new EventEmitter();
 
 //Setup interactive instructions logic
-Template.instructionsInteractive.helpers({
+Template.instructions.helpers({
 	options: {
 		steps: tutorialSteps,
 		emitter: emitter,
@@ -139,3 +155,4 @@ Template.quiz.helpers({
 		Meteor.call('incQuizAttempts',currentUser, gameId, userInst);
 	}
 });
+
