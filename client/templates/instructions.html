@@ -1,11 +1,7 @@
 <template name = "instructions">
-</template>
-<!--
-<template name="instructionsInteractive">
-<div class = "container-fluid">
-{{> gameTreeinstr}}
-{{> tutorial options}}
-</div>
+	<div class = "container-fluid">
+		{{> tutorial options}}
+	</div>
 </template>
 
 <template name="step1">
@@ -15,7 +11,18 @@
 </template>
 
 <template name="step2">
-	<p>In this game you will be randomly selected to play the role of either 'Player A' or 'Player B' and see a game tree like this.</p>
+	<blockquote>
+		In this game you will be making a series of decisions about how to allocate points with {{numPlayers}} other players over the course of {{numRounds}} rounds. Before the start of every round we will give each player 100 points.
+	</blockquote>
+	<blockquote>
+		 Each round consists of 3 parts:
+		 <br> 
+		 First you player will make a decision about how many points you would like to contribute to the group pot.
+		 {{#if equals game.condition '2G'}}
+		 You will be able to see the contributions made by the two other players adjacent to you. 
+		 <br>
+		 Second, 
+	</blockquote>
 </template>
 
 <template name="step3">
