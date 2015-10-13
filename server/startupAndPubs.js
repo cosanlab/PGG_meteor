@@ -2,12 +2,9 @@ Meteor.startup(function(){
 	try{
 		//Create a test batch for now and give it an assigner
 		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
-		TurkServer.ensureTreatmentExists({name: 'withMessaging'});
-    	TurkServer.ensureTreatmentExists({name: 'noMessaging'});
+		TurkServer.ensureTreatmentExists({name: '2G'});
 		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: '2G'}});
-		//var batch = TurkServer.Batch.getBatchByName('Test_1');
-		//batch.setAssigner(new TurkServer.Assigners.UGAssigner(2));
-		 Batches.find().forEach(function(batch) {
+  		Batches.find().forEach(function(batch) {
 		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PGGAssigner(groupSize,'2G'));
     		});
 	} 

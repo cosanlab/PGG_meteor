@@ -363,4 +363,4 @@ Meteor.methods({
 
 	}
 });
-
+*/

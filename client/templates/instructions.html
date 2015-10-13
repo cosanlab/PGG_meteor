@@ -5,7 +5,7 @@
 </template>
 
 <template name="step1">
-	<h3 align="center"> You have been successfully matched with another player! </h3>
+	<h3 align="center"> Thank you for accepting this HIT</h3>
 	<p> For the best experience please scroll/adjust the window until you can see both the top and bottom banners of the screen.</p>
 	<p> Click next to learn how to play the game </p>
 </template>
@@ -20,6 +20,7 @@
 		 First you player will make a decision about how many points you would like to contribute to the group pot.
 		 {{#if equals game.condition '2G'}}
 		 You will be able to see the contributions made by the two other players adjacent to you. 
+		 {{/if}}
 		 <br>
 		 Second, 
 	</blockquote>
@@ -76,4 +77,3 @@
 		<p align = "center" style = '{{feedback.promptDisp}}'><b>Click Finish below to complete these instructions and wait for the other player. You can also go back and review if you like.</b></p>
 	</div>
 </template>
--->
