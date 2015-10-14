@@ -5,9 +5,8 @@ var extend = function(child, parent) { for (var key in parent) { if (hasProp.cal
 TurkServer.Assigners.PGGAssigner = (function(superClass) {
   extend(PGGAssigner, superClass);
 
-  function PGGAssigner(groupSize,treatment){
+  function PGGAssigner(groupSize){
     this.groupSize = groupSize;
-    this.treatment = treatment;
     this.lobbyTimers = [];
     return PGGAssigner.__super__.constructor.apply(this, arguments);
   }
@@ -17,11 +16,12 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     PGGAssigner.__super__.initialize.apply(this, arguments);
     //Player matching occurs by a lobby event triggered by a client after they pass the comprehension quiz
     //This event puts users into a game with other users who have passed the quiz and clears their lobby timebombs, otherwise it does nothing
-    /*this.lobby.events.on("match-players", (function(_this){
+    this.lobby.events.on("match-players", (function(_this){
       return function() {
         var lobbyUsers = this.lobby.getAssignments({'passedQuiz':true});
         if (lobbyUsers.length == this.groupSize)  {
-          this.instance = this.batch.createInstance([this.treatment]);
+          var treatment = _.sample(this.batch.getTreatments());
+          this.instance = this.batch.createInstance([treatment]);
           this.instance.setup();
           results = []; playerIds = [];
           for (i = 0, len = lobbyUsers.length; i < len; i++) {
@@ -39,11 +39,12 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
           console.log('Lobby event triggered but not enough users!');
         }
       };
-    })(this)); */
+    })(this)); 
   };
 
   PGGAssigner.prototype.userJoined = function(asst){
     //If a user has been in an experiment before check to see if they need to be rematched, if so leave them in the lobby otherwise take them to the exit survey
+    
     var asstId = asst.userId;
     if(asst.getInstances().length > 0){
       if(Players.findOne(asstId).needRematch){
