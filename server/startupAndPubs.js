@@ -5,7 +5,7 @@ Meteor.startup(function(){
 		TurkServer.ensureTreatmentExists({name: '2G'});
 		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: '2G'}});
   		Batches.find().forEach(function(batch) {
-		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PGGAssigner(groupSize,'2G'));
+		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PGGAssigner(2));
     		});
 	} 
 	catch(e){
