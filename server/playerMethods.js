@@ -23,7 +23,7 @@ Meteor.methods({
 		if(passedQuiz){
 			Meteor.call('updatePlayerInfo',currentUser,{'status':'waiting'},'set');
 			var userLobbyBomb = Meteor.setTimeout(function(){
-          		Meteor.call('lobbyTimeBomb',asstId);
+          		timebomb(asstId);
         		},5000);
         	batch.assigner.lobbyTimers.push({currentUser:userLobbyBomb});
         	var emitter = batch.lobby.events;

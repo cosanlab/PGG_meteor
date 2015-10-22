@@ -18,21 +18,21 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     //This event puts users into a game with other users who have passed the quiz and clears their lobby timebombs, otherwise it does nothing
     this.lobby.events.on("match-players", (function(_this){
       return function() {
-        var lobbyUsers = this.lobby.getAssignments({'passedQuiz':true});
-        if (lobbyUsers.length == this.groupSize)  {
-          var treatment = _.sample(this.batch.getTreatments());
-          this.instance = this.batch.createInstance([treatment]);
-          this.instance.setup();
+        var lobbyUsers = _this.lobby.getAssignments({'passedQuiz':true});
+        if (lobbyUsers.length == _this.groupSize)  {
+          var treatment = _.sample(_this.batch.getTreatments());
+          _this.instance = _this.batch.createInstance([treatment]);
+          _this.instance.setup();
           results = []; playerIds = [];
           for (i = 0, len = lobbyUsers.length; i < len; i++) {
             asst = lobbyUsers[i];
-            Meteor.clearTimeout(this.lobbyTimers[i].asst.userId);
-            this.lobby.pluckUsers([asst.userId]);
-            Meteor.call('updatePlayerInfo', asst.userId,{'status': 'playing'});
-            results.push(this.instance.addAssignment(asst));
+            Meteor.clearTimeout(_this.lobbyTimers[i].asst.userId);
+            _this.lobby.pluckUsers([asst.userId]);
+            Meteor.call('updatePlayerInfo', asst.userId,{'status': 'playing'},'set');
+            results.push(_this.instance.addAssignment(asst));
             playerIds.push(asst.userId);
           }
-          Meteor.call('createGame',this.instance._id, playerIds, treatment);
+          Meteor.call('createGame',_this.instance._id, playerIds, treatment);
           console.log('Lobby event triggered and new game successfully started!');
           return results;
         } else {
