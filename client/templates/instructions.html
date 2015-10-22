@@ -1,79 +1,100 @@
 <template name = "instructions">
-	<div class = "container-fluid">
+	<div class = "container-fluid" id = "main">
 		{{> tutorial options}}
 	</div>
 </template>
 
-<template name="step1">
+<template name="accept">
 	<h3 align="center"> Thank you for accepting this HIT</h3>
-	<p> For the best experience please scroll/adjust the window until you can see both the top and bottom banners of the screen.</p>
-	<p> Click next to learn how to play the game </p>
-</template>
-
-<template name="step2">
-	<blockquote>
-		In this game you will be making a series of decisions about how to allocate points with {{numPlayers}} other players over the course of {{numRounds}} rounds. Before the start of every round we will give each player 100 points.
+	<blockquote class = "instr">
+		For the best experience please scroll/adjust the window until you can see both the top and bottom banners of the screen.<br><br>
+		Please read the following set of instructions <i>carefully</i> to learn how to play the game.<br><br>
+		You may move forward and backwards through any page of these instructions at any time.
 	</blockquote>
-	<blockquote>
-		 Each round consists of 3 parts:
-		 <br> 
-		 First you player will make a decision about how many points you would like to contribute to the group pot.
-		 {{#if equals game.condition '2G'}}
-		 You will be able to see the contributions made by the two other players adjacent to you. 
-		 {{/if}}
-		 <br>
-		 Second, 
+	<br>
+	<p align = "center" style = "font-size:14px"> Click next to begin the instructions </p>
+</template>
+
+<template name="overview">
+	<h3 align="center">Game Overview</h3>
+	<blockquote class = "instr">
+	In this game you will be making a series of decisions about how to allocate points with {{numPlayers}} other players in real-time over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <br>
+	<b>1 point = 2 cents</b>.
+	</blockquote>
+	<blockquote class = "instr">
+	In the beginning of every round of you will decide <b>how many of your own points you would like to contribute to the group account.</b> At the end of every round, the group account will be multiplied by 1.5 and points will be evenly redistributed to all players.
 	</blockquote>
 </template>
 
-<template name="step3">
-	<p>Player A will first decide how they would like to split $4 by selecting from two possible options. </p> 
+<template name = "rounds">
+	<h3 align = "center">Structure of Each Round</h3>
+	<blockquote class = "instr">
+		Afer you decide how many points to contribute to the group account you will be able to see the contributions made by <b>two</b> other players. These players will be randomly selected from the four other people you are playing with. Across every round of the game you will always see contributions from the <b>same</b> two players.
+	</blockquote>
+	<blockquote class = "instr">
+		Next, you will be able to communicate with <b>one</b> other player. This player will be different from the two players' whose contributions you can see. In order to communicate, you will be able to send and receive two messages (140 characters max) to this other player. Upon sending your first message you will be shown their first message sent to you. Following this you will be able to second a second message and likewise see their second message sent to you.
+	</blockquote>
+	<blockquote class = "instr">
+		After communication ends, the group account multiplier of (1.5x) will be applied and the group account will be divided evenly. Finally the round will end and you will be shown the points you earned.
+	</blockquote>
 </template>
 
-<template name="step4">
-	<p>If Player A selects the 'Left' option, they will keep $1 for themselves, give $3 to Player B and the game will end.</p>
+<template name = "exampleRound">
+	<h3 align = "center">Example Round</h3>
+	<blockquote class = "instr">
+		To illustrate the game lets look at an example round:<br><br>
+		<ul>
+		<li>First you will be given 100 points and will choose how many of these to contribute to the group account; let's say you choose to contribute 50 points</li>
+		<li>Following this you will be able to see the contributions made by two other players; let's say you see a contribution of 75 and a contribution of 25 points</li>
+		<li>Next you will be able to send and receive two messages with another player</li>
+		<li>Finally you will see the results of the splitting of the group account; let's say you receive 60 points at the end of the round bringing your total earned for that round to 110 points (50 you didn't contribute + 60 you earned)</li>
+		</ul>
+	</blockquote>
+	<blockquote class = "instr">
+		Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 50 points:
+	</blockquote>
+	<p align = "center" style= 'font-size: 14px'>
+		60 (your earning) * 5 (total players) = 300 / 1.5 (multiplier) = 
+		<br>
+		<b>200 (sum of total contributions)</b>
+	</p>
+	<br>
+	<p align = "center" style= 'font-size: 14px'>
+		200 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
+		<b>50 (sum of players you can't see)</b>
+	</p>
 </template>
 
-<template name="step5">
-	<p>If Player A select the 'Right' option, the money will be split evenly so that both Player A and Player B receive $2.</p>
+<template name = "recap">
+	<h3 align="center">Summary</h3>
+	<blockquote class = "instr">
+	To summarize, you will play a game with {{numPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise 5 parts:<br><br>
+	<ol>
+		<li>Each player will receive a starting balance of 100 points</li>
+		<li>Each player will decide how many of their points to contribute to the group account</li>
+		<li>Each player will be able to see the contributions made by <b><i>two</i></b> other randomly selected players*</li>
+		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> different randomly selected player**</li>
+		<li>Each player will see how much they earned after the group account multiplier is applied and redistributed</li>
+	</ol>
+	</blockquote>
+	<br>
+	<p><i>*Players will always see contributions from the <b>same</b> two players during the entire game</i></p>
+	<p><i>**Player will always be communicating with the <b>same</b> player during the entire game</i></p>
 </template>
 
-<template name="step6">
-	<p>However, Player B will have the opportunity to veto this decision.</p>
+<template name = "timing">
+	<h3 align="center">Connection and Timing Considerations</h3>
+	<blockquote class = "instr">
+		Because you are interacting in real time with {{otherPlayers}} other players, it is <b>extremely important</b> that you make your decisions and complete your communication within a timely manner.<br><br>
+		If you idle for too long during the game you will <b>forfeit</b> any bonuses you could have earned during this HIT.<br><br>
+		If your game partners have connection issues we will provide you with the opportunity to join a new game and earn additional bonuses or simply submit the HIT.
+	</blockquote>
 </template>
 
-<template name="step7">
-	<p>If Player B chooses to veto this decision by selecting 'Left,' Player A will receive $0 and Player B will receive $1.</p>
-</template>
-
-<template name="step8">
-	<p>If Player B chooses to accept this decision by selecting 'Right,' both Player A and Player B will receive $2.</p>
-</template>
-
-<template name = "step9">
-	<h3 align = "center">Please ensure you understand these instructions before proceeding</h3>
-	<h4 align = "center">On the next page we will ask you a question to make sure you understand the game</h4>
-</template>
-
-<template name ="quiz">
-	<h4 align="center"> Please answer the following question in order to proceed</h4>
-	<p align = "center"><i>You must respond correctly within two tries to be eligible to participate</i></p>
-	<p>If Player A chooses right and player B chooses left how much money will each player earn?</p>
-	<form>
-		<div class="radio">
-    		<label><input type="radio" id ="A" name="optradio">Player A will earn $1 and Player B will earn $3</label>
-		</div>
-		<div class="radio">
-      		<label><input type="radio" id = "B" name="optradio">Player A will earn $0 and Player B will earn $1</label>
-		</div>
-		<div class="radio">
-    		<label><input type="radio" id = "C" name="optradio">Player A will earn $2 and Player B will earn $2</label>
-		</div>
-	</form>
-	<div class = "row">
-		<p align = "center" class = '{{feedback.dispClass}}'> {{feedback.text}}</p>
-	</div>
-	<div class = "row">
-		<p align = "center" style = '{{feedback.promptDisp}}'><b>Click Finish below to complete these instructions and wait for the other player. You can also go back and review if you like.</b></p>
-	</div>
+<template name = "preQuiz">
+	<h3 align="center">Please be sure you have understood these instructions before proceeding</h3>
+	<blockquote class = "instr">
+		On the next page we will ask you some questions to ensure your understanding. If you fail to answer these questions correctly you will not be eligible to play and will be compensated $0.05 for your time.<br>
+		You may move backwards and forwards through these instructions screens as much as you like before and during the quiz.
+	</blockquote>
 </template>

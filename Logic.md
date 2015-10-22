@@ -101,6 +101,8 @@ Games:
 ###Changes
 - 6 people
 - People know num players but not network structure
-- See neighbors contributions, see everyone earned X, your total for this round was:
-- Then communication: 140 char question, followed by 140 char answer
-- New round
+- See neighbors contributions, send a message, see how much they earned:
+    - Communication: 140 char question, followed by 140 char answer
+- As about average group contribtion after last round, also ask about network structure
+- Alterate versions:
+    + public shaming: message to the group to enforce descriptive norm
