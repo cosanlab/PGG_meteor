@@ -3,6 +3,7 @@
 ###Current todos
 - Update ineligibility with button to submit hit for 0.05 cents and langauge
 - Update lobby language when eligible
+- Look into assigner logic for lobby event not working properly
 
 ###Assigner
 - ~~Is user associate with an experiment?~~
