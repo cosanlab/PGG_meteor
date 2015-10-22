@@ -33,13 +33,29 @@ var tutorialSteps = [
 		template: "preQuiz"
 	},
 	{
-		template: "quiz",
+		template: "quiz", 
 		require: {
 			event: 'submittedQuiz'
 		}
 	}
 ];
-//Tutorial step helpers
+
+quizEmitter = new EventEmitter();
+//Setup interactive instructions logic
+Template.instructions.helpers({
+	options: {
+		steps: tutorialSteps,
+		emitter: quizEmitter,
+		onFinish: function(){
+			var currentUser = Meteor.userId();
+			var passedQuiz = Players.findOne(currentUser).passedQuiz;
+			console.log('Quiz status ' + passedQuiz);
+    		Meteor.call('checkPlayerEligibility',currentUser, passedQuiz);
+		}
+	}
+});
+
+//Tutorial steps helpers
 Template.overview.helpers({
 	numPlayers: function(){
 		return groupSize;
@@ -71,18 +87,3 @@ Template.timing.helpers({
 	}
 });
 
-//Global event emitter for quiz
-var emitter = new EventEmitter();
-
-//Setup interactive instructions logic
-Template.instructions.helpers({
-	options: {
-		steps: tutorialSteps,
-		emitter: emitter,
-		onFinish: function(){
-			var gameId = Games.findOne()._id;
-			var currentUser = Meteor.userId();
-    		Meteor.call('playerInstrComplete',gameId, currentUser);
-		}
-	}
-});

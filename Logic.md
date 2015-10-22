@@ -1,5 +1,9 @@
 ## Experiment Logic
 
+###Current todos
+- Update ineligibility with button to submit hit for 0.05 cents and langauge
+- Update lobby language when eligible
+
 ###Assigner
 - ~~Is user associate with an experiment?~~
     + Yes: Does user need rematch?
