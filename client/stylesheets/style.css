@@ -6,6 +6,26 @@ img {
     height: 100%;
 }
 
+/*Quiz styling */
+blockquote.instr {
+  font-size: 16px;
+}
+
+span.quiz {
+  font-weight:normal;
+}
+span.noresp{
+  visibility: hidden;
+}
+span.correct{
+  color: #00CC00;
+  font-weight: bold;
+}
+span.incorrect{
+  color: #FF0000;
+  font-weight: bold;
+}
+
 /* Exit Survey form 
 .exitSurvey{
   float: left;
