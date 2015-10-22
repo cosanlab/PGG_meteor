@@ -54,8 +54,9 @@ Template.question.helpers({
 });
 
 Template.quiz.events({
-	'submit .quiz': function(event){
+	'submit .quiz': _.debounce(function(event){
 		//Only allow clients to attempt quiz twice before preventing them from doing so. Because server and client databases don't update instantly, increasing the quiz attempt counter and immediately querying it usually results in the local mongo being behind the server at the time of query. So to remedy that just look to see if they've done the quiz at least once before (i.e. got something wrong) then look to see how they did when they submitted this time, and pass or fail them.
+		event.stopPropagation();
 		event.preventDefault();
 		var currentUser = Meteor.userId();
 		var quizAttempts = Players.findOne(currentUser).quizAttempts;
@@ -69,12 +70,11 @@ Template.quiz.events({
 		if(!result){
 			Meteor.call('updatePlayerInfo',currentUser,{'quizAttempts':1},'inc');
 			if(quizAttempts == 1){
-				Meteor.call('updatePlayerInfo',currentUser,{'status':'failedQuiz'},'set');
 				quizEmitter.emit('submittedQuiz');
 			}
 		} else{
 			Meteor.call('updatePlayerInfo',currentUser,{'passedQuiz':true}, 'set');
 			quizEmitter.emit('submittedQuiz');
 		}
-	}
+	}, 1000, true)
 });

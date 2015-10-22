@@ -21,7 +21,7 @@ Router.route('/lobby',{
   },
   action: function(){
     var currentUser = Players.findOne(Meteor.userId());
-    if (!currentUser.passedQuiz){
+    if (currentUser.status == 'instructions'){
       this.render('instructions');
     } else{
       this.render('lobby');

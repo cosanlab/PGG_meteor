@@ -5,7 +5,7 @@ Meteor.methods({
 			_id: currentUser,
 			name: currentUser,
 			enterTime: new Date(),
-			status: 'waiting',
+			status: 'instructions',
 			passedQuiz: false,
 			quizAttempts: 0,
 			needRematch: false,
@@ -16,17 +16,21 @@ Meteor.methods({
 		//Updates the Assignments db with a boolean about whether user passed the comprehension quiz. If so emits an event (which is tied to the current users's batch) that tells the assigner to try and match lobby users, otherwise shows them the exit survey 
 		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var asstId = asst.asstId;
-		var batch = asst.batchId;
+		var batchId = asst.batchId;
+		var batch = TurkServer.Batch.getBatch(batchId);
 		Assignments.update(asstId,{$set:{'passedQuiz':passedQuiz}});
+		console.log("I did something!");
 		if(passedQuiz){
-			var userlobbyBomb = Meteor.setTimeout(function(){
+			Meteor.call('updatePlayerInfo',currentUser,{'status':'waiting'},'set');
+			var userLobbyBomb = Meteor.setTimeout(function(){
           		Meteor.call('lobbyTimeBomb',asstId);
-        		},300000);
+        		},5000);
         	batch.assigner.lobbyTimers.push({currentUser:userLobbyBomb});
         	var emitter = batch.lobby.events;
-        	emitter.emit.apply(emitter,'match-players');
+        	emitter.emit('match-players');
         	console.log('Meteor ID: ' + currentUser + ' passed Quiz! Triggering lobby match event and starting timebomb.');
       	} else{
+      		Meteor.call('updatePlayerInfo',currentUser,{'status':'failedQuiz'},'set');
       		asst.showExitSurvey();
       	}	
 	},
