@@ -1,4 +1,4 @@
-Template.lobbyUG.helpers({
+Template.lobby.helpers({
   
   rematch:function(){
     return Players.findOne(Meteor.userId()).needRematch;

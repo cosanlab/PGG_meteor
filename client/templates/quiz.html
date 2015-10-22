@@ -1,55 +1,27 @@
 <template name ="quiz">
-	<h4 align="center"> Please answer the following questions in order to proceed</h4>
-	<p align = "center"><i>You must respond correctly to 4 out of 5 questions to be eligible to participate</i></p>
+	<h4 align="center"> You must answer all following questions correctly in order to be eligible for participation</h4>
+	<p align = "center"><i>You have two opportunities to submit your responses</i></p>
 
-	<label>
-		1)
-		<span class = "quiz">If you decide to contribute 50 points to the group account, how many points will be left in your private account?</span><br>
-		<input type="text" id ="q1" name="optradio" size = "7">
-	</label>
-	<br><br>
-	<label>
-		2)
-		<span class = "quiz">If the total in the group account after the multiplier is applied is 200, how many points will each player receive?</span><br>
-		<input type="text" id ="q2" name="optradio" size = "7">
-	</label>
-	<br><br>
-	<label>
-		3)
-		<span class = "quiz">If you contribute 50 points, and both players visible to you contribute 10 points each, and you receive 75 points at the end of the round, did the other two players contribute more or less than you did?</span><br>
-		<input type="text" id ="q3" name="optradio" size = "7">
-	</label>
-	<br><br>
-	<label>
-		4)
-		<span class = "quiz">How many other players will you be communicating with during the game?</span><br>
-		<input type="text" id ="q4" name="optradio" size = "7">
-	</label>
-	<br><br>
-	<label>
-		5)
-		<span class = "quiz">How many messages will you be able to send and receive during communication?</span><br>
-		<input type="text" id ="q5" name="optradio" size = "7">
-	</label>
-	<button type = "button" class = "btn btn-primary btn-sm" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id = "submitQuiz">Submit Answers</button>
-
-<!--
-	<p><b>1)</b>If you decide to contribute 50 points, how many points will be left in your private account?</p>
-	<form>
-		<div class="radio">
-    		<label><input type="radio" id ="A" name="optradio">Player A will earn $1 and Player B will earn $3</label>
-		</div>
-		<div class="radio">
-      		<label><input type="radio" id = "B" name="optradio">Player A will earn $0 and Player B will earn $1</label>
-		</div>
-		<div class="radio">
-    		<label><input type="radio" id = "C" name="optradio">Player A will earn $2 and Player B will earn $2</label>
-		</div>
+	<form class = "quiz">
+		{{#each questions}}
+			{{> question}}
+		{{/each}}
+		{{#if equals quizAttempts 1}}
+		<div class = "alert alert-warning">One or more of your answers are incorrect. You have one more attempt remaining.</div>
+		{{else}}
+			{{#if equals quizAttempts 2}}
+			<div class = "alert alert-danger">One or more of your answers are still incorrect. You have exhausted your quiz attempts. Click Finish Below.</div>
+			{{/if}}
+		{{/if}}
+		{{#if notequals quizAttempts 2}}
+		<button type = "submit" class = "btn btn-primary btn-sm submit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id = "submitQuiz">Submit Answers</button>
+		{{/if}}
 	</form>
-	<div class = "row">
-		<p align = "center" class = '{{feedback.dispClass}}'> {{feedback.text}}</p>
-	</div>
-	<div class = "row">
-		<p align = "center" style = '{{feedback.promptDisp}}'><b>Click Finish below to complete these instructions and wait for the other player. You can also go back and review if you like.</b></p>
-	</div> -->
 </template>
+
+	<template name = "question">
+		<div class = "form-group {{#if incorrect}}has-error{{/if}}">
+			<label for="{{_id}}" class = "control-label">{{text}}</label>
+			<input id="{{_id}}" name="{{_id}}" class = "sm-width form-control">
+		</div>
+	</template>

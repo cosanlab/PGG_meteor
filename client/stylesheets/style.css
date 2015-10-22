@@ -10,6 +10,9 @@ img {
 blockquote.instr {
   font-size: 16px;
 }
+button#submitQuiz #invisible{
+  visibility: hidden;
+}
 
 span.quiz {
   font-weight:normal;
