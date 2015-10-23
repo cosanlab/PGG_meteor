@@ -2,7 +2,7 @@ Meteor.methods({
 	//Adds a new game document to the database
 	'createGame': function(gameId, playerIds, condition){
 		var playersData = {};	
-		for(i=0; i<playerIds.length; i++) {
+		for(var i=0; i<playerIds.length; i++) {
 			playersData[letters[i]] = {
 				name: playerIds[i],
 				readyStatus: false,

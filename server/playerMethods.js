@@ -1,9 +1,9 @@
 Meteor.methods({
 	//Adds a new player document to the database
-	'addPlayer': function(currentUser){
+	'addPlayer': function(currentUser, workerId){
 		var data = {
 			_id: currentUser,
-			name: currentUser,
+			workerId: workerId,
 			enterTime: new Date(),
 			status: 'instructions',
 			passedQuiz: false,
@@ -15,23 +15,24 @@ Meteor.methods({
 	'checkPlayerEligibility': function(currentUser,passedQuiz){
 		//Updates the Assignments db with a boolean about whether user passed the comprehension quiz. If so emits an event (which is tied to the current users's batch) that tells the assigner to try and match lobby users, otherwise shows them the exit survey 
 		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
+		var workerId = asst.workerId;
 		var asstId = asst.asstId;
 		var batchId = asst.batchId;
 		var batch = TurkServer.Batch.getBatch(batchId);
 		Assignments.update(asstId,{$set:{'passedQuiz':passedQuiz}});
-		console.log("I did something!");
 		if(passedQuiz){
 			Meteor.call('updatePlayerInfo',currentUser,{'status':'waiting'},'set');
 			var userLobbyBomb = Meteor.setTimeout(function(){
-          		timebomb(asstId);
-        		},5000);
+				Meteor.call('lobbyTimeBomb',currentUser);
+			},10000);
         	batch.assigner.lobbyTimers.push({currentUser:userLobbyBomb});
         	var emitter = batch.lobby.events;
+        	console.log('TURKER: ' + workerId + ' passed Quiz! Told Assigner and set them up the bomb!');
         	emitter.emit('match-players');
-        	console.log('Meteor ID: ' + currentUser + ' passed Quiz! Triggering lobby match event and starting timebomb.');
       	} else{
       		Meteor.call('updatePlayerInfo',currentUser,{'status':'failedQuiz'},'set');
       		asst.showExitSurvey();
+      		console.log('TURKER: ' + workerId + ' failedQuiz!	Sent to exit survey!');
       	}	
 	},
 	//Remove a player document from the database
@@ -52,9 +53,9 @@ Meteor.methods({
 	//Lobby timer so players don't wait too long to get match
 	lobbyTimeBomb: function(currentUser){
 		asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
-		var asstId = asst.asstId;
-		Meteor.call('updatePlayerInfo',asstId,{'status':'lobbyTimeout'}, 'set');
+		var workerId = asst.workerId;
+		Meteor.call('updatePlayerInfo',currentUser,{'status':'lobbyTimeout'}, 'set');
 		asst.showExitSurvey();
-		console.log('Meteor ID: ' + currentUser + ' sent to exit survey because lobby timer went off!');
+		console.log('TURKER: ' + workerId + ' went boom! Sent to exit survey!');
 	}
 });

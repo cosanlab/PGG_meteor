@@ -44,6 +44,9 @@ Template.quiz.helpers({
 	},
 	quizAttempts: function(){
 		return Players.findOne(Meteor.userId()).quizAttempts;
+	},
+	passedQuiz: function(){
+		return Players.findOne(Meteor.userId()).passedQuiz;
 	}
 });
 
