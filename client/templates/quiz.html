@@ -6,11 +6,15 @@
 		{{#each questions}}
 			{{> question}}
 		{{/each}}
-		{{#if equals quizAttempts 1}}
-		<div class = "alert alert-warning">One or more of your answers are incorrect. You have one more attempt remaining.</div>
-		{{else}}
-			{{#if equals quizAttempts 2}}
-			<div class = "alert alert-danger">One or more of your answers are still incorrect. You have exhausted your quiz attempts. Click Finish Below.</div>
+		{{#if passedQuiz}}
+			<div class = "alert alert-success" align="center">You have successfully passed the quiz! Click Finish below to get matched with other players and start a game.</div>
+		{{else}}				
+			{{#if equals quizAttempts 1}}
+				<div class = "alert alert-warning" align="center">One or more of your answers are incorrect. You have one more attempt remaining.</div>
+			{{else}}
+				{{#if equals quizAttempts 2}}
+				<div class = "alert alert-danger" align="center">One or more of your answers are still incorrect. You have exhausted your quiz attempts. Click Finish Below.</div>
+				{{/if}}				
 			{{/if}}
 		{{/if}}
 		{{#if notequals quizAttempts 2}}

@@ -28,6 +28,10 @@ span.incorrect{
   color: #FF0000;
   font-weight: bold;
 }
+.alert{
+  padding: .5%;
+  font-weight: bold;
+}
 
 /* Exit Survey form 
 .exitSurvey{

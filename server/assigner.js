@@ -33,10 +33,10 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
             playerIds.push(asst.userId);
           }
           Meteor.call('createGame',_this.instance._id, playerIds, treatment);
-          console.log('Lobby event triggered and new game successfully started!');
+          console.log('ASSIGNER: Match the players! New game created!');
           return results;
         } else {
-          console.log('Lobby event triggered but not enough users!');
+          console.log("ASSIGNER: Match the players! There aren't enough!");
         }
       };
     })(this)); 
@@ -45,14 +45,15 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
   PGGAssigner.prototype.userJoined = function(asst){
     //If a user has been in an experiment before check to see if they need to be rematched, if so leave them in the lobby otherwise take them to the exit survey
     
-    var asstId = asst.userId;
+    var currentUser = asst.userId; //Same as Meteor.userId
+    var workerId = asst.workerId; //Mturk Id displayed in admin
     if(asst.getInstances().length > 0){
-      if(Players.findOne(asstId).needRematch){
-        this.lobby.pluckUsers([asstId]);
+      if(Players.findOne(currentUser).needRematch){
+        this.lobby.pluckUsers([currentUser]);
         return asst.showExitSurvey();
       }
-    } else if(!Players.findOne(asstId)){
-        Meteor.call('addPlayer', asstId);
+    } else if(!Players.findOne(currentUser)){
+        Meteor.call('addPlayer', currentUser, workerId);
         
     }
   };
