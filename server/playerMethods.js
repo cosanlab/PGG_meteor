@@ -19,13 +19,15 @@ Meteor.methods({
 		var asstId = asst.asstId;
 		var batchId = asst.batchId;
 		var batch = TurkServer.Batch.getBatch(batchId);
+		var userBombKey = {};
 		Assignments.update(asstId,{$set:{'passedQuiz':passedQuiz}});
 		if(passedQuiz){
 			Meteor.call('updatePlayerInfo',currentUser,{'status':'waiting'},'set');
 			var userLobbyBomb = Meteor.setTimeout(function(){
 				Meteor.call('lobbyTimeBomb',currentUser);
-			},10000);
-        	batch.assigner.lobbyTimers.push({currentUser:userLobbyBomb});
+			},lobbyTimeout*60*1000);
+			userBombKey[currentUser] = userLobbyBomb;
+        	batch.assigner.lobbyTimers.push(userBombKey);
         	var emitter = batch.lobby.events;
         	console.log('TURKER: ' + workerId + ' passed Quiz! Told Assigner and set them up the bomb!');
         	emitter.emit('match-players');
@@ -51,7 +53,7 @@ Meteor.methods({
 
 	},
 	//Lobby timer so players don't wait too long to get match
-	lobbyTimeBomb: function(currentUser){
+	'lobbyTimeBomb': function(currentUser){
 		asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var workerId = asst.workerId;
 		Meteor.call('updatePlayerInfo',currentUser,{'status':'lobbyTimeout'}, 'set');

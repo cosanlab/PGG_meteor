@@ -33,14 +33,20 @@ span.incorrect{
   font-weight: bold;
 }
 
-/* Exit Survey form 
-.exitSurvey{
-  float: left;
+/* Lobby clock */
+#clock{
+  font-size: 20px;
+  font-weight:bold;
+  color:#2EBCED;
 }
-.exitSurveyInput{
-  float:center;
+#clockInfo{
+  font-size: 14px;
+  font-weight:normal;
+  color:#2EBCED;
 }
-*/
+
+
+
 /* Player prompts during game */
 .well-text{
   font-size:18px;

@@ -49,7 +49,6 @@ Template.instructions.helpers({
 		onFinish: function(){
 			var currentUser = Meteor.userId();
 			var passedQuiz = Players.findOne(currentUser).passedQuiz;
-			console.log('Quiz status ' + passedQuiz);
     		Meteor.call('checkPlayerEligibility',currentUser, passedQuiz);
 		}
 	}

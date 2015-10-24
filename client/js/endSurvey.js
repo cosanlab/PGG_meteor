@@ -13,6 +13,9 @@ Template.endSurvey.helpers({
 			partnerDisconnected: partnerDisconnected,
 			failedQuiz: failedQuiz
 		};
+	},
+	ineligibilityPay: function(){
+		return ineligibilityPay;
 	}
 });
 
@@ -21,12 +24,17 @@ Template.endSurvey.events({
 	'click button': function(event){
 		event.preventDefault();
 		var currentUser = Meteor.userId();
+		var player = Players.findOne(currentUser);
 		var feedback = $('#feedback').val();
-		var results = {Feedback: feedback};
 		var age = $('#age').val();
+		var results;
 		//For the sake no blank fields fill NAs if client doesn't complete exit survey
 		if(!feedback){
-			feedback = 'NA';
+			if(player.status != 'failedQuiz'){
+				feedback = 'NA';
+			} else{
+				feedback = 'FAILED QUIZ';
+			}
 		}
 		if (!age){
 			age = 'NA';
@@ -39,7 +47,9 @@ Template.endSurvey.events({
 		} else{
 			gender = 'NA';
 		}
-		Meteor.call('addPlayerExitInfo',currentUser,feedback, age, gender);
+		Meteor.call('updatePlayerInfo',currentUser,{'feedback':feedback},'set');
+		//Meteor.call('addPlayerExitInfo...')
+		results = {Feedback: feedback};
 		TurkServer.submitExitSurvey(results);
 	}
 });
