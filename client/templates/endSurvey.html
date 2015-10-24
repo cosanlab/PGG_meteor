@@ -7,7 +7,8 @@
                     <br>
                     <br>
                     <p align="center">It appears that you did not pass our comprehension quiz and therefore cannot partcipate.</p>
-                    <p align = "center">Please return this HIT.</p>
+                    <br>
+                    <p align="center">You will be paid ${{ineligibilityPay}} for your time.</p>
                 {{else}}
                     <h2 align="center">Thank you for participating!</h2>
                     {{#if player.partnerDisconnected}}
@@ -23,13 +24,13 @@
                         </div>                    
                     <label style= "display:block; text-align:center" for="feedback">Please enter any feedback, including problems you encountered in the box below </label>
                     <textarea class= "form-control" id ="feedback" rows = "3" ></textarea>
-                    <p align="center"> Click the button below to submit the HIT.</p>
                     {{#unless player.partnerDisconnected}}
                         <p align="center"> Your bonus payment will be added automatically.</p>
-                    {{/unless}}
-                    <br>
-				    <button type="button" class="btn btn-primary btn-lg" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>Submit HIT</button>
+                    {{/unless}}  
                 {{/if}}	
+                <p align="center"> Click the button below to submit the HIT.</p>
+                <br>
+                <button type="button" class="btn btn-primary btn-lg" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>Submit HIT</button>
             </div>
         </div>
     </div>

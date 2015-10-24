@@ -1,16 +1,25 @@
 <template name="lobby">
 	<div class="jumbotron">
+        <div class = "row well-sm">
+            <div class = "col-xs-4 col-xs-offset-8">
+                <p align="center" id= "clock">You have been waiting for approx
+                <br>
+                {{clock.min}} min and {{clock.sec}} sec
+                <br>
+                <span id = "clockInfo">(clock updates every 5s)</span></p>
+            </div>
+        </div>
         <div class="row well well-lg">
             <div class="col-xs-10 col-xs-offset-1">
             	{{#if rematch}}
-            		<h3 align="center">Sorry we need to rematch you with another player because the previous player was having an issue.</h3>
+            		<h3 align="center">Sorry we need to rematch you with another player because the previous participant was having an issue.</h3>
             	{{else}}
-                	<h3 align="center">For this particular experiment we need {{desiredNumPlayers}} participants.</h3>
+                	<h3 align="center">For this experiment we need {{desiredNumPlayers}} participants.</h3>
                 {{/if}}
-                <h3 align="center">There are currently {{numWaiting}} participants (including you) waiting for the game to start.
+                <h3 align="center">There are currently {{numWaiting}} other participants waiting for the game to start.
                 </h3>
                 <br>
-                <h3 align = "center">Please wait a few moments. If we can't find enough participants within 5 minutes we will end the HIT and pay you for your time.</h3>
+                <h3 align = "center">Please wait a few moments while we try to find the needed participants.<br><br> If we can't find enough participants within {{lobbyTimeout}} minutes we will end the HIT and pay you for your time.</h3>
             </div>
         </div>
     </div>

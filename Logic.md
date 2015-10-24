@@ -2,8 +2,9 @@
 
 ###Current todos
 - Update ineligibility with button to submit hit for 0.05 cents and langauge
-- Update lobby language when eligible
 - Update end screen for non matching
+- Update end screen for lobby timeout
+- Figure out better logic for hiding quiz button when pass
 
 ###Assigner
 - ~~Is user associate with an experiment?~~

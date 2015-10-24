@@ -53,4 +53,10 @@ Template.registerHelper("equals", function(a,b){
 Template.registerHelper("notequals", function(a,b){
     return (a!=b);
 });
+Template.registerHelper("lessthan", function(a,b){
+    return (a<b);
+});
+Template.registerHelper("or",function(a,b){
+    return (a||b);
+});
 
