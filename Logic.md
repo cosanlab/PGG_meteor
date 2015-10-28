@@ -40,6 +40,14 @@
     8. Rinse and repeat
 - One outcome finally enacted as bonus
     + Alternatively no endowment resetting and *all* earnings are bonus payment
+- Game states in db:
+    + pChoose
+    + pDisp
+    + pSendMess1
+    + pReceiveMess1
+    + pSendMess2
+    + pReceiveMess2
+    + gDisp
 
 ###Exit Survey
 - Age
@@ -61,8 +69,8 @@ Games:
 - Round
 - State: initialized/
 - Players
-    + Player A:
-        * name: meteorID
+    + MeteorID:
+        * name: A
         * readyStatus: boolean
         * rematched: boolean
         * instrComp: boolean (maybe don't need)
@@ -77,7 +85,7 @@ Games:
             - Round 1
             - Round 2...
             - Round N
-    + Player B: ...
+    + MeteorID: ...
 
 ###Attrition considerations
 - Tell people upfront that if they idle they won't get paid the full amount
@@ -99,9 +107,6 @@ Games:
 - Visualize player decisions correlations as similarity matrix per round (see Evernote)
 
 ###Extra notes
-- use python letters equivalent for modularity of number of players
-- wait until last user has completed game before tearing down instance
-- When submitting instructions quiz, change assignment status to passed quiz
 - When a person drops, start the disconnection timer. If the timer goes off then ask the remaining players if they want to get re-matched or cash out.
 
 ###Changes

@@ -1,0 +1,23 @@
+<template name = "assignment">
+	<div class = "container-fluid" id = "main">
+		{{> tutorial options}}
+	</div>
+</template>
+
+<template name="matched">
+	<h3 align="center">You have been successfully matched with a group of players!</h3>
+	<blockquote class = "instr">
+	As a quick reminder, you are playing a game with {{numPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise 5 parts:<br><br>
+	<ol>
+		<li>Each player will receive a starting balance of 100 points</li>
+		<li>Each player will decide how many of their points to contribute to the group account</li>
+		<li>Each player will be able to see the contributions made by <b><i>two</i></b> other randomly selected players*</li>
+		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> different randomly selected player**</li>
+		<li>Each player will see how much they earned after the group account multiplier is applied and redistributed</li>
+	</ol>
+	</blockquote>
+	<br>
+	<p><i>*Players will always see contributions from the <b>same</b> two players during the entire game</i></p>
+	<p><i>**Player will always be communicating with the <b>same</b> player during the entire game</i></p>
+	<p align = "center" style = "font-size:16px"> Click Finish below if you aready to begin. The game will start when every player is ready.</p>
+</template>

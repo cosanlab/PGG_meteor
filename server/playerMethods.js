@@ -12,8 +12,8 @@ Meteor.methods({
 		};
 		Players.insert(data);
 	},
+	//Updates the Assignments db with a boolean about whether user passed the comprehension quiz. If so emits an event (which is tied to the current users's batch) that tells the assigner to try and match lobby users, otherwise shows them the exit survey 
 	'checkPlayerEligibility': function(currentUser,passedQuiz){
-		//Updates the Assignments db with a boolean about whether user passed the comprehension quiz. If so emits an event (which is tied to the current users's batch) that tells the assigner to try and match lobby users, otherwise shows them the exit survey 
 		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var workerId = asst.workerId;
 		var asstId = asst.asstId;
@@ -42,13 +42,13 @@ Meteor.methods({
 		return Players.remove(currentUser);
 	},
 	//General purpose document modification function
-	updatePlayerInfo: function(currentUser,data,func){
-		if(func == 'set'){
-			return Players.update(currentUser, {$set: data});
-		} else if(func == 'inc'){
-			return Players.update(currentUser, {$inc: data});
-		} else if(func == 'dec'){
-			return Players.update(currentUser, {$dec: data});
+	'updatePlayerInfo': function(currentUser,data,func){
+		if(operation == 'set'){
+			Players.update(currentUser, {$set: data});
+		} else if(operation == 'inc'){
+			Players.update(currentUser, {$inc: data});
+		} else if(operation == 'dec'){
+			Players.update(currentUser, {$dec: data});
 		}
 
 	},

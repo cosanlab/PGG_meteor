@@ -28,7 +28,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
             asst = lobbyUsers[i];
             Meteor.clearTimeout(_this.lobbyTimers[i].asst.userId);
             _this.lobby.pluckUsers([asst.userId]);
-            Meteor.call('updatePlayerInfo', asst.userId,{'status': 'playing'},'set');
+            Meteor.call('updatePlayerInfo', asst.userId,{'status': 'matched'},'set');
             results.push(_this.instance.addAssignment(asst));
             playerIds.push(asst.userId);
           }
