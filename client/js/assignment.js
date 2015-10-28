@@ -23,6 +23,7 @@ Template.assignment.helpers({
 		onFinish: function(){
 			var currentUser = Meteor.userId();
 			var gameId = Games.findOne()._id;
+			$(".action-tutorial-finish").text("	");
     		Meteor.call('startGame',gameId, currentUser);
 		}
 	}
@@ -37,4 +38,7 @@ Template.matched.helpers({
 	}
 });
 
-
+//Change role assignment ready button text
+Template.assignment.onRendered(function(){
+	$(".action-tutorial-finish").text("Ready!");
+});

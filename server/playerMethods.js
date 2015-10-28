@@ -42,7 +42,7 @@ Meteor.methods({
 		return Players.remove(currentUser);
 	},
 	//General purpose document modification function
-	'updatePlayerInfo': function(currentUser,data,func){
+	'updatePlayerInfo': function(currentUser,data,operation){
 		if(operation == 'set'){
 			Players.update(currentUser, {$set: data});
 		} else if(operation == 'inc'){
