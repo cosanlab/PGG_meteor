@@ -2,15 +2,14 @@
 	<div class="jumbotron container-fluid">
         <div class="row well well-xs">
             <div class="col-xs-10 col-xs-offset-1">
-                {{#if equals playerStatus 'failedQuiz'}}
+                {{#if Cond playerStatus '==' 'failedQuiz'}}
                     <h2 align="center">You are not eligible for this HIT</h2>
                     <br>
                     <br>
                     <p align="center">It appears that you did not pass our comprehension quiz and therefore cannot partcipate.</p>
                     <br>
                     <p align="center">You will be paid ${{ineligibilityPay}} for your time.</p>
-                {{else}}
-                {{#if equals playerStatus 'lobbyTimeout'}}
+                {{else}} {{#if Cond playerStatus '==' 'lobbyTimeout'}}
                     <h2 align="center">Thank you for accepting this HIT</h2>
                     <br>
                     <br>
@@ -19,7 +18,7 @@
                     <p align="center">You will be paid ${{lobbyTimeoutPay}} for waiting.</p>
                 {{else}}
                     <h2 align="center">Thank you for participating!</h2>
-                    {{#if equals playerStatus 'partnerDisconnected'}}
+                    {{#if Cond playerStatus '==' 'partnerDisconnected'}}
                         <p align="center" style = "font-size:18px">It appears as though we could not reconnect you with the other players in the game.</p>
                         <p align="center" style = "font-size:18px">Please rest assured that you will still be paid for accepting this HIT including a bonus payment of ${{disconnectPay}} </p>
                     {{/if}}

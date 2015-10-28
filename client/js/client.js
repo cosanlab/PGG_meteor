@@ -47,16 +47,23 @@ Tracker.autorun(function(){
 
 
 //New Spacebars function that should work on all templates
-Template.registerHelper("equals", function(a,b){
-    return (a==b);
+Template.registerHelper('Cond', function (v1, operator, v2) {
+    switch (operator) {
+        case '==':
+            return (v1 == v2);
+        case '!=':
+            return (v1 != v2);
+        case '<':
+            return (v1 < v2);
+        case '<=':
+            return (v1 <= v2);
+        case '>':
+            return (v1 > v2);
+        case '>=':
+            return (v1 >= v2);
+        case '&&':
+            return (v1 && v2);
+        case '||':
+            return (v1 || v2);
+    }
 });
-Template.registerHelper("notequals", function(a,b){
-    return (a!=b);
-});
-Template.registerHelper("lessthan", function(a,b){
-    return (a<b);
-});
-Template.registerHelper("or",function(a,b){
-    return (a||b);
-});
-

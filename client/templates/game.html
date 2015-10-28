@@ -2,23 +2,24 @@
 <div class= "container-fluid">
 	<div class = "row" id = "gameState Label">
 		<div class= "col-xs-5 col-xs-offset-4">
-		{{#if equals game.state 'playerBmessaging'}}		
-			<div class="well well-sm well-text" align="center" style="{{game.messageForm}}">
-				<b>Player B: </b>Send a message to Player A 
+		{{#if Cond game.state '==' 'pChoose'}}		
+			<div class="well well-sm well-text" align="center">
+				<b>How many points do you want to contribute to the group account?</b>
 			</div>
-		{{else}} {{#if equals game.state 'playerAdeciding'}}
-			<div class="well well-sm well-text" align="center" style="{{game.Adecide}}">
-				<b>Player A: </b>What do you want to do?
+		{{else}} {{#if Cond game.state '==' 'pDisp'}}
+			<div class="well well-sm well-text" align="center">
+				<b>Two other players contributed:</b>
+				<!--Select and disp 2 players contributions here based on player's role assignment-->
 			</div>
-		{{else}} {{#if equals game.state 'playerBdeciding'}}
+		{{else}} {{#if Cond game.state '==' 'pSendMess'}}
 			<div class="well well-sm well-text" align="center" style="{{game.Bdecide}}">
 				<b>Player B: </b>What do you want to do?
 			</div>
-		{{else}} {{#if equals game.state 'finalChoices'}}
+		{{else}} {{#if Cond game.state '==' 'finalChoices'}}
 			<div class="well well-sm well-text" align="center" style="visibility:hidden">
 				<b>Invisible spacing text </b>
 			</div>
-		{{else}} {{#if equals game.state 'beliefs'}}
+		{{else}} {{#if Cond game.state '==' 'beliefs'}}
 			<div class="well well-sm well-text" align="center" style="visibility:hidden">
 				<b>Invisible spacing text </b>
 			</div>
