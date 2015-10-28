@@ -1,21 +1,19 @@
 //Display partner disconnect and bonus payment info
 Template.endSurvey.helpers({
-	player: function(){
-		var player = Players.findOne(Meteor.userId());
-		var partnerDisconnected = false;
-		var failedQuiz = false;
-		if(player.status == 'partnerDisconnected'){
-			partnerDisconnected = true;
-		} else if (player.status == 'failedQuiz') {
-			failedQuiz = true;
-		}
-		return {
-			partnerDisconnected: partnerDisconnected,
-			failedQuiz: failedQuiz
-		};
+	playerStatus: function(){
+		return Players.findOne(Meteor.userId()).status;
 	},
 	ineligibilityPay: function(){
 		return ineligibilityPay;
+	},
+	lobbyTimeoutPay: function(){
+		return lobbyTimeoutPay;
+	},
+	lobbyTimeout: function(){
+		return lobbyTimeout;
+	},
+	disconnectPay: function(){
+		return disconnectPay;
 	}
 });
 
