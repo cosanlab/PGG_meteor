@@ -1,10 +1,7 @@
 ## Experiment Logic
 
 ###Current todos
-- Update ineligibility with button to submit hit for 0.05 cents and langauge
-- Update end screen for non matching
-- Update end screen for lobby timeout
-- Figure out better logic for hiding quiz button when pass
+- Use session variables about time on each page, that auto makes a meteor call for the player
 
 ###Assigner
 - ~~Is user associate with an experiment?~~

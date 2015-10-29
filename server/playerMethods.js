@@ -20,7 +20,7 @@ Meteor.methods({
 		var batchId = asst.batchId;
 		var batch = TurkServer.Batch.getBatch(batchId);
 		var userBombKey = {};
-		Assignments.update(asstId,{$set:{'passedQuiz':passedQuiz}});
+		LobbyStatus.update(currentUser,{$set:{'passedQuiz':passedQuiz}});
 		if(passedQuiz){
 			Meteor.call('updatePlayerInfo',currentUser,{'status':'waiting'},'set');
 			var userLobbyBomb = Meteor.setTimeout(function(){
