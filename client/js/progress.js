@@ -4,42 +4,40 @@ Template.progress.helpers({
 		if(!game){
 			return false;
 		} else{ 
+			var pChoose = "";
+			var pDisp = "";
 			var mess = "";
-			var beliefs = "";
-			var pA = "";
-			var pB = "";
-			var over = ""; 
-			var summ = "";
+			var gOut = "";
 
 			switch(game.state){
-				case 'beliefs':
+				case 'pChoose':
 					beliefs = 'active';
 					break;
-				case 'playerBmessaging':
+				case 'pDisp':
+					pDisp = 'active';
+					break;
+				case 'pSendMess1':
 					mess = 'active';
 					break;
-				case 'playerAdeciding':
-					pA = 'active';
+				case 'pReceiveMess1':
+					mess = 'active';
 					break;
-				case 'playerBdeciding':
-					pB = 'active';
+				case 'pSendMess2':
+					mess = 'active';
 					break;
-				case 'finalChoices':
-					over = 'active';
+				case 'pReceiveMess2':
+					mess = 'active';
 					break;
-				case 'ended':
-					summ = 'active';
+				case 'gDisp':
+					gOut = 'active';
 					break;
 				}
 			return {
 				state: game.state,
-				condition: game.condition,
-				beliefs: beliefs,
+				pChoose: pChoose,
+				pDisp: pDisp,
 				mess: mess,
-				pA: pA,
-				pB: pB,
-				over: over,
-				summ: summ
+				gOut: gOut
 			};
 		}
 	}

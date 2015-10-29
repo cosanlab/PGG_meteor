@@ -20,8 +20,8 @@ Router.route('/lobby',{
     return Meteor.subscribe('Players');
   },
   action: function(){
-    var currentUser = Players.findOne(Meteor.userId());
-    if (currentUser.status == 'instructions'){
+    var player = Players.findOne(Meteor.userId());
+    if (player.status == 'instructions'){
       this.render('instructions');
     } else{
       this.render('lobby');
@@ -79,26 +79,22 @@ Router.route('/instructionsInteractive',{
   }
 }); 
 
-//Games template, make sure we can see the games db for properly rendering
-//the game tree and forward routing to payoffs
+//Core game logic, maybe better to have templating logic in game template instead?
 Router.route('/game',{
+  name: 'game',
   waitOn: function(){
-    return Meteor.subscribe('Games');
+    return [Meteor.subscribe('Games'), Meteor.subscribe('Players')]; //Might not need players here
   },
-
   action: function(){
     var game = Games.findOne();
-    if (game.state == 'beliefs'){
-      this.render('beliefsPopup');
-    }
-    else if (game.state== 'finalChoices'){
+    if(game.state == 'assignment'){
+      this.render('assignment');
+    } else if (game.state== 'gameEnd'){
         setTimeout(function(){
           Router.go('payoffs'); 
         },5000);
-        this.next();
-                
-      }
-      else{
+        this.next();   
+    } else{
         this.render('game');
       }
   }

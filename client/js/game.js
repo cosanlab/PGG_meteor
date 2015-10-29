@@ -1,173 +1,68 @@
 Template.game.helpers({
 	game: function(){
 		var game = Games.findOne();
-		var Adecide = "visibility:hidden";
-		var Bdecide = "visibility:hidden";
-		var messageForm = "visibility:hidden";
-		var messageDisplay = "visibility:hidden";
-
-		if(Meteor.userId() == game.playerA){
-			Adecide = "";
-		} else if(Meteor.userId() == game.playerB){
-			if(game.condition == 'withMessaging'){
-				messageForm = "";
-			}
-			Bdecide = "";
-		}
-		if(game.condition == 'withMessaging' && (game.state=='playerAdeciding' || game.state == 'beliefs')){
-			messageDisplay = "";
-		}
 		return {
 			condition: game.condition,
 			state: game.state,
-			Adecide: Adecide,
-			Bdecide: Bdecide,
-			messageForm: messageForm,
-			messageDisplay: messageDisplay
+			round: game.round,
+
 		};
+	},
+});
+
+//Player Contribution Template
+Template.playerContribution.onRendered(function(){
+	$(".action-tutorial-finish").text("Continue");
+});
+
+Template.playerContribution.helpers({
+    limit: function () {
+      return "50";
+    }
+  });
+
+Template.playerContribution.events({
+	'click button': function(event){
+		event.preventDefault();
+		$('#contributionSubmit').text(" ");
+		var contribution = $('#contributionSubmit').val();
+		var gameId = Games.findOne()._id;
+		var currentUser = Meteor.userId();
+		var nextState = 'pDisp';
+		var autoState = 'pSendMess1';
+		var delay = 5000;
+		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoState,delay]);
 	}
 });
 
-//Set the game tree colors dynamically based on player choices
-Template.gameTree.helpers({
-	branch: function(){
+//Player Display Template
+Template.playerDisplay.helpers({
+	'contributions': function(){
+		var currentUser = Meteor.userId();
 		var game = Games.findOne();
-		var colorAL = "black"; var widthAL = "3"; 
-		var colorAR = "black"; var widthAR = "3";
-		var colorBL = "black"; var widthBL = "3";
-	    var colorBR = "black"; var widthBR = "3";
-		if(game.PlayerAChoice == 'Left'){
-			 colorAL = "#33CCFF";
-			 widthAL = "6";
-		} else if(game.PlayerAChoice == 'Right'){
-			colorAR = "#33CCFF";
-			widthAR = "6";
-		} 
-		if(game.PlayerBChoice == 'Left'){
-			 colorBL = "#33CCFF";
-			 widthBL = "6";
-		} else if(game.PlayerBChoice == 'Right'){
-			colorBR = "#33CCFF";
-			widthBR = "6";
+		var allNames = letters.slice(0,groupSize);
+		var pName = game.players[currentUser].name;
+		var pIdx = _.indexOf(allNames,pName);
+		var round = game.round;
+		var neighborContributions = [];
+		if(game.condition == '2G'){
+			var neighborName;
+			var neighborId;
+			for(var i = -1; i < 2; i+=2){
+				neighborName =  allNames.slice(pIdx + i);
+				neighborId = _.findkey(game.players,
+					function(key){return key.name == neighborName;});
+				neighborContributions.push(game.players[neighborId].contribution[round]);
+			}
 		}
-		return{
-			colorAL: colorAL,
-			widthAL: widthAL,
-			colorAR: colorAR,
-			widthAR: widthAR,
-			colorBL: colorBL,
-			widthBL: widthBL,
-			colorBR: colorBR,
-			widthBR: widthBR
-		};
+		return neighborContributions;
 	}
+
 });
 
-//Event handlers for game 
-Template.gameTree.events({
-	//Meteor doesn't have a hover event handler so this is the way to go
-	//and is what jquery does behind the scenes anyway
-	'mouseenter .playerAleft':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA && game.state=='playerAdeciding'){
-			$(".playerAleft").attr('class','playerAleft hover');		
-		}
-	},
-	'mouseleave .playerAleft':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA && game.state=='playerAdeciding'){
-			$(".playerAleft").attr('class','playerAleft');
-		}
-	},
-	'mouseenter .playerAright':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA && game.state=='playerAdeciding'){
-			$(".playerAright").attr('class','playerAright hover');		
-		}
-	},
-	'mouseleave .playerAright':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA && game.state=='playerAdeciding'){
-			$(".playerAright").attr('class','playerAright');
-		}
-	},
-	'mouseenter .playerBleft':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerB && game.state=='playerBdeciding'){
-			$(".playerBleft").attr('class','playerBleft hover');		
-		}
-	},
-	'mouseleave .playerBleft':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerB && game.state=='playerBdeciding'){
-			$(".playerBleft").attr('class','playerBleft');
-		}
-	},
-	'mouseenter .playerBright':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerB && game.state=='playerBdeciding'){
-			$(".playerBright").attr('class','playerBright hover');		
-		}
-	},
-	'mouseleave .playerBright':function(event){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerB && game.state=='playerBdeciding'){
-			$(".playerBright").attr('class','playerBright');
-		}
-	},	
-	'click .playerAleft': function(event){
-		event.preventDefault();
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA && game.state=='playerAdeciding'){
-			$(".playerAleft").attr('class','playerAleft');
-			Meteor.call('updatePlayerChoice', game._id,'A','Left');
-			Meteor.call('updateGameState',game._id, 'finalChoices');
-		}	
-	},
-	'click .playerAright': function(event){
-		event.preventDefault();
-		var game= Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerA && game.state=='playerAdeciding'){
-			$(".playerAright").attr('class','playerAright');
-			Meteor.call('updatePlayerChoice',game._id,'A','Right');
-			Meteor.call('updateGameState',game._id, 'playerBdeciding');
-		}
-	},	
-	'click .playerBleft': function(event){
-		event.preventDefault();
-		var game= Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerB && game.state=='playerBdeciding'){
-			$(".playerBleft").attr('class','playerBleft');
-			Meteor.call('updatePlayerChoice', game._id,'B','Left');
-			Meteor.call('updateGameState',game._id, 'finalChoices');
-		}
-	},
-	'click .playerBright': function(event){
-		event.preventDefault();
-		var game= Games.findOne();
-		var currentUser = Meteor.userId();
-		if(currentUser == game.playerB && game.state=='playerBdeciding'){
-			$(".playerBright").attr('class','playerBright');
-			Meteor.call('updatePlayerChoice', game._id,'B','Right');
-			Meteor.call('updateGameState',game._id, 'finalChoices');
-		}
-	}	
-});
 
-//Give messageForm access to game template helpers 
+//Messaging Templates
 Template.messageForm.inheritsHelpersFrom('game');
-//Mesage input event handler
 Template.messageForm.events({
 		'click .bubble' : function(event){
 			event.preventDefault();
@@ -189,9 +84,7 @@ Template.messageForm.events({
 	}
 });
 
-//Give messageDisplay access to game template helpers 
 Template.messageDisplay.inheritsHelpersFrom('game');
-//Message display template helper
 Template.messageDisplay.helpers({
 	message: function(){
 		var game = Games.findOne();
@@ -208,5 +101,10 @@ Template.messageDisplay.helpers({
 			whoSaid: whoSaid
 		};
 	}
+});
+
+//Player/Group earnings template
+Template.playerEarnings.helpers({
+
 });
 

@@ -19,7 +19,7 @@ Meteor.startup(function(){
                     if(endGameTimer){
                         Meteor.clearTimeout(endGameTimer);
                     } 
-                    Router.go('instructionsInteractive');
+                    Router.go('game');
                 }
             } 
             //If a user is in the exit survey clear any experiment-ending times and render the end survey template
