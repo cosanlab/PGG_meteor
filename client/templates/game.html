@@ -5,23 +5,27 @@
 		{{#if Cond game.state '==' 'pChoose'}}		
 			<div class="well well-sm well-text" align="center">
 				<b>How many points do you want to contribute to the group account?</b>
+				{{> playerContribution}}
 			</div>
 		{{else}} {{#if Cond game.state '==' 'pDisp'}}
 			<div class="well well-sm well-text" align="center">
 				<b>Two other players contributed:</b>
-				<!--Select and disp 2 players contributions here based on player's role assignment-->
+				{{> playerDisplay}}
 			</div>
-		{{else}} {{#if Cond game.state '==' 'pSendMess'}}
-			<div class="well well-sm well-text" align="center" style="{{game.Bdecide}}">
-				<b>Player B: </b>What do you want to do?
+		{{else}} {{#if messageSend}}
+			<div class="well well-sm well-text" align="center">
+				<b>What do you want to say to another player?</b>
+				{{> messageForm}}
 			</div>
-		{{else}} {{#if Cond game.state '==' 'finalChoices'}}
-			<div class="well well-sm well-text" align="center" style="visibility:hidden">
-				<b>Invisible spacing text </b>
+		{{else}} {{#if messageReceive}}
+			<div class="well well-sm well-text" align="center">
+				<b>The other player said:</b>
+				{{> messageDisplay}}
 			</div>
-		{{else}} {{#if Cond game.state '==' 'beliefs'}}
-			<div class="well well-sm well-text" align="center" style="visibility:hidden">
-				<b>Invisible spacing text </b>
+		{{else}} {{#if Cond game.state '==' 'gOut'}}
+			<div class="well well-sm well-text" align="center">
+				<b>You earned: </b>
+				{{> playerEarnings}}
 			</div>
 		{{/if}}
 		{{/if}}
@@ -29,21 +33,42 @@
 		{{/if}}
 		{{/if}}
 		</div>
-	</div>
-
-	<div class = "row" id = "message-gameTree">
-		{{#if equals game.state 'playerBmessaging'}}
-			{{> messageForm}}
-		{{else}}
-			{{> messageDisplay}}
-		{{/if}}
-		{{> gameTree}}
+	<div class = "col-xs-3 col-xs-9">
+		<p align = "center" id = "roundCounter">Current Round: {{game.round}}</p>
 	</div>
 </div>	
 </template>
 
+<!-- template for player contribution -->
+<template name = "playerContribution">
+		<div class = "row">
+			<div class = "col-xs-4">
+				<p style = "text-align:right; font-size:18px"><b>0 points </b></p>
+			</div>
+			<div class = "col-xs-4">        		
+        		<input type="range" id="beliefRating" value="{{limit}}" min="0" max="100">
+			</div>
+			<div class = "col-xs-4">
+				<p style = "font-size:18px"><b>100 points</b></p>
+    		</div>
+		</div>
+		<button type="button" class="btn btn-primary btn-lg" id = "beliefSubmit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block">Continue</button>
+</template>
 
-<!-- template for the message input form -->
+<!-- template for other player contributions -->
+<template name = "playerDisplay">
+	<div class = "col-xs-4">
+		<!-- TODO -->
+		<ul class = "list-inline">
+			{{#each contributions}}
+				<li>{{this}}</li>
+			{{/each}}
+		</ul>
+	</div>
+</template>
+
+
+<!-- template for message input -->
 <template name="messageForm">
 	<div class="col-xs-4" style= "{{game.messageForm}}">
 		<p style = "font-size:20px"><b>Insert your message below:</b></p>
@@ -61,35 +86,9 @@
 	</div>
 </template>
 
-
-<!-- template for the game tree -->
-<template name = "gameTree">
-	<div class = "svg-container col-xs-8">
-		<svg preserveAspectRatio= "xMinYMin meet" viewBox = "0 0 450 345" class= "svg-content-responsive">
-			<text x = "205" y="25" text-anchor="middle" font-weight= "bold" font-size= "30">A</text>
-			<g class="playerAleft" stroke= "{{branch.colorAL}}" stroke-width= "{{branch.widthAL}}" fill = "{{branch.colorAL}}">
-				<path d= "M205 35 L105 135"></path>
-				<text x="105" y="165" font-size="28" text-anchor="middle" stroke-width="1">A gets: $1</text>
-				<text x="105" y="195" font-size="28" text-anchor="middle" stroke-width="1">B gets: $3</text>
-				<text x="115" y="85" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
-			</g>
-			<g class ="playerAright" stroke= "{{branch.colorAR}}" stroke-width= "{{branch.widthAR}}" fill = "{{branch.colorAR}}">
-				<path d= "M205 35 L305 135"></path>
-				<text x="305" y="165" text-anchor="middle" font-weight= "bold" stroke-width= "1" font-size= "30">B</text>
-				<text x="300" y="85" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
-			</g>
-			<g class="playerBleft" stroke= "{{branch.colorBL}}" stroke-width= "{{branch.widthBL}}" fill = "{{branch.colorBL}}">
-				<path d= "M305 175 L205 275"></path>
-				<text x="205" y="305" font-size="28" text-anchor="middle" stroke-width="1">A gets: $0</text>
-				<text x="205" y="335" font-size="28" text-anchor="middle" stroke-width="1">B gets: $1</text>
-				<text x="210" y="235" font-size="22" text-anchor="middle" stroke-width="1">Left</text>
-			</g>
-			<g class="playerBright" stroke= "{{branch.colorBR}}" stroke-width= "{{branch.widthBR}}" fill = "{{branch.colorBR}}">
-				<path d= "M305 175 L405 275"></path>
-				<text x="405" y="305" font-size="28" text-anchor="middle" stroke-width="1">A gets: $2</text>
-				<text x="405" y="335" font-size="28" text-anchor="middle" stroke-width="1">B gets: $2</text>
-				<text x="410" y="235" font-size="22" text-anchor="middle" stroke-width="1">Right</text>
-			</g>
-		</svg>
+<!-- template for player/group earnings -->
+<template name = "playerEarnings">
+	<div class = "col-xs-4">
+	<!-- TODO -->
 	</div>
 </template>

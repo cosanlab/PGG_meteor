@@ -1,7 +1,19 @@
-## Experiment Logic
+# Experiment Logic
 
-###Current todos
-- Use session variables about time on each page, that auto makes a meteor call for the player
+##Current todos
+- Use session variables about time on each page, that auto makes a meteor call for the player if they take too long
+- Game states in db:
+    + assignment (initially only)
+    + pChoose (click then)
+    + pDisp (auto advance then)
+    + pSendMess1 (click then)
+    + pReceiveMess1 (auto advance then)
+    + pSendMess2 (click then)
+    + pReceiveMess2 (auto advance then)
+    + gOut (auto advance, next round)
+- Finish core game logic with embedded templates approach
+    + aesthetics of neighbors contributions - YOU WERE HERE
+    + Limit communication in message templates to 140 chars (text area char limit counter)
 
 ###Assigner
 - ~~Is user associate with an experiment?~~
@@ -37,14 +49,7 @@
     8. Rinse and repeat
 - One outcome finally enacted as bonus
     + Alternatively no endowment resetting and *all* earnings are bonus payment
-- Game states in db:
-    + pChoose
-    + pDisp
-    + pSendMess1
-    + pReceiveMess1
-    + pSendMess2
-    + pReceiveMess2
-    + gDisp
+
 
 ###Exit Survey
 - Age
