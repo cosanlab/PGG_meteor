@@ -6,7 +6,7 @@ Meteor.methods({
 			playersData[playerIds[i]] = {
 				name: letters[i],
 				readyStatus: false,
-				rematched: Players.findOne(playerIds[idx]).needRematch,
+				rematched: Players.findOne(playerIds[i]).needRematch,
 				instrCmp: false,
 				contributions:{},
 				messages: {}

@@ -19,6 +19,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     this.lobby.events.on("match-players", (function(_this){
       return function() {
         var lobbyUsers = _this.lobby.getAssignments({'passedQuiz':true});
+        console.log('Lobby Users:' + lobbyUsers);
         if (lobbyUsers.length == _this.groupSize)  {
           var treatment = _.sample(_this.batch.getTreatments());
           _this.instance = _this.batch.createInstance([treatment]);
@@ -26,13 +27,13 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
           results = []; playerIds = [];
           for (i = 0, len = lobbyUsers.length; i < len; i++) {
             asst = lobbyUsers[i];
-            Meteor.clearTimeout(_this.lobbyTimers[i].asst.userId);
+            Meteor.clearTimeout(_this.lobbyTimers[i][asst.userId]);
             _this.lobby.pluckUsers([asst.userId]);
             Meteor.call('updatePlayerInfo', asst.userId,{'status': 'matched'},'set');
             results.push(_this.instance.addAssignment(asst));
             playerIds.push(asst.userId);
           }
-          Meteor.call('createGame',_this.instance._id, playerIds, treatment);
+          Meteor.call('createGame',_this.instance.groupId, playerIds, treatment);
           console.log('ASSIGNER: Match the players! New game created!');
           return results;
         } else {
