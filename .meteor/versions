@@ -32,6 +32,7 @@ ecmascript@0.1.5
 ecmascript-collections@0.1.6
 ejson@1.0.7
 email@1.0.7
+erasaur:meteor-lodash@3.10.1_1
 facts@1.0.5
 fastclick@1.0.7
 force-ssl@1.0.6

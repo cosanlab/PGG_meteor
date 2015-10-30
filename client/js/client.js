@@ -4,30 +4,17 @@ Meteor.startup(function(){
         Tracker.autorun(function(){
             //When a user is in the lobby clear any experiment-ending timers, make sure they have access to the lobby db, and show them the lobby template
             if(TurkServer.inLobby()){
-                if(endGameTimer){
-                        Meteor.clearTimeout(endGameTimer);
-                    }
                 var batch = TurkServer.batch();
                 Meteor.subscribe('lobby', batch && batch._id);
                 Router.go('lobby');
             }
             //When a user is in an experiment, if their partner has disconnected show them the disconnection template and start a timer that will eventually end the experiment. Otherwise, clear any experiment-ending timers (e.g. if everyone reconnects) and show them the instructions template which has it's own logic about which state of the game they should see
             else if (TurkServer.inExperiment()){
-                if(Meteor.users.findOne({_id: {$ne:Meteor.userId()}}) == undefined){
-                    Router.go('userDisconnect');
-                } else {
-                    if(endGameTimer){
-                        Meteor.clearTimeout(endGameTimer);
-                    } 
                     Router.go('game');
-                }
-            } 
+            }
             //If a user is in the exit survey clear any experiment-ending times and render the end survey template
             else if (TurkServer.inExitSurvey()){
-                if(endGameTimer){
-                        Meteor.clearTimeout(endGameTimer);
-                    }
-                Router.go('endSurvey');
+                    Router.go('endSurvey');
             }
         });
     });

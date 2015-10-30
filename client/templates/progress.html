@@ -3,9 +3,10 @@
 	{{#if game}}
 		{{#if Cond game.state '!=' 'assignment'}}
 			<div>
-				<ul class="nav nav-pills nav-wizard">
+				<ul class="nav nav-wizard">
+					<li id = "roundCounter"><u>Current Round:</u> {{game.round}}</li>
 					<li class = "{{game.pChoose}}"><a>Your Contribution</a></li>
-					<li class = '{{game.pDisp}}'><a>Others' Contribution</a>
+					<li class = '{{game.pDisp}}'><a>Others' Contribution</a></li>
 					<li class = '{{game.mess}}'><a>Messaging</a></li>
 					<li class = '{{game.gOut}}'><a>Group Outcome</a></li>
 		    	</ul>
