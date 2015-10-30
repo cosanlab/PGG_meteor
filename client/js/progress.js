@@ -11,7 +11,7 @@ Template.progress.helpers({
 
 			switch(game.state){
 				case 'pChoose':
-					beliefs = 'active';
+					pChoose = 'active';
 					break;
 				case 'pDisp':
 					pDisp = 'active';
@@ -37,7 +37,8 @@ Template.progress.helpers({
 				pChoose: pChoose,
 				pDisp: pDisp,
 				mess: mess,
-				gOut: gOut
+				gOut: gOut,
+				round: game.round
 			};
 		}
 	}

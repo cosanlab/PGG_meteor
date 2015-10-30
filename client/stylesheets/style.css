@@ -45,28 +45,51 @@ span.incorrect{
   color:#2EBCED;
 }
 
-
-
 /* Player prompts during game */
 .well-text{
   font-size:18px;
+  margin-top: 2%;
+  text-align: center;
+  font-weight: bold;
 }
 
-/* Comprehension Quiz styling */
-.correctQuiz{
-  color: #00CC00;
-  font-weight: bold;
-  font-size: 20px;
-  visibility:visible;
+/* Contribution phase */
+#contributionSliderRow{
+  margin-top: 20%;
 }
-.incorrectQuiz{
-  color: #FF0000;
-  font-weight: bold;
-  font-size: 20px;
-  visibility:visible;
+#contributionSubmit{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 10%;
 }
-.noresponseQuiz{
-  visibility: hidden;
+.contributionText{
+  font-size: 20px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+/* Other player contributions phase */
+.neighborContributions{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
+  list-style: none;
+  margin-top: 5%;
+}
+.neighborContributionsText{
+  margin-bottom: 2%;
+}
+
+/* Messaging */
+#messagePrompt{
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+#messagePrompt span{
+  font-size: 14px;
+  font-weight: normal;
 }
 
 /* Chat bubble */
@@ -87,6 +110,7 @@ blockquote{
   margin-bottom:0px;
   font-size:16px;
 }
+/*
 .bubble{
 position: relative;
 min-height: 60px;
@@ -94,10 +118,11 @@ width: 75%;
 height: 100%;
 padding: 10px;
 background: #99FFFF;
--webkit-border-radius: 10px;
--moz-border-radius: 10px;
-border-radius: 10px;
+-webkit-border-radius: 15px;
+-moz-border-radius: 15px;
+border-radius: 15px;
 }
+
 .bubble:after{
 content: '';
 position: absolute;
@@ -113,7 +138,71 @@ left: 15%;
 }
 p.message-form:focus{
   outline: 0px solid transparent;
+}*/
+
+.bubbleUser {
+position: relative;
+min-height: 100px;
+width: 50%;
+height: 100%;
+padding: 10px 10px 0px 10px;
+background: #99FFFF;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+margin-top: 5%;
 }
+
+.bubbleTriangleUser {
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 10px 11px 0;
+border-color: transparent #99FFFF;
+display: block;
+width: 0;
+z-index: 1;
+left: -10px;
+top: 40px;
+}
+
+.bubbleOther {
+position: relative;
+min-height: 100px;
+left: 50%;
+width: 50%;
+height: 100%;
+padding: 10px 10px 0px 10px;
+background: #99FFFF;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+margin-top: 5%;
+}
+
+.bubbleTriangleOther {
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 0px 10px 11px;
+border-color: transparent #99FFFF;
+display: block;
+width: 0;
+z-index: 1;
+right: -10px;
+top: 40px;
+}
+
+p.message-form:focus{
+  outline: 0px solid transparent;
+}
+
+
+
+
+
+
+
 
 /* Footer styling */
 .footer{
@@ -178,34 +267,12 @@ p.message-form:focus{
 }
 .navbar {min-height:40px !important;}
 
-/* Game tree styling */
-.svg-container {
-    display: inline-block;
-    position: relative;
-    height: 50%;
-    padding-bottom: 28%; /* aspect ratio */
-    vertical-align: middle;
-    overflow: hidden;
-}
-.svg-content-responsive {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    margin: auto;
-}
-.hover{
-    stroke: #33CCFF;
-    fill: #33CCFF;
-    stroke-width: 6;
-}
-.choice{
-    stroke: #33CCFF;
-    fill: #33CCFF;
-    stroke-width: 6;
+/* Progress bar styling */
+#roundCounter{
+  font-weight: bold;
+  color: #000033
 }
 
-/* Progress bar styling */
 ul.nav-wizard {
   background-color: #f9f9f9;
   border: 1px solid #d4d4d4;

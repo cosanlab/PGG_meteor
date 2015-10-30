@@ -32,7 +32,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
             results.push(_this.instance.addAssignment(asst));
             playerIds.push(asst.userId);
           }
-          Meteor.call('createGame',_this.instance.groupId, playerIds, treatment);
+          Meteor.call('createGame', _this.instance.groupId, playerIds, treatment);
           console.log('ASSIGNER: Match the players! New game created: '+ _this.instance.groupId);
           return results;
         } else {

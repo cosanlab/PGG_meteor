@@ -7,7 +7,6 @@ Meteor.methods({
 				name: letters[i],
 				readyStatus: false,
 				rematched: Players.findOne(playerIds[i]).needRematch,
-				instrCmp: false,
 				contributions:[],
 				messages: []
 			};
@@ -19,7 +18,7 @@ Meteor.methods({
 			round: 1,
 			players: playersData
 		};
-		Partitioner.directOperation(function(){
+		Partitioner.bindGroup(gameId,function(){
 			Games.insert(data);
 		});
 	},
@@ -27,13 +26,13 @@ Meteor.methods({
 	'updateGameInfo': function(gameId,data,operation){
 		Partitioner.directOperation(function(){
 			if(operation == 'set'){
-				Games.update(currentUser, {$set: data});
+				Games.update(gameId, {$set: data});
 			} else if(operation == 'inc'){
-				Games.update(currentUser, {$inc: data});
+				Games.update(gameId, {$inc: data});
 			} else if(operation == 'dec'){
-				Games.update(currentUser, {$dec: data});
+				Games.update(gameId, {$dec: data});
 			} else if(operation == 'push'){
-				Games.update(currentUser, {$push: data});
+				Games.update(gameId, {$push: data});
 			}
 		});
 	},
@@ -50,10 +49,10 @@ Meteor.methods({
 	//Adds a single client's data to the Game document and updates the game state if all players have inserted that data into the document by comparing how many insertions have been made relative to the current game round; Can also auto-advance another game state if a second state and delay are passed into the data array
 	'addPlayerRoundData': function(gameId, currentUser,data){
 		//var dataArray = _.flatten(_.pairs(data));
-		var pKey = makePQuery(currentUser,dataArray[0],dataArray[1]);
+		var pKey = makePQuery(currentUser,data[0],data[1]);
 		Meteor.call('updateGameInfo',gameId,pKey,'push');
 		var game = Games.findOne(gameId);
-		if(_.every(_.pluck(game.players,dataArray[0]),
+		if(_.every(_.pluck(game.players,data[0]),
 			function(elem){return elem.length == game.round;})){
 			if(data.length > 3){
 				Meteor.call('autoAdvanceState',game._id,data[2],data[3],data[4]);
@@ -75,6 +74,6 @@ Meteor.methods({
 //Function to make a variable-based dot-notation query for updating a nested mongo document 
 function makePQuery(currentUser,field,value){
 	var pKey = {};
-	pkey['players.' + currentUser + '.' + field] = value;
+	pKey['players.' + currentUser + '.' + field] = value;
 	return pKey;
 }

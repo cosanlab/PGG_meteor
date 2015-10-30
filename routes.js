@@ -37,53 +37,12 @@ Router.route('/lobby',{
   }
 }); 
 
-//Disconnect template
-Router.route('/userDisconnect',{
-  name: 'userDisconnect',
-  template: 'userDisconnect',
-  waitOn: function(){
-    return Meteor.subscribe('Games');
-  },
-  action:function(){
-      this.render('userDisconnect');
-  }
-});
-
-
-
-//Instructions template, that sends players to the game if the game state is ready
-Router.route('/instructionsInteractive',{
-  waitOn: function(){
-    return [Meteor.subscribe('Games'), Meteor.subscribe('Players')];
-  },
-  action: function(){
-      var gameState = Games.findOne().state;
-      var currentUser = Meteor.userId();
-      var needRematch = Players.findOne(currentUser).needRematch;
-      if(gameState== 'instructions'){
-        this.render('instructionsInteractive');
-      }
-      else if(gameState == 'assignment'){
-        this.render('assignmentInteractive');
-        Meteor.call('updatePlayerState', currentUser, 'roleAssignment');
-      }
-      else if(needRematch){
-        Router.go('failedQuiz');
-      }
-      else if(gameState == 'playerBmessaging' || gameState == 'playerAdeciding' || gameState == 'playerBdeciding' || gameState == 'beliefs'){
-        console.log('Game ready');
-        Router.go('game');
-        //Each client updates their own status
-        Meteor.call('updatePlayerState', Meteor.userId(),'playing');
-      }
-  }
-}); 
 
 //Core game logic, maybe better to have templating logic in game template instead?
 Router.route('/game',{
   name: 'game',
   waitOn: function(){
-    return [Meteor.subscribe('Games'), Meteor.subscribe('Players')]; //Might not need players here
+    return [Meteor.subscribe('Games'), Meteor.subscribe('Players')];
   },
   action: function(){
     var game = Games.findOne();
@@ -97,6 +56,32 @@ Router.route('/game',{
     } else{
         this.render('game');
       }
+  }
+});
+
+//End survey
+Router.route('/endSurvey',{
+  name: 'endSurvey',
+  template: 'endSurvey',
+  
+  waitOn: function(){
+    return Meteor.subscribe('Players');
+  },
+  action: function(){
+      this.render('endSurvey');
+  }
+});
+
+/*
+//Disconnect template
+Router.route('/userDisconnect',{
+  name: 'userDisconnect',
+  template: 'userDisconnect',
+  waitOn: function(){
+    return Meteor.subscribe('Games');
+  },
+  action:function(){
+      this.render('userDisconnect');
   }
 });
 
@@ -115,16 +100,5 @@ Router.route('/failedQuiz',{
   name: 'failedQuiz',
   template: 'partnerfailedQuiz'
 });
+*/
 
-//End survey
-Router.route('/endSurvey',{
-  name: 'endSurvey',
-  template: 'endSurvey',
-  
-  waitOn: function(){
-    return Meteor.subscribe('Players');
-  },
-  action: function(){
-      this.render('endSurvey');
-  }
-});

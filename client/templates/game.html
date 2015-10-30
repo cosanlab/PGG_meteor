@@ -1,27 +1,27 @@
 <template name="game">
 <div class= "container-fluid">
-	<div class = "row" id = "gameState Label">
-		<div class= "col-xs-5 col-xs-offset-4">
+	<div class = "row">
+		<div class= "col-xs-6 col-xs-offset-3">
 		{{#if Cond game.state '==' 'pChoose'}}		
 			<div class="well well-sm well-text" align="center">
-				<b>How many points do you want to contribute to the group account?</b>
-				{{> playerContribution}}
+				How many points do you want to contribute to the group account?
 			</div>
+			{{> playerContribution}}
 		{{else}} {{#if Cond game.state '==' 'pDisp'}}
 			<div class="well well-sm well-text" align="center">
-				<b>Two other players contributed:</b>
-				{{> playerDisplay}}
+				Two other players contributed:
 			</div>
-		{{else}} {{#if messageSend}}
+			{{> playerDisplay}}
+		{{else}} {{#if game.messageSend}}
 			<div class="well well-sm well-text" align="center">
 				<b>What do you want to say to another player?</b>
-				{{> messageForm}}
 			</div>
-		{{else}} {{#if messageReceive}}
+				{{> messageForm}}
+		{{else}} {{#if game.messageReceive}}
 			<div class="well well-sm well-text" align="center">
 				<b>The other player said:</b>
-				{{> messageDisplay}}
 			</div>
+				{{> messageDisplay}}
 		{{else}} {{#if Cond game.state '==' 'gOut'}}
 			<div class="well well-sm well-text" align="center">
 				<b>You earned: </b>
@@ -33,35 +33,37 @@
 		{{/if}}
 		{{/if}}
 		</div>
-	<div class = "col-xs-3 col-xs-9">
-		<p align = "center" id = "roundCounter">Current Round: {{game.round}}</p>
 	</div>
 </div>	
 </template>
 
 <!-- template for player contribution -->
 <template name = "playerContribution">
-		<div class = "row">
-			<div class = "col-xs-4">
-				<p style = "text-align:right; font-size:18px"><b>0 points </b></p>
+		<div class = "row" id = "contributionSliderRow">
+			<div class = "col-xs-2">
+				<p class = "contributionText">0<br>points</p>
 			</div>
-			<div class = "col-xs-4">        		
-        		<input type="range" id="beliefRating" value="{{limit}}" min="0" max="100">
+			<div class = "col-xs-8">
+				<form oninput = "rangeOutput.value = rangeInput.value">    		
+        			<input type="range" id="contributionSlider" value="{{limit}}" min="0" max="100" name = "rangeInput">
+        		<br>
+        			<output class = "contributionText" name = "rangeOutput" for="rangeInput"><span class = "contributionText">{{limit}}</span></output>
+        		</form>
 			</div>
-			<div class = "col-xs-4">
-				<p style = "font-size:18px"><b>100 points</b></p>
+			<div class = "col-xs-2">
+				<p class = "contributionText">100<br>points</p>
     		</div>
 		</div>
-		<button type="button" class="btn btn-primary btn-lg" id = "beliefSubmit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block">Continue</button>
+		<button type="button" class="btn btn-primary btn-lg" id = "contributionSubmit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block">Submit</button>
 </template>
 
 <!-- template for other player contributions -->
 <template name = "playerDisplay">
-	<div class = "col-xs-4">
+	<div class = "col-xs-12">
 		<!-- TODO -->
-		<ul class = "list-inline">
+		<ul class = "neighborContributions">
 			{{#each contributions}}
-				<li>{{this}}</li>
+				<li class = "neighborContributionsText">{{this}} points</li>
 			{{/each}}
 		</ul>
 	</div>
@@ -70,11 +72,20 @@
 
 <!-- template for message input -->
 <template name="messageForm">
-	<div class="col-xs-4" style= "{{game.messageForm}}">
-		<p style = "font-size:20px"><b>Insert your message below:</b></p>
-      	<div class= "bubble">
-       		<p style="font-size:16px" id="message" class = 'message-form' contenteditable="true">Type a message here and press Enter to send...</p>
+	<div class="col-xs-12" style= "{{game.messageForm}}">
+		<p id = "messagePrompt"><b>Insert your message below:</b><br><span>(press Enter to send)</span></p>
+		
+      	<div class= "bubbleUser">
+       		<p style="font-size:16px" id="message" class = 'message-form' contenteditable="true">Type a 140 character message here...</p>
+       		<p style = "font-size:10px" id="charCount">140/140</p>
+       		<div class = "bubbleTriangleUser"></div>
    		</div>
+	   		<!--If statement here -->
+	   		<div class= "bubbleOther">
+	       		<p style="font-size:16px" id="message" contenteditable="false">Type a 140 character message here...</p>
+	       		<p style = "font-size:10px" id="charCount">140/140</p>
+	       		<div class = "bubbleTriangleOther"></div>
+	   		</div>
     </div>
 </template>
 
