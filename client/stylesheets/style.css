@@ -55,7 +55,7 @@ span.incorrect{
 
 /* Contribution phase */
 #contributionSliderRow{
-  margin-top: 20%;
+  margin-top: 10%;
 }
 #contributionSubmit{
   margin-left: auto;
@@ -79,11 +79,12 @@ span.incorrect{
 }
 .neighborContributionsText{
   margin-bottom: 2%;
+  text-align: center;
 }
 
-/* Messaging */
+/* Messaging Phase */
 #messagePrompt{
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
 }
@@ -92,9 +93,14 @@ span.incorrect{
   font-weight: normal;
 }
 
+#message-form:focus{
+  outline: 0px solid transparent;
+}
+
+
 /* Chat bubble */
 /* To handle long continous strings of text that extend outside a div */
-#message{
+.message{
   white-space: pre;           /* CSS 2.0 */
   white-space: pre-wrap;      /* CSS 2.1 */
   white-space: pre-line;      /* CSS 3.0 */
@@ -105,52 +111,21 @@ span.incorrect{
   word-wrap: break-word;      /* IE 5+ */
   min-width: 10px;
   min-height: 60px;
+  font-size: 14px;
 }
-blockquote{
-  margin-bottom:0px;
-  font-size:16px;
-}
-/*
-.bubble{
-position: relative;
-min-height: 60px;
-width: 75%;
-height: 100%;
-padding: 10px;
-background: #99FFFF;
--webkit-border-radius: 15px;
--moz-border-radius: 15px;
-border-radius: 15px;
-}
-
-.bubble:after{
-content: '';
-position: absolute;
-border-style: solid;
-border-width: 0 9px 12px;
-border-color: #99FFFF transparent;
-display: block;
-width: 0;
-z-index: 1;
-margin-left: -9px;
-top: -10px;
-left: 15%;
-}
-p.message-form:focus{
-  outline: 0px solid transparent;
-}*/
 
 .bubbleUser {
 position: relative;
-min-height: 100px;
-width: 50%;
+min-height: 30px;
+width: 100%;
 height: 100%;
 padding: 10px 10px 0px 10px;
 background: #99FFFF;
 -webkit-border-radius: 10px;
 -moz-border-radius: 10px;
 border-radius: 10px;
-margin-top: 5%;
+margin-top: 1%;
+margin-left: 5%;
 }
 
 .bubbleTriangleUser {
@@ -168,16 +143,16 @@ top: 40px;
 
 .bubbleOther {
 position: relative;
-min-height: 100px;
-left: 50%;
-width: 50%;
+min-height: 50px;
+width: 100%;
 height: 100%;
 padding: 10px 10px 0px 10px;
 background: #99FFFF;
 -webkit-border-radius: 10px;
 -moz-border-radius: 10px;
 border-radius: 10px;
-margin-top: 5%;
+margin-top: 1%;
+margin-right: 5%;
 }
 
 .bubbleTriangleOther {
@@ -193,16 +168,68 @@ right: -10px;
 top: 40px;
 }
 
-p.message-form:focus{
-  outline: 0px solid transparent;
+/* Should probably try to replace class inheritance with LESS instead of CSS toget rid of this redundant code */
+.bubbleUserSent {
+position: relative;
+min-height: 30px;
+width: 100%;
+height: 100%;
+padding: 10px 10px 0px 10px;
+background: #B0FF96;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+margin-top: 1%;
+margin-left: 5%;
 }
 
+.bubbleTriangleUserSent {
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 10px 11px 0;
+border-color: transparent #B0FF96;
+display: block;
+width: 0;
+z-index: 1;
+left: -10px;
+top: 40px;
+}
 
+.bubbleOtherSent {
+position: relative;
+min-height: 50px;
+width: 100%;
+height: 100%;
+padding: 10px 10px 0px 10px;
+background: #FFFF82;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+margin-top: 1%;
+margin-right: 5%;
+}
 
+.bubbleTriangleOtherSent {
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 15px 0px 10px 11px;
+border-color: transparent #FFFF82;
+display: block;
+width: 0;
+z-index: 1;
+right: -10px;
+top: 40px;
+}
 
-
-
-
+/* Final outcome */
+.earnings{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
+  margin-top: 2%;
+}
 
 /* Footer styling */
 .footer{

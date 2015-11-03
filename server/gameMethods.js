@@ -1,15 +1,26 @@
 Meteor.methods({
 	//Adds a new game document to the database
 	'createGame': function(gameId, playerIds, condition){
-		var playersData = {};	
+		var playersData = {};
 		for(var i=0, plen = playerIds.length; i<plen; i++) {
 			playersData[playerIds[i]] = {
 				name: letters[i],
 				readyStatus: false,
 				rematched: Players.findOne(playerIds[i]).needRematch,
 				contributions:[],
-				messages: []
+				firstMessages: [],
+				secondMessages: [],
 			};
+			if(condition == '2G'){
+				var partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
+				var neighbors = [];
+				for (var j = -1; j < 2; j+=2){
+					var nIdx = (i+j) < playerIds.length ? (i+j) : (i+j-playerIds.length);
+					neighbors.push(playerIds.slice(nIdx)[0]);
+				}
+				playersData[playerIds[i]].neighbors = neighbors;
+				playersData[playerIds[i]].partner = playerIds[partner];
+			}
 		}
 		var data = {
 			_id: gameId,

@@ -22,7 +22,7 @@ Template.lobby.helpers({
       s = s < 10 ? "0" + s: s;
       Session.set('min',m);
       Session.set('sec',s);
-    },5000);
+    },900);
 
     return {
       min: Session.get('min'),
