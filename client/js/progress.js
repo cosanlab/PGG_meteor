@@ -28,7 +28,7 @@ Template.progress.helpers({
 				case 'pReceiveMess2':
 					mess = 'active';
 					break;
-				case 'gDisp':
+				case 'gOut':
 					gOut = 'active';
 					break;
 				}

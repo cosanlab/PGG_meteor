@@ -1,6 +1,7 @@
 # Experiment Logic
 
 ##Current todos
+- Add in another auto advance to game state after final outcomes
 - Use session variables about time on each page, that auto makes a meteor call for the player if they take too long
 - Game states in db:
     + assignment (initially only)
@@ -11,9 +12,7 @@
     + pSendMess2 (click then)
     + pReceiveMess2 (auto advance then)
     + gOut (auto advance, next round)
-- Finish core game logic with embedded templates approach
-    + aesthetics of neighbors contributions - YOU WERE HERE
-    + Limit communication in message templates to 140 chars (text area char limit counter)
+
 
 ###Assigner
 - ~~Is user associate with an experiment?~~

@@ -1,38 +1,38 @@
 <template name="game">
 <div class= "container-fluid">
 	<div class = "row">
-		<div class= "col-xs-6 col-xs-offset-3">
-		{{#if Cond game.state '==' 'pChoose'}}		
+		{{#if Cond game.state '==' 'pChoose'}}	
+		<div class = "col-xs-8 col-xs-offset-2">	
 			<div class="well well-sm well-text" align="center">
 				How many points do you want to contribute to the group account?
 			</div>
+		</div>
 			{{> playerContribution}}
 		{{else}} {{#if Cond game.state '==' 'pDisp'}}
+		<div class = "col-xs-8 col-xs-offset-2">
 			<div class="well well-sm well-text" align="center">
 				Two other players contributed:
 			</div>
+		</div>
 			{{> playerDisplay}}
-		{{else}} {{#if game.messageSend}}
-			<div class="well well-sm well-text" align="center">
-				<b>What do you want to say to another player?</b>
+		{{else}} {{#if game.messaging}}
+			<div class = "col-xs-8 col-xs-offset-2">
+				<div class="well well-sm well-text" align="center">
+					<b>{{game.messagePrompt}}</b>
+				</div>
 			</div>
 				{{> messageForm}}
-		{{else}} {{#if game.messageReceive}}
-			<div class="well well-sm well-text" align="center">
-				<b>The other player said:</b>
-			</div>
-				{{> messageDisplay}}
 		{{else}} {{#if Cond game.state '==' 'gOut'}}
-			<div class="well well-sm well-text" align="center">
-				<b>You earned: </b>
-				{{> playerEarnings}}
+			<div class = "col-xs-8 col-xs-offset-2">
+				<div class="well well-sm well-text" align="center">
+					<b>Your earnings: </b>
+				</div>
 			</div>
+			{{> playerEarnings}}
 		{{/if}}
 		{{/if}}
 		{{/if}}
 		{{/if}}
-		{{/if}}
-		</div>
 	</div>
 </div>	
 </template>
@@ -40,66 +40,142 @@
 <!-- template for player contribution -->
 <template name = "playerContribution">
 		<div class = "row" id = "contributionSliderRow">
-			<div class = "col-xs-2">
+			<div class = "col-xs-1 col-xs-offset-3">
 				<p class = "contributionText">0<br>points</p>
 			</div>
-			<div class = "col-xs-8">
+			<div class = "col-xs-4">
 				<form oninput = "rangeOutput.value = rangeInput.value">    		
         			<input type="range" id="contributionSlider" value="{{limit}}" min="0" max="100" name = "rangeInput">
         		<br>
         			<output class = "contributionText" name = "rangeOutput" for="rangeInput"><span class = "contributionText">{{limit}}</span></output>
         		</form>
 			</div>
-			<div class = "col-xs-2">
+			<div class = "col-xs-1">
 				<p class = "contributionText">100<br>points</p>
     		</div>
-		</div>
-		<button type="button" class="btn btn-primary btn-lg" id = "contributionSubmit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block">Submit</button>
+    		<button type="button" class="btn btn-primary btn-lg" id = "contributionSubmit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block">Submit</button>
+		</div>		
 </template>
 
 <!-- template for other player contributions -->
 <template name = "playerDisplay">
 	<div class = "col-xs-12">
-		<!-- TODO -->
-		<ul class = "neighborContributions">
+		<ul class = "neighborContributions" align = "center">
 			{{#each contributions}}
-				<li class = "neighborContributionsText">{{this}} points</li>
+				<li class = "neighborContributionsText"> Player {{name}}:   {{amount}} points</li>
 			{{/each}}
 		</ul>
 	</div>
 </template>
 
 
-<!-- template for message input -->
+<!-- template for messaging -->
 <template name="messageForm">
-	<div class="col-xs-12" style= "{{game.messageForm}}">
+	<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
 		<p id = "messagePrompt"><b>Insert your message below:</b><br><span>(press Enter to send)</span></p>
-		
-      	<div class= "bubbleUser">
-       		<p style="font-size:16px" id="message" class = 'message-form' contenteditable="true">Type a 140 character message here...</p>
-       		<p style = "font-size:10px" id="charCount">140/140</p>
-       		<div class = "bubbleTriangleUser"></div>
-   		</div>
-	   		<!--If statement here -->
-	   		<div class= "bubbleOther">
-	       		<p style="font-size:16px" id="message" contenteditable="false">Type a 140 character message here...</p>
-	       		<p style = "font-size:10px" id="charCount">140/140</p>
-	       		<div class = "bubbleTriangleOther"></div>
-	   		</div>
-    </div>
-</template>
-
-<!-- template for message display -->
-<template name="messageDisplay">
-	<div class= "col-xs-4" style = "{{game.messageDisplay}}">
-		<p style = "font-size:20px"><b>{{message.whoSaid}}</b> </p>
-		<p style = "font-size: 16px" class = "bubble" id="message">{{message.content}}</p>
 	</div>
+		{{#if Cond game.state '==' 'pSendMess1'}}
+		<div class = "row" id = "messageRow">
+			<div class = "col-xs-4 col-xs-offset-2">
+		      	<div class= "bubbleUser" id = "userMessage">
+		       		<p id="message-form" class = 'message' contenteditable="true">Type a 140 character message here...</p>
+		       		<p style = "font-size:10px" id="charCount">140/140</p>
+		       		<div class = "bubbleTriangleUser"></div>
+		   		</div>
+		   	</div>
+	   	</div>
+   		{{else}}{{#if Cond game.state '==' 'pReceiveMess1'}}
+   		<div class = "row" id = "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-2">
+	   		<p style = "font-size:20px"> You: </p>
+	   			<div class= "bubbleUserSent">
+	       			<p class="message">{{messageContent.usrMess1}}</p>
+	       			<div class = "bubbleTriangleUserSent"></div>
+	   			</div>
+	   		</div>
+	   	</div>
+	   	<div class = "row" id= "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-6">
+	   		<p style = "font-size:20px; text-align:right">Player {{messageContent.partnerName}}:</p>
+	   			<div class= "bubbleOtherSent">
+	       			<p class="message">{{messageContent.partnerMess1}}</p>
+	       			<div class = "bubbleTriangleOtherSent"></div>
+	   			</div>
+   			</div>
+		</div>
+		{{else}}{{#if Cond game.state '==' 'pSendMess2'}}
+		<div class = "row" id = "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-2">
+	   		<p style = "font-size:20px"> You: </p>
+	   			<div class= "bubbleUserSent">
+	       			<p class="message">{{messageContent.usrMess1}}</p>
+	       			<div class = "bubbleTriangleUserSent"></div>
+	   			</div>
+	   		</div>
+	   	</div>
+	   	<div class = "row" id= "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-6">
+	   		<p style = "font-size:20px; text-align:right">Player {{messageContent.partnerName}}:</p>
+	   			<div class= "bubbleOtherSent">
+	       			<p class="message">{{messageContent.partnerMess1}}</p>
+	       			<div class = "bubbleTriangleOtherSent"></div>
+	   			</div>
+   			</div>
+		</div>
+		<div class = "row" id = "messageRow">
+			<div class = "col-xs-4 col-xs-offset-2">
+		      	<div class= "bubbleUser" id = "userMessage">
+		       		<p id="message-form" class = 'message' contenteditable="true">Type a 140 character message here...</p>
+		       		<p style = "font-size:10px" id="charCount">140/140</p>
+		       		<div class = "bubbleTriangleUser"></div>
+		   		</div>
+		   	</div>
+	   	</div>
+	   	{{else}}{{#if Cond game.state '==' 'pReceiveMess2'}}
+	   	<div class = "row" id = "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-2">
+	   		<p style = "font-size:20px"> You: </p>
+	   			<div class= "bubbleUserSent">
+	       			<p class="message">{{messageContent.usrMess1}}</p>
+	       			<div class = "bubbleTriangleUserSent"></div>
+	   			</div>
+	   		</div>
+	   	</div>
+	   	<div class = "row" id= "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-6">
+	   		<p style = "font-size:20px; text-align:right">Player {{messageContent.partnerName}}:</p>
+	   			<div class= "bubbleOtherSent">
+	       			<p class="message">{{messageContent.partnerMess1}}</p>
+	       			<div class = "bubbleTriangleOtherSent"></div>
+	   			</div>
+   			</div>
+		</div>
+		<div class = "row" id = "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-2">
+	   			<div class= "bubbleUserSent">
+	       			<p class="message">{{messageContent.usrMess2}}</p>
+	       			<div class = "bubbleTriangleUserSent"></div>
+	   			</div>
+	   		</div>
+	   	</div>
+	   	<div class = "row" id= "messageRow">
+	   		<div class = "col-xs-4 col-xs-offset-6">
+	   			<div class= "bubbleOtherSent">
+	       			<p class="message">{{messageContent.partnerMess2}}</p>
+	       			<div class = "bubbleTriangleOtherSent"></div>
+	   			</div>
+   			</div>
+		</div>
+		{{/if}}
+		{{/if}}
+		{{/if}}
+		{{/if}}
 </template>
 
 <!-- template for player/group earnings -->
 <template name = "playerEarnings">
-	<div class = "col-xs-4">
-	<!-- TODO -->
+	<div class = "col-xs-12" align = "center">
+		<p class = "earnings"> You earned {{earnings.round}} points this round </p>
+		<p class = "earnings"> Your total earnings for this round = {{earnings.total}} points </p>
 	</div>
 </template>

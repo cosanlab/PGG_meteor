@@ -1,22 +1,30 @@
 Template.game.helpers({
 	game: function(){
 		var game = Games.findOne();
-		var messageSend = false;
-		var messageReceive = false;
+		var messaging = false;
+		var messagePrompt;
+		var messageSubPromptDisplay = "";
+		var messageSubPrompt = "";
+		var messageSubPrompt2 = "";
 		if(game.state == 'pSendMess1' || game.state == 'pSendMess2'){
-			messageSend = true;
+			messaging = true;
+			messagePrompt = 'What do you want to say to another player?';
+			messageSubPrompt = "Insert your message below:";
+			messageSubPrompt2 = "(press Enter to send)";
 		}
 		if(game.state == 'pReceiveMess1' || game.state == 'pReceiveMess2'){
-			messageReceive = true;
+			messaging = true;
+			messagePrompt = 'Your conversation:';
+			messageSubPromptDisplay = 'visibility:hidden';
 		}
 
 		return {
 			condition: game.condition,
 			state: game.state,
 			round: game.round,
-			messageSend: messageSend,
-			messageReceive: messageReceive
-
+			messaging: messaging,
+			messagePrompt: messagePrompt,
+			messageSubPromptDisplay: messageSubPromptDisplay
 		};
 	}
 });
@@ -37,7 +45,7 @@ Template.playerContribution.events({
 		var currentUser = Meteor.userId();
 		var nextState = 'pDisp';
 		var autoState = 'pSendMess1';
-		var delay = 5000;
+		var delay = 10000;
 		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoState,delay]);
 	}
 });
@@ -51,20 +59,25 @@ Template.playerDisplay.helpers({
 		var pName = game.players[currentUser].name;
 		var pIdx = _.indexOf(allNames,pName);
 		var round = game.round - 1;
-		var neighborContributions = [];
-		if(game.condition == '2G'){
-			var neighborName;
-			var neighborId;
-			var idx;
-			for(var i = -1; i < 2; i+=2){
-				idx = (pIdx+i) < allNames.length ? (pIdx+i) : (pIdx+i-allNames.length);
-				neighborName =  allNames.slice(idx)[0];
-				neighborId = _.findKey(game.players,
-					function(key){return key.name == neighborName;});
-				neighborContributions.push(game.players[neighborId].contributions[round]);
+		var contributions = [];
+		var data = {};
+		if(game.condition == '2G'){		
+			var neighbors = game.players[currentUser].neighbors;	
+			for (var n=0, nLen = neighbors.length; n<nLen; n++){
+				data.name = game.players[neighbors[n]].name;
+				data.amount = game.players[neighbors[n]].contributions[round];
+				contributions.push(data);
+				data = {};
+			}
+		} else{
+			for (var p in _.keys(game.players)){
+				data.name = game.players[p].name;
+				data.amount = game.players[p].contributions[round];
+				contributions.push(data);
 			}
 		}
-		return neighborContributions;
+		console.log(contributions);
+		return contributions;
 	}
 
 });
@@ -72,27 +85,57 @@ Template.playerDisplay.helpers({
 
 //Messaging Templates
 Template.messageForm.inheritsHelpersFrom('game');
+Template.messageForm.helpers({
+	'messageContent':function(){
+		var game = Games.findOne();
+		var round = game.round - 1;
+		var currentUser = Meteor.userId();
+		var partner = game.players[currentUser].partner;
+		return {
+			usrMess1: game.players[currentUser].firstMessages[round],
+			partnerMess1: game.players[partner].firstMessages[round],
+			usrMess2: game.players[currentUser].secondMessages[round],
+			partnerMess2: game.players[partner].secondMessages[round],
+			partnerName: game.players[partner].name
+		};
+	}
+});
 Template.messageForm.events({
-		'click .bubbleUser' : function(event){
+		'click #userMessage' : function(event){
 			event.preventDefault();
-			if($('.message-form').text() == 'Type a 140 character message here...'){
-				$('.message-form').text('');
+			if($('#message-form').text() == 'Type a 140 character message here...'){
+				$('#message-form').text('');
 			}
 		},
-		/*'keydown p.message-form': function(event){
+		'keydown #message-form': function(event){
 			if(event.which===13){
-	        	var message = $('.message-form').text();
-	        	var gameId = Games.findOne()._id;
-	        	//Meteor.call('addMessage',gameId, message);
-	        	//Meteor.call('updateGameState', gameId, 'beliefs');
-	        //	Meteor.setTimeout(function(){
-	      	//		Meteor.call('updateGameState',gameId, 'beliefs');
-	    	//	},10000);
-	        	event.target.value = "";
-	    	}
-		}, */
-		'keyup p.message-form': function(event){
-			var charLen = 140 - $('.message-form').text().length;
+				if($('#message-form').text().length <= charLim){
+		        	var message = $('#message-form').text();
+		        	$('#message-form').prop('contenteditable','false');
+		        	$('#charCount').css('visibility','hidden');
+		        	$('#messagePrompt').text('Waiting for other players...');
+		        	var currentUser = Meteor.userId();
+		        	var game = Games.findOne();
+		        	var delay = 10000;
+		        	var nextState;
+		        	var autoState;
+		        	var messageField;
+		        	if (game.state == 'pSendMess1'){
+		        		nextState = 'pReceiveMess1';
+		        		autoState = 'pSendMess2';
+		        		messageField = 'firstMessages';
+		        	}
+		        	else if(game.state == 'pSendMess2'){
+		        		nextState = 'pReceiveMess2';
+		        		autoState = 'gOut';
+		        		messageField = 'secondMessages';
+		        	}
+		        	Meteor.call('addPlayerRoundData',game._id,currentUser,[messageField,message,nextState,autoState,delay]);
+		    	}
+		    }
+		}, 
+		'keyup #message-form': function(event){
+			var charLen = charLim - $('#message-form').text().length;
 			$('#charCount').text(charLen + '/140');
 			if(charLen < 0){
 				$('.bubbleUser').css('background','#FF8080');
@@ -106,27 +149,25 @@ Template.messageForm.events({
 
 });
 
-Template.messageDisplay.inheritsHelpersFrom('game');
-Template.messageDisplay.helpers({
-	message: function(){
-		var game = Games.findOne();
-		var whoSaid;
-		var currentUser = Meteor.userId();
-		if(currentUser==game.playerA){
-			whoSaid = 'Player B says:';
-		}
-		else if(currentUser == game.playerB){
-			whoSaid = 'You said:';
-		}
-		return {
-			content: game.message,
-			whoSaid: whoSaid
-		};
-	}
-});
-
 //Player/Group earnings template
 Template.playerEarnings.helpers({
+	earnings: function(){
+		var game = Games.findOne();
+		var currentUser = Meteor.userId();
+		var round = game.round-1;
+		var pot = 0;
+		var roundEarnings;
+		var totalEarnings;
+		_.forEach(game.players,function(c){
+			pot += c.contributions[round];
+		});
+		roundEarnings = (pot * 1.5)/_.pluck(game.players, 'name').length;
+		totalEarnings = game.players[currentUser].contributions[round] + roundEarnings;
+		return {
+			round: roundEarnings,
+			total: totalEarnings
+		};
+	}
 
 });
 
