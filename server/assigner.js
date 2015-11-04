@@ -48,7 +48,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     var currentUser = asst.userId; //Same as Meteor.userId
     var workerId = asst.workerId; //Mturk Id displayed in admin
     if(asst.getInstances().length > 0){
-      if(Players.findOne(currentUser).needRematch){
+      if(!Players.findOne(currentUser).needRematch){
         this.lobby.pluckUsers([currentUser]);
         return asst.showExitSurvey();
       }

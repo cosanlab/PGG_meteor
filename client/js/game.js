@@ -48,8 +48,7 @@ Template.playerContribution.events({
 		var nextState = 'pDisp';
 		var autoStates = ['pSendMess1'];
 		var delay = 5000;
-		var endRound = false;
-		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoStates],delay,endRound);
+		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoStates],delay);
 	}
 });
 
@@ -122,7 +121,6 @@ Template.messageForm.events({
 		        	var nextState;
 		        	var autoStates;
 		        	var messageField;
-		        	var endRound = false;
 		        	if (game.state == 'pSendMess1'){
 		        		nextState = 'pReceiveMess1';
 		        		autoStates = ['pSendMess2'];
@@ -132,9 +130,8 @@ Template.messageForm.events({
 		        		nextState = 'pReceiveMess2';
 		        		autoStates = ['gOut','pChoose'];
 		        		messageField = 'secondMessages';
-		        		endRound = true;
 		        	}
-		        	Meteor.call('addPlayerRoundData',game._id,currentUser,[messageField,message,nextState,autoStates],delay,endRound);
+		        	Meteor.call('addPlayerRoundData',game._id,currentUser,[messageField,message,nextState,autoStates],delay);
 		    	}
 		    }
 		}, 
@@ -159,12 +156,14 @@ Template.playerEarnings.helpers({
 		var game = Games.findOne();
 		var currentUser = Meteor.userId();
 		var round = game.round-1;
-		var pot = 0;
 		var roundEarnings;
 		var totalEarnings;
-		_.forEach(game.players,function(c){
-			pot += c.contributions[round];
-		});
+		//Underscore js map reduce magic
+		var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list){return list[round];}),function(a,b){return a+b;});
+		//var pot = 0;
+		//_.forEach(game.players,function(c){
+		//	pot += c.contributions[round];
+		//});
 		roundEarnings = (pot * 1.5)/_.pluck(game.players, 'name').length;
 		totalEarnings = game.players[currentUser].contributions[round] + roundEarnings;
 		return {
