@@ -48,11 +48,6 @@ Router.route('/game',{
     var game = Games.findOne();
     if(game.state == 'assignment'){
       this.render('assignment');
-    } else if (game.state== 'gameEnd'){
-        setTimeout(function(){
-          Router.go('payoffs'); 
-        },5000);
-        this.next();   
     } else{
         this.render('game');
       }

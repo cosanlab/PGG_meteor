@@ -14,6 +14,10 @@ Template.endSurvey.helpers({
 	},
 	disconnectPay: function(){
 		return disconnectPay;
+	},
+	bonus: function(){
+		var currentUser = Meteor.userId();
+		return Players.findOne(currentUser).bonus/100;
 	}
 });
 
@@ -28,10 +32,10 @@ Template.endSurvey.events({
 		var results;
 		//For the sake no blank fields fill NAs if client doesn't complete exit survey
 		if(!feedback){
-			if(player.status != 'failedQuiz'){
-				feedback = 'NA';
-			} else{
+			if(player.status == 'failedQuiz'){
 				feedback = 'FAILED QUIZ';
+			} else{
+				feedback = 'NA';
 			}
 		}
 		if (!age){
