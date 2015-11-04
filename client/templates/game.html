@@ -72,7 +72,7 @@
 <!-- template for messaging -->
 <template name="messageForm">
 	<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
-		<p id = "messagePrompt"><b>Insert your message below:</b><br><span>(press Enter to send)</span></p>
+		<p id = "messagePrompt"><b>{{game.messageSubPrompt}}</b><br><span>{{game.messageSubPrompt2}}</span></p>
 	</div>
 		{{#if Cond game.state '==' 'pSendMess1'}}
 		<div class = "row" id = "messageRow">
