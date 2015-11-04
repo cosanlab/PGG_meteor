@@ -58,26 +58,36 @@ Meteor.methods({
 		}
 	},
 	//Adds a single client's data to the Game document and updates the game state if all players have inserted that data into the document by comparing how many insertions have been made relative to the current game round; Can also auto-advance another game state if a second state and delay are passed into the data array
-	'addPlayerRoundData': function(gameId, currentUser,data){
+	'addPlayerRoundData': function(gameId, currentUser,data,delay,endRound){
 		//var dataArray = _.flatten(_.pairs(data));
 		var pKey = makePQuery(currentUser,data[0],data[1]);
 		Meteor.call('updateGameInfo',gameId,pKey,'push');
 		var game = Games.findOne(gameId);
 		if(_.every(_.pluck(game.players,data[0]),
 			function(elem){return elem.length == game.round;})){
-			if(data.length > 3){
-				Meteor.call('autoAdvanceState',game._id,data[2],data[3],data[4]);
+			if(delay > 0){
+				Meteor.call('autoAdvanceState',game._id,data[2],data[3],delay,endRound);
 			} else{
 				Meteor.call('updateGameInfo',game._id,data[2],'set');
 			}
 			
 		}
 	},
-	//Most of the time, clients trigger game state changes based on events (button clicks), but occassionally the server should trigger a state change based on a timer. This function handles that second automatic state change. 
-	'autoAdvanceState': function(gameId,startState,endState,delay){
-		Meteor.call('updateGameInfo',gameId,{'state':startState},'set');
-		Meteor.setTimeout(function(){
-			Meteor.call('updateGameInfo',gameId,{'state':endState},'set');
+	//Most of the time, clients trigger game state changes based on events (button clicks), but occassionally the server should trigger a state change based on a timer. This function handles those automatic state changes by making delayed method calls based on an array of states. 
+	'autoAdvanceState': function(gameId,immediateState,delayedStates,delay,endRound){
+		Meteor.call('updateGameInfo',gameId,{'state':immediateState},'set');
+		var counter = 0;
+		var repeatCallID = Meteor.setInterval(function(){
+			Meteor.call('updateGameInfo',gameId,{'state':delayedStates[counter]},'set');
+			if(delayedStates[counter] == 'gOut'){
+				if(endRound){
+					Meteor.call('updateGameInfo',gameId,{round: 1},'inc');
+				}
+			}
+			counter ++;
+			if(counter > delayedStates.length - 1){
+				Meteor.clearInterval(repeatCallID);
+			}
 		},delay);
 	}
 });

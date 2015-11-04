@@ -4,8 +4,8 @@ Template.game.helpers({
 		var messaging = false;
 		var messagePrompt;
 		var messageSubPromptDisplay = "";
-		var messageSubPrompt = "";
-		var messageSubPrompt2 = "";
+		var messageSubPrompt = "Placeholder text";
+		var messageSubPrompt2 = "Placeholder text";
 		if(game.state == 'pSendMess1' || game.state == 'pSendMess2'){
 			messaging = true;
 			messagePrompt = 'What do you want to say to another player?';
@@ -24,7 +24,9 @@ Template.game.helpers({
 			round: game.round,
 			messaging: messaging,
 			messagePrompt: messagePrompt,
-			messageSubPromptDisplay: messageSubPromptDisplay
+			messageSubPromptDisplay: messageSubPromptDisplay,
+			messageSubPrompt: messageSubPrompt,
+			messageSubPrompt2: messageSubPrompt2
 		};
 	}
 });
@@ -44,9 +46,10 @@ Template.playerContribution.events({
 		var gameId = Games.findOne()._id;
 		var currentUser = Meteor.userId();
 		var nextState = 'pDisp';
-		var autoState = 'pSendMess1';
-		var delay = 10000;
-		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoState,delay]);
+		var autoStates = ['pSendMess1'];
+		var delay = 5000;
+		var endRound = false;
+		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoStates],delay,endRound);
 	}
 });
 
@@ -76,7 +79,6 @@ Template.playerDisplay.helpers({
 				contributions.push(data);
 			}
 		}
-		console.log(contributions);
 		return contributions;
 	}
 
@@ -113,24 +115,26 @@ Template.messageForm.events({
 		        	var message = $('#message-form').text();
 		        	$('#message-form').prop('contenteditable','false');
 		        	$('#charCount').css('visibility','hidden');
-		        	$('#messagePrompt').text('Waiting for other players...');
+		        	$('#messagePrompt').html('Waiting for other players... <br><span style = "visibility:hidden">placeholder</span>');
 		        	var currentUser = Meteor.userId();
 		        	var game = Games.findOne();
-		        	var delay = 10000;
+		        	var delay = 5000;
 		        	var nextState;
-		        	var autoState;
+		        	var autoStates;
 		        	var messageField;
+		        	var endRound = false;
 		        	if (game.state == 'pSendMess1'){
 		        		nextState = 'pReceiveMess1';
-		        		autoState = 'pSendMess2';
+		        		autoStates = ['pSendMess2'];
 		        		messageField = 'firstMessages';
 		        	}
 		        	else if(game.state == 'pSendMess2'){
 		        		nextState = 'pReceiveMess2';
-		        		autoState = 'gOut';
+		        		autoStates = ['gOut','pChoose'];
 		        		messageField = 'secondMessages';
+		        		endRound = true;
 		        	}
-		        	Meteor.call('addPlayerRoundData',game._id,currentUser,[messageField,message,nextState,autoState,delay]);
+		        	Meteor.call('addPlayerRoundData',game._id,currentUser,[messageField,message,nextState,autoStates],delay,endRound);
 		    	}
 		    }
 		}, 
