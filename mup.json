@@ -25,7 +25,7 @@
   "setupNode": true,
 
   // WARNING: If nodeVersion omitted will setup 0.10.36 by default. Do not use v, only version number.
-  "nodeVersion": "0.10.36",
+  "nodeVersion": "0.10.40",
 
   // Install PhantomJS in the server
   // "setupPhantom": true,
@@ -35,7 +35,7 @@
   "enableUploadProgressBar": true,
 
   // Application name (No spaces)
-  "appName": "UG",
+  "appName": "PGG_meteor",
 
   // Location of app (local directory)
   "app": ".",
