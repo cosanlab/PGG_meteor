@@ -9,19 +9,18 @@
                     <p align="center">It appears that you did not pass our comprehension quiz and therefore cannot partcipate.</p>
                     <br>
                     <p align="center">You will be paid ${{ineligibilityPay}} for your time.</p>
-                {{else}} {{#if Cond playerStatus '==' 'lobbyTimeout'}}
-                    <h2 align="center">Thank you for accepting this HIT</h2>
-                    <br>
-                    <br>
+                {{else}}
+                <h2 align="center">Thank you for participating!</h2>
+                <br>
+                <br>
+                 {{#if Cond playerStatus '==' 'lobbyTimeout'}}
                     <p align="center">It appears that {{lobbyTimeout}} minutes have passed and we could not match you with enough players in that time.</p>
                     <br>
                     <p align="center">You will be paid ${{lobbyTimeoutPay}} for waiting.</p>
-                {{else}}
-                    <h2 align="center">Thank you for participating!</h2>
-                    {{#if Cond playerStatus '==' 'partnerDisconnected'}}
-                        <p align="center" style = "font-size:18px">It appears as though we could not reconnect you with the other players in the game.</p>
-                        <p align="center" style = "font-size:18px">Please rest assured that you will still be paid for accepting this HIT including a bonus payment of ${{disconnectPay}} </p>
-                    {{/if}}
+                {{else}} {{#if Cond playerStatus '==' 'partnerDisconnected'}}
+                    <p align="center">It appears as though we could not reconnect you with the other players in the game.</p>
+                    <p align="center">Please rest assured that you will still be paid for accepting this HIT including a bonus payment of ${{disconnectPay}} </p>
+                {{else}} {{#if Cond playerStatus '==' 'finished'}}
                      <p align="center" style = "font-size:18px">You earned a bonus of ${{bonus}}.</p>
                     <h4 align = "center">Please provide your age and gender below</h4>
                     <p align = "center" style="font-size:14px"> <i>You do not have to provide any information you feel uncomfortable with</i></p>
@@ -34,6 +33,8 @@
                     <textarea class= "form-control" id ="feedback" rows = "3" ></textarea>
                 {{/if}}  
                 {{/if}}	
+                {{/if}}  
+                {{/if}} 
                 <p align="center"> Click the button below to submit the HIT.</p>
                 <br>
                 <button type="button" class="btn btn-primary btn-lg" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>Submit HIT</button>

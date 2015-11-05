@@ -56,6 +56,7 @@ Meteor.methods({
 		var workerId = asst.workerId;
 		Meteor.call('updatePlayerInfo',currentUser,{'status':'lobbyTimeout'}, 'set');
 		LobbyStatus.remove(currentUser);
+		asst.addPayment(lobbyTimeoutPay);
 		asst.showExitSurvey();
 		console.log('TURKER: ' + workerId + ' went boom! Sent to exit survey!');
 	}
