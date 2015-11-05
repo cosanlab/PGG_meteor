@@ -109,6 +109,7 @@ Template.messageForm.events({
 			}
 		},
 		'keydown #message-form': function(event){
+			event.stopPropagation();
 			if(event.which===13){
 				if($('#message-form').text().length <= charLim){
 		        	var message = $('#message-form').text();
@@ -155,7 +156,7 @@ Template.playerEarnings.helpers({
 	earnings: function(){
 		var game = Games.findOne();
 		var currentUser = Meteor.userId();
-		var round = game.round-1;
+		var round = game.round-2; //Executes after round counter is updated so -2 
 		var roundEarnings;
 		var totalEarnings;
 		//Underscore js map reduce magic
@@ -164,7 +165,7 @@ Template.playerEarnings.helpers({
 		//_.forEach(game.players,function(c){
 		//	pot += c.contributions[round];
 		//});
-		roundEarnings = (pot * 1.5)/_.pluck(game.players, 'name').length;
+		roundEarnings = Math.round((pot * 1.5)/_.pluck(game.players, 'name').length);
 		totalEarnings = game.players[currentUser].contributions[round] + roundEarnings;
 		return {
 			round: roundEarnings,

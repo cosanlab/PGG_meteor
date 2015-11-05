@@ -33,8 +33,12 @@ Meteor.methods({
 			Games.insert(data);
 		});
 	},
-	//General purpose document modication function
+	//General purpose document modication function, can handle upto 2 simultaneous db operations
 	'updateGameInfo': function(gameId,data,operation){
+		if (data.constructor.toString().indexOf("Array") > -1){
+			var query1 = data[0];
+			var query2 = data[1];
+		}
 		Partitioner.directOperation(function(){
 			if(operation == 'set'){
 				Games.update(gameId, {$set: data});
@@ -44,6 +48,8 @@ Meteor.methods({
 				Games.update(gameId, {$dec: data});
 			} else if(operation == 'push'){
 				Games.update(gameId, {$push: data});
+			} else if (operation == 'setinc'){
+				Games.update(gameId, {$set: query1, $inc: query2});
 			}
 		});
 	},
@@ -78,18 +84,21 @@ Meteor.methods({
 		Meteor.call('updateGameInfo',gameId,{'state':immediateState},'set');
 		var stateCounter = 0;
 		var repeatCallID = Meteor.setInterval(function(){
-			Meteor.call('updateGameInfo',gameId,{'state':delayedStates[stateCounter]},'set');
+			//If we're at the last possible game state, increment the round counter, switch to that state, see if we need to end the game 
 			if(delayedStates[stateCounter] == 'gOut'){
+				Meteor.call('updateGameInfo',gameId,[{'state':delayedStates[stateCounter]},{'round':1}],'setinc');
 				var currentRound = Games.findOne(gameId).round;
-				if(currentRound==numRounds){
-					Meteor.call('endGame',gameId);
-					Meteor.clearInterval(repeatCallID);
-				} else{
-					Meteor.call('updateGameInfo',gameId,{round: 1},'inc');
+				if(currentRound > numRounds){
+					Meteor.setTimeout(function(){
+						Meteor.call('endGame',gameId);						
+					},delay);
+					return Meteor.clearInterval(repeatCallID);
 				}
+			} else {
+				Meteor.call('updateGameInfo',gameId,{'state':delayedStates[stateCounter]},'set');
 			}
-			counter ++;
-			if(counter > delayedStates.length - 1){
+			stateCounter ++;
+			if(stateCounter > delayedStates.length - 1){
 				Meteor.clearInterval(repeatCallID);
 			}
 		},delay);
@@ -97,18 +106,13 @@ Meteor.methods({
 	//Function updates all player status to finished and ends a game, changing its state and tearing down the experiment instance thereby sending all players back to the lobby, where they'll be shuttled to the exit survey
 	'endGame':function(gameId){
 		var asst;
-		var game = Games.findOne(gameId);
-
-		for(var p in _.keys(game.players)){
-			Meteor.call('updatePlayerInfo',p,{'status':'finished'});
-			asst = TurkServer.Assignment.getCurrentUserAssignment(p);
-		}
+		calcBonuses(gameId);
 		Meteor.setTimeout(function(){
 			Meteor.call('updateGameInfo',gameId,{'state':'ended'},'set');
 			var exp = TurkServer.Instance.getInstance(gameId);
 			if(exp != null){
 				exp.teardown(returnToLobby = true);
-				console.log("ASSIGNER: Game just successfully ended: " + gameId);
+				console.log("ASSIGNER: Game successfully ended: " + gameId);
 			} else{
 				console.log("ASSIGNER: Game could not be ended! No instance for: " + gameId);
 			}
@@ -123,17 +127,18 @@ function makePQuery(currentUser,field,value){
 	pKey['players.' + currentUser + '.' + field] = value;
 	return pKey;
 }
+//Function to randomly choose a round, calculate the bonus, store it in the players db and add it to the assignment
 function calcBonuses(gameId){
 	var game = Games.findOne(gameId);
-	var roundNum = _.random(1,numRounds);
+	var roundNum = _.random(0,numRounds-1);
 	var playerIds = _.keys(game.players);
 	var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list) {return list[roundNum];}),function(a,b){return a+b;});
-	var bonus = (pot*1.5)/playerIds.length * bonusPaymentConversion;
+	var bonus = Math.round((pot*1.5)/playerIds.length * bonusPaymentConversion)/100;
 	var asst;
 	_.each(playerIds,function(player){
 		asst = TurkServer.Assignment.getCurrentUserAssignment(player);
 		asst.addPayment(bonus);
-		Players.update(player,{$set:{'bonus':bonus}});
+		Meteor.call('updatePlayerInfo',player,{'status':'finished','bonus':bonus},'set');
 	});
-
+	return;
 }

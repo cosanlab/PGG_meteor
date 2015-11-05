@@ -10,7 +10,7 @@ Template.lobby.helpers({
 
   numWaiting: function(){
     var currentUser = Meteor.userId();
-    return Players.find({$and:[{'passedQuiz':true},{'status':'waiting'},{'_id':{$ne:currentUser}}]}).count();
+    return Players.find({$and:[{'passedQuiz':true},{'status':'waiting'}]}).count();
   },
 
   clock: function(){

@@ -7,7 +7,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
 
   function PGGAssigner(groupSize){
     this.groupSize = groupSize;
-    this.lobbyTimers = [];
+    this.lobbyTimers = {};
     return PGGAssigner.__super__.constructor.apply(this, arguments);
   }
 
@@ -26,7 +26,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
           results = []; playerIds = [];
           for (i = 0, len = lobbyUsers.length; i < len; i++) {
             asst = lobbyUsers[i];
-            Meteor.clearTimeout(_this.lobbyTimers[i][asst.userId]);
+            Meteor.clearTimeout(_this.lobbyTimers[asst.userId]);
             _this.lobby.pluckUsers([asst.userId]);
             Meteor.call('updatePlayerInfo', asst.userId,{'status': 'matched'},'set');
             results.push(_this.instance.addAssignment(asst));
