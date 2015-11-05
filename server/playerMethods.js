@@ -19,15 +19,13 @@ Meteor.methods({
 		var asstId = asst.asstId;
 		var batchId = asst.batchId;
 		var batch = TurkServer.Batch.getBatch(batchId);
-		var userBombKey = {};
 		LobbyStatus.update(currentUser,{$set:{'passedQuiz':passedQuiz}});
 		if(passedQuiz){
 			Meteor.call('updatePlayerInfo',currentUser,{'status':'waiting'},'set');
 			var userLobbyBomb = Meteor.setTimeout(function(){
 				Meteor.call('lobbyTimeBomb',currentUser);
 			},lobbyTimeout*60*1000);
-			userBombKey[currentUser] = userLobbyBomb;
-        	batch.assigner.lobbyTimers.push(userBombKey);
+        	batch.assigner.lobbyTimers[currentUser] = userLobbyBomb;
         	var emitter = batch.lobby.events;
         	console.log('TURKER: ' + workerId + ' passed Quiz! Told Assigner and set them up the bomb!');
         	emitter.emit('match-players');
@@ -57,6 +55,7 @@ Meteor.methods({
 		asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
 		var workerId = asst.workerId;
 		Meteor.call('updatePlayerInfo',currentUser,{'status':'lobbyTimeout'}, 'set');
+		LobbyStatus.remove(currentUser);
 		asst.showExitSurvey();
 		console.log('TURKER: ' + workerId + ' went boom! Sent to exit survey!');
 	}

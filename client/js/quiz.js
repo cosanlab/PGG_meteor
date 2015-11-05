@@ -57,7 +57,7 @@ Template.question.helpers({
 });
 
 Template.quiz.events({
-	'submit .quiz': _.debounce(function(event){
+	'submit .quiz': function(event){
 		//Only allow clients to attempt quiz twice before preventing them from doing so
 		event.stopPropagation();
 		event.preventDefault();
@@ -80,5 +80,5 @@ Template.quiz.events({
 			Meteor.call('updatePlayerInfo',currentUser,{'passedQuiz':true}, 'set');
 			quizEmitter.emit('submittedQuiz');
 		}
-	}, 1000, true)
+	}
 });

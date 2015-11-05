@@ -17,7 +17,8 @@ Template.endSurvey.helpers({
 	},
 	bonus: function(){
 		var currentUser = Meteor.userId();
-		return Players.findOne(currentUser).bonus/100;
+		var bonus = Players.findOne(currentUser).bonus;
+		return bonus.toFixed(2);
 	}
 });
 
@@ -34,6 +35,8 @@ Template.endSurvey.events({
 		if(!feedback){
 			if(player.status == 'failedQuiz'){
 				feedback = 'FAILED QUIZ';
+			} else if(player.status == 'lobbyTimeout'){
+				feedback = 'LOBBY TIMEOUT';
 			} else{
 				feedback = 'NA';
 			}

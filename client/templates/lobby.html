@@ -11,11 +11,9 @@
         <div class="row well well-lg">
             <div class="col-xs-10 col-xs-offset-1">
             	{{#if rematch}}
-            		<h3 align="center">Sorry we need to rematch you with another player because the previous participant was having an issue.</h3>
-            	{{else}}
-                	<h3 align="center">For this experiment we need {{desiredNumPlayers}} participants.</h3>
-                {{/if}}
-                <h3 align="center">There are currently {{numWaiting}} other participants waiting for the game to start.
+            		<h3 align="center">Sorry we need to rematch you with another player because the game was having connection issues.</h3>
+            	{{/if}}
+                <h3 align="center">There are currently a total of {{numWaiting}} out of {{desiredNumPlayers}} required participants waiting for the game to start.
                 </h3>
                 <br>
                 <h3 align = "center">Please wait a few moments while we try to find the needed participants.<br><br> If we can't find enough participants within {{lobbyTimeout}} minutes we will end the HIT and pay you for your time.</h3>

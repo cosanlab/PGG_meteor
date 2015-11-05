@@ -1,7 +1,6 @@
 # Experiment Logic
 
 ##Current todos
-- Add in another auto advance to game state after final outcomes
 - Use session variables about time on each page, that auto makes a meteor call for the player if they take too long
 - Game states in db:
     + assignment (initially only)
