@@ -2,6 +2,10 @@
 
 ##Current todos
 - Use session variables about time on each page, that auto makes a meteor call for the player if they take too long
+- jquery bug about waiting players text
+- ask how likely to play with each player again
+- add total player earned amounts
+-
 - Game states in db:
     + assignment (initially only)
     + pChoose (click then)

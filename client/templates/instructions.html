@@ -18,7 +18,7 @@
 <template name="overview">
 	<h3 align="center">Game Overview</h3>
 	<blockquote class = "instr">
-	In this game you will be making a series of decisions about how to allocate points with {{numPlayers}} other players in real-time over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <br>
+	In this game you will be making a series of decisions about how to allocate points with {{otherPlayers}} other players in real-time over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <br>
 	<b>1 point = 2 cents</b>.
 	</blockquote>
 	<blockquote class = "instr">
@@ -47,28 +47,28 @@
 		<li>First you will be given 100 points and will choose how many of these to contribute to the group account; let's say you choose to contribute 50 points</li>
 		<li>Following this you will be able to see the contributions made by two other players; let's say you see a contribution of 75 and a contribution of 25 points</li>
 		<li>Next you will be able to send and receive two messages with another player</li>
-		<li>Finally you will see the results of the splitting of the group account; let's say you receive 60 points at the end of the round bringing your total earned for that round to 110 points (50 you didn't contribute + 60 you earned)</li>
+		<li>Finally you will see the results of the splitting of the group account; let's say you receive 75 points at the end of the round bringing your total earned for that round to 125 points (50 you didn't contribute + 75 you earned)</li>
 		</ul>
 	</blockquote>
 	<blockquote class = "instr">
-		Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 50 points:
+		Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 150 points:
 	</blockquote>
 	<p align = "center" style= 'font-size: 14px'>
-		60 (your earning) * 5 (total players) = 300 / 1.5 (multiplier) = 
+		75 (your earning) * {{numPlayers}} (total players) = 450 / 1.5 (multiplier) = 
 		<br>
-		<b>200 (sum of total contributions)</b>
+		<b>300 (sum of total contributions)</b>
 	</p>
 	<br>
 	<p align = "center" style= 'font-size: 14px'>
-		200 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
-		<b>50 (sum of players you can't see)</b>
+		300 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
+		<b>150 (sum of players you can't see)</b>
 	</p>
 </template>
 
 <template name = "recap">
 	<h3 align="center">Recap</h3>
 	<blockquote class = "instr">
-	To review, you will play a game with {{numPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise 5 parts:<br><br>
+	To review, you will play a game with {{otherPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise 5 parts:<br><br>
 	<ol>
 		<li>Each player will receive a starting balance of 100 points</li>
 		<li>Each player will decide how many of their points to contribute to the group account</li>
