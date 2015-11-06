@@ -65,10 +65,12 @@ Meteor.methods({
 	},
 	//Adds a single client's data to the Game document and updates the game state if all players have inserted that data into the document by comparing how many insertions have been made relative to the current game round; Expects an array called data with: [dbFieldName,dbFieldVal,nextState,arrayOfAutoAdvanceStates,delayForAutoAdvancing]
 	'addPlayerRoundData': function(gameId, currentUser,data,delay){
-		//var dataArray = _.flatten(_.pairs(data));
-		var pKey = makePQuery(currentUser,data[0],data[1]);
-		Meteor.call('updateGameInfo',gameId,pKey,'push');
-		var game = Games.findOne(gameId);
+		var game = Games.findOne();
+		if(game.players[currentUser][data[0]].length < game.round){
+			var pKey = makePQuery(currentUser,data[0],data[1]);
+			Meteor.call('updateGameInfo',gameId,pKey,'push');
+		}
+		game = Games.findOne(gameId);
 		if(_.every(_.pluck(game.players,data[0]),
 			function(elem){return elem.length == game.round;})){
 			if(delay > 0){

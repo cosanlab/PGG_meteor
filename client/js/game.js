@@ -166,7 +166,7 @@ Template.playerEarnings.helpers({
 		//	pot += c.contributions[round];
 		//});
 		roundEarnings = Math.round((pot * 1.5)/_.pluck(game.players, 'name').length);
-		totalEarnings = game.players[currentUser].contributions[round] + roundEarnings;
+		totalEarnings = 100 - game.players[currentUser].contributions[round] + roundEarnings;
 		return {
 			round: roundEarnings,
 			total: totalEarnings
