@@ -135,9 +135,13 @@ function calcBonuses(gameId){
 	var roundNum = _.random(0,numRounds-1);
 	var playerIds = _.keys(game.players);
 	var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list) {return list[roundNum];}),function(a,b){return a+b;});
-	var bonus = Math.round((pot*1.5)/playerIds.length * bonusPaymentConversion)/100;
+	var potSplit = Math.round((pot*1.5)/playerIds.length);
 	var asst;
+	var bonus;
+	var contribution;
 	_.each(playerIds,function(player){
+		contribution = game[player].contributions[roundNum];
+		bonus = (100 - contribution + potSplit) * bonusPaymentConversion/100;
 		asst = TurkServer.Assignment.getCurrentUserAssignment(player);
 		asst.addPayment(bonus);
 		Meteor.call('updatePlayerInfo',player,{'status':'finished','bonus':bonus},'set');

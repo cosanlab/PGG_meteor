@@ -101,6 +101,9 @@ Template.messageForm.helpers({
 		};
 	}
 });
+Template.messageForm.onRendered(function(){
+	$('#messagePrompt').html('Insert your message below <br><span>(press Enter to send)</span>');
+});
 Template.messageForm.events({
 		'click #userMessage' : function(event){
 			event.preventDefault();

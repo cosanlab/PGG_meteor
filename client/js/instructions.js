@@ -56,6 +56,9 @@ Template.instructions.helpers({
 
 //Tutorial steps helpers
 Template.overview.helpers({
+	otherPlayers: function(){
+		return groupSize - 1;
+	},
 	numPlayers: function(){
 		return groupSize;
 	},
@@ -70,19 +73,7 @@ Template.overview.helpers({
 	}
 });
 
-Template.recap.helpers({
-	numPlayers: function(){
-		return groupSize;
-	},
-	numRounds: function(){
-		return numRounds;
-	}
-});
-
-
-Template.timing.helpers({
-	otherPlayers: function(){
-		return groupSize-1;
-	}
-});
+Template.exampleRound.inheritsHelpersFrom('overview');
+Template.recap.inheritsHelpersFrom('overview');
+Template.timing.inheritsHelpersFrom('overview');
 

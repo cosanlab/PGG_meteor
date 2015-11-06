@@ -71,10 +71,10 @@
 
 <!-- template for messaging -->
 <template name="messageForm">
-	<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
-		<p id = "messagePrompt"><b>{{game.messageSubPrompt}}</b><br><span>{{game.messageSubPrompt2}}</span></p>
-	</div>
 		{{#if Cond game.state '==' 'pSendMess1'}}
+		<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
+			<p id = "messagePrompt"><b>{{game.messageSubPrompt}}</b><br><span>{{game.messageSubPrompt2}}</span></p>
+		</div>
 		<div class = "row" id = "messageRow">
 			<div class = "col-xs-4 col-xs-offset-2">
 		      	<div class= "bubbleUser" id = "userMessage">
@@ -85,6 +85,9 @@
 		   	</div>
 	   	</div>
    		{{else}}{{#if Cond game.state '==' 'pReceiveMess1'}}
+		<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
+			<p id = "messagePrompt"><b>{{game.messageSubPrompt}}</b><br><span>{{game.messageSubPrompt2}}</span></p>
+		</div>
    		<div class = "row" id = "messageRow">
 	   		<div class = "col-xs-4 col-xs-offset-2">
 	   		<p style = "font-size:20px"> You: </p>
@@ -104,6 +107,9 @@
    			</div>
 		</div>
 		{{else}}{{#if Cond game.state '==' 'pSendMess2'}}
+		<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
+			<p id = "messagePrompt"><b>{{game.messageSubPrompt}}</b><br><span>{{game.messageSubPrompt2}}</span></p>
+		</div>
 		<div class = "row" id = "messageRow">
 	   		<div class = "col-xs-4 col-xs-offset-2">
 	   		<p style = "font-size:20px"> You: </p>
@@ -132,6 +138,9 @@
 		   	</div>
 	   	</div>
 	   	{{else}}{{#if Cond game.state '==' 'pReceiveMess2'}}
+   		<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
+			<p id = "messagePrompt"><b>{{game.messageSubPrompt}}</b><br><span>{{game.messageSubPrompt2}}</span></p>
+		</div>
 	   	<div class = "row" id = "messageRow">
 	   		<div class = "col-xs-4 col-xs-offset-2">
 	   		<p style = "font-size:20px"> You: </p>
