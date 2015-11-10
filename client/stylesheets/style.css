@@ -204,9 +204,10 @@ input[type=range].playerRange{
 .finalEarnings{
   text-align: center;
   font-size: 20px;
-  font-weight: bolder;
+  font-weight: normal;
   list-style: none;
   margin-top: 1%;
+  color: #AEAEAE;
 }
 .finalEarningsText{
   text-align: center;
@@ -215,8 +216,8 @@ input[type=range].playerRange{
   right: 5%;
 }
 #playerLabel{
-  font-style: italic;
   color: #309DD4;
+  font-style: italic;
 }
 
 /* Footer styling */

@@ -179,7 +179,7 @@ function calcBonuses(gameId){
 	var bonus;
 	var contribution;
 	_.each(playerIds,function(player){
-		contribution = game[player].contributions[roundNum];
+		contribution = game.players[player].contributions[roundNum];
 		bonus = (100 - contribution + potSplit) * bonusPaymentConversion/100;
 		asst = TurkServer.Assignment.getCurrentUserAssignment(player);
 		asst.addPayment(bonus);
