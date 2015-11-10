@@ -57,13 +57,13 @@ Template.instructions.helpers({
 //Tutorial steps helpers
 Template.overview.helpers({
 	otherPlayers: function(){
-		return groupSize - 1;
+		return String(groupSize - 1);
 	},
 	numPlayers: function(){
-		return groupSize;
+		return String(groupSize);
 	},
 	numRounds: function(){
-		return numRounds;
+		return String(numRounds);
 	},
 	game: function(){
 		var game = Games.findOne();
@@ -72,7 +72,7 @@ Template.overview.helpers({
 		};
 	}
 });
-
+Template.rounds.inheritsHelpersFrom('overview');
 Template.exampleRound.inheritsHelpersFrom('overview');
 Template.recap.inheritsHelpersFrom('overview');
 Template.timing.inheritsHelpersFrom('overview');

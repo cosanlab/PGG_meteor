@@ -18,8 +18,7 @@
 <template name="overview">
 	<h3 align="center">Game Overview</h3>
 	<blockquote class = "instr">
-	In this game you will be making a series of decisions about how to allocate points with {{otherPlayers}} other players in real-time over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <br>
-	<b>1 point = 2 cents</b>.
+	In this game you will be making a series of decisions about how to allocate points with {{otherPlayers}} other players in real-time over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <b>1 point = 2 cents</b>.
 	</blockquote>
 	<blockquote class = "instr">
 	In the beginning of every round of you will decide <b>how many of your own points you would like to contribute to the group account.</b> At the end of every round, the group account will be multiplied by 1.5 and points will be evenly redistributed to all players.
@@ -29,7 +28,7 @@
 <template name = "rounds">
 	<h3 align = "center">Structure of Each Round</h3>
 	<blockquote class = "instr">
-		Afer you decide how many points to contribute to the group account you will be able to see the contributions made by <b>two</b> other players. These players will be randomly selected from the four other people you are playing with. Across every round of the game you will always see contributions from the <b>same</b> two players.
+		Afer you decide how many points to contribute to the group account you will be able to see the contributions made by <b>two</b> other players. These players will be randomly selected from the {{otherPlayers}} other people you are playing with. Across every round of the game you will always see contributions from the <b>same</b> two players.
 	</blockquote>
 	<blockquote class = "instr">
 		Next, you will be able to communicate with <b>one</b> other player. This player will be different from the two players' whose contributions you can see. In order to communicate, you will be able to send and receive two messages (140 characters max) to this other player. Upon sending your first message you will be shown their first message sent to you. Following this you will be able to second a second message and likewise see their second message sent to you.
@@ -50,6 +49,7 @@
 		<li>Finally you will see the results of the splitting of the group account; let's say you receive 75 points at the end of the round bringing your total earned for that round to 125 points (50 you didn't contribute + 75 you earned)</li>
 		</ul>
 	</blockquote>
+	{{#if Cond numPlayers '==' '6'}}
 	<blockquote class = "instr">
 		Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 150 points:
 	</blockquote>
@@ -63,6 +63,22 @@
 		300 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
 		<b>150 (sum of players you can't see)</b>
 	</p>
+	{{else}}{{#if Cond numPlayers '==' '4'}}
+	<blockquote class = "instr">
+		Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 50 points:
+	</blockquote>
+	<p align = "center" style= 'font-size: 14px'>
+		75 (your earning) * {{numPlayers}} (total players) = 300 / 1.5 (multiplier) = 
+		<br>
+		<b>200 (sum of total contributions)</b>
+	</p>
+	<br>
+	<p align = "center" style= 'font-size: 14px'>
+		200 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
+		<b>50 (sum of players you can't see)</b>
+	</p>
+	{{/if}}
+	{{/if}}
 </template>
 
 <template name = "recap">
