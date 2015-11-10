@@ -2,7 +2,6 @@
 
 ##Current todos
 
-- Do some console logs in calcBonuses to figure out why contributions fields is coming back undefined
 - player disconnect template, with logic based on game.round and option to reconnect
     + add lobby timer style clock in there too
 - if < numRounds/2 rematch otherwise give bonus and submit
