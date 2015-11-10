@@ -1,10 +1,14 @@
 body{
     padding: 80px 0 0 0 ;
 }
-img {
+img#logo {
     width: auto;
     height: 100%;
 }
+img.avatar{
+  margin-right: 2%;
+}
+
 
 /*Quiz styling */
 blockquote.instr {
@@ -120,12 +124,13 @@ min-height: 30px;
 width: 100%;
 height: 100%;
 padding: 10px 10px 0px 10px;
-background: #99FFFF;
+background: #d9edf7;
 -webkit-border-radius: 10px;
 -moz-border-radius: 10px;
 border-radius: 10px;
 margin-top: 1%;
 margin-left: 5%;
+color: #275A74;
 }
 
 .bubbleTriangleUser {
@@ -133,12 +138,12 @@ content: '';
 position: absolute;
 border-style: solid;
 border-width: 15px 10px 11px 0;
-border-color: transparent #99FFFF;
+border-color: transparent #d9edf7;
 display: block;
 width: 0;
 z-index: 1;
-left: -10px;
-top: 40px;
+left: -9px;
+top: 9px;
 }
 
 .bubbleOther {
@@ -147,12 +152,13 @@ min-height: 50px;
 width: 100%;
 height: 100%;
 padding: 10px 10px 0px 10px;
-background: #99FFFF;
+background: #FFE5E5;
 -webkit-border-radius: 10px;
 -moz-border-radius: 10px;
 border-radius: 10px;
 margin-top: 1%;
 margin-right: 5%;
+color:#7F0000;
 }
 
 .bubbleTriangleOther {
@@ -160,75 +166,57 @@ content: '';
 position: absolute;
 border-style: solid;
 border-width: 15px 0px 10px 11px;
-border-color: transparent #99FFFF;
+border-color: transparent #FFE5E5;
 display: block;
 width: 0;
 z-index: 1;
-right: -10px;
-top: 40px;
+right: -9px;
+top: 9px;
 }
 
-/* Should probably try to replace class inheritance with LESS instead of CSS toget rid of this redundant code */
-.bubbleUserSent {
-position: relative;
-min-height: 30px;
-width: 100%;
-height: 100%;
-padding: 10px 10px 0px 10px;
-background: #B0FF96;
--webkit-border-radius: 10px;
--moz-border-radius: 10px;
-border-radius: 10px;
-margin-top: 1%;
-margin-left: 5%;
+.overCharLimit{
+  background:#FF8080;
+  border-color: #FF8080;
 }
 
-.bubbleTriangleUserSent {
-content: '';
-position: absolute;
-border-style: solid;
-border-width: 15px 10px 11px 0;
-border-color: transparent #B0FF96;
-display: block;
-width: 0;
-z-index: 1;
-left: -10px;
-top: 40px;
-}
-
-.bubbleOtherSent {
-position: relative;
-min-height: 50px;
-width: 100%;
-height: 100%;
-padding: 10px 10px 0px 10px;
-background: #FFFF82;
--webkit-border-radius: 10px;
--moz-border-radius: 10px;
-border-radius: 10px;
-margin-top: 1%;
-margin-right: 5%;
-}
-
-.bubbleTriangleOtherSent {
-content: '';
-position: absolute;
-border-style: solid;
-border-width: 15px 0px 10px 11px;
-border-color: transparent #FFFF82;
-display: block;
-width: 0;
-z-index: 1;
-right: -10px;
-top: 40px;
-}
-
-/* Final outcome */
+/* Round outcome */
 .earnings{
   text-align: center;
   font-size: 20px;
   font-weight: bolder;
   margin-top: 2%;
+}
+
+/* Players rating each other */
+input[type=range].playerRange{
+  display: inline;
+  width: 80%;
+  margin-left: 2%;
+}
+#playerRatingSubmit{
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 10%;
+}
+
+/* Final outcomes */
+.finalEarnings{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
+  list-style: none;
+  margin-top: 1%;
+}
+.finalEarningsText{
+  text-align: center;
+  margin-bottom: 5%;
+  position: relative;
+  right: 5%;
+}
+#playerLabel{
+  font-style: italic;
+  color: #309DD4;
 }
 
 /* Footer styling */

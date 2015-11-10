@@ -2,14 +2,17 @@ Meteor.methods({
 	//Adds a new game document to the database
 	'createGame': function(gameId, playerIds, condition){
 		var playersData = {};
+		var icons = _.shuffle(avatars);
 		for(var i=0, plen = playerIds.length; i<plen; i++) {
 			playersData[playerIds[i]] = {
 				name: letters[i],
+				icon: icons[i],
 				readyStatus: false,
 				rematched: Players.findOne(playerIds[i]).needRematch,
 				contributions:[],
 				firstMessages: [],
 				secondMessages: [],
+				playerRatings: {}
 			};
 			if(condition == '2G'){
 				var partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
@@ -65,9 +68,10 @@ Meteor.methods({
 	},
 	//Adds a single client's data to the Game document and updates the game state if all players have inserted that data into the document by comparing how many insertions have been made relative to the current game round; Expects an array called data with: [dbFieldName,dbFieldVal,nextState,arrayOfAutoAdvanceStates,delayForAutoAdvancing]
 	'addPlayerRoundData': function(gameId, currentUser,data,delay){
-		var game = Games.findOne();
+		var game = Games.findOne(gameId);
+		var pKey;
 		if(game.players[currentUser][data[0]].length < game.round){
-			var pKey = makePQuery(currentUser,data[0],data[1]);
+			pKey = makePQuery(currentUser,data[0],data[1]);
 			Meteor.call('updateGameInfo',gameId,pKey,'push');
 		}
 		game = Games.findOne(gameId);
@@ -81,8 +85,46 @@ Meteor.methods({
 			
 		}
 	},
+	//Same as add player round data, but instead adds non-round based data, i.e. expects a single insertion to a single field across the entire game for each client
+	'addPlayerStaticData':function(gameId, currentUser,data,delay){
+		var game = Games.findOne(gameId);
+		if(_.isEmpty(game.players[currentUser][data[0]])){
+			pKey = makePQuery(currentUser,data[0],data[1]);
+			Meteor.call('updateGameInfo',gameId,pKey,'set');
+		}
+		game = Games.findOne(gameId);
+		if(_.every(_.pluck(game.players,data[0]),
+			function(elem){return !_.isEmpty(elem);})){
+			if(delay > 0){
+				Meteor.call('autoAdvanceState',game._id,data[2],data[3],delay);
+			} else{
+				Meteor.call('updateGameInfo',game._id,data[2],'set');
+			}
+
+		}
+
+	},
 	//Most of the time, clients trigger game state changes based on events (button clicks), but occassionally the server should trigger a state change based on a timer. This function handles those automatic state changes by making delayed method calls based on an array of future states. Will also increment the round counter if it encounters the last possible game state (gOut) in the delayedStates array, or end the game if the it's the last round.
 	'autoAdvanceState': function(gameId,immediateState,delayedStates,delay){
+		Meteor.call('updateGameInfo',gameId,{'state':immediateState},'set');
+		var stateCounter = 0;
+		var repeatCallID = Meteor.setInterval(function(){
+			//If we encounter the ended game auto state, end the game, otherwise if we encounter the round outcome autostate, updated the round counter and switch to that state, otherwise switch the autostate 
+			if(delayedStates[stateCounter] == 'ended'){
+				Meteor.call('endGame',gameId);
+				return Meteor.clearInterval(repeatCallID);
+			} else if(delayedStates[stateCounter] == 'gOut'){
+				Meteor.call('updateGameInfo',gameId,[{'state':delayedStates[stateCounter]},{'round':1}],'setinc');
+			} else {
+				Meteor.call('updateGameInfo',gameId,{'state':delayedStates[stateCounter]},'set');
+			}
+			stateCounter ++;
+			if(stateCounter > delayedStates.length - 1){
+				Meteor.clearInterval(repeatCallID);
+			}
+		},delay);
+	},
+	'meow': function(gameId,immediateState,delayedStates,delay){
 		Meteor.call('updateGameInfo',gameId,{'state':immediateState},'set');
 		var stateCounter = 0;
 		var repeatCallID = Meteor.setInterval(function(){
@@ -92,7 +134,7 @@ Meteor.methods({
 				var currentRound = Games.findOne(gameId).round;
 				if(currentRound > numRounds){
 					Meteor.setTimeout(function(){
-						Meteor.call('endGame',gameId);						
+						Meteor.call('endGame',gameId,delay);						
 					},delay);
 					return Meteor.clearInterval(repeatCallID);
 				}
@@ -107,19 +149,16 @@ Meteor.methods({
 	},
 	//Function updates all player status to finished and ends a game, changing its state and tearing down the experiment instance thereby sending all players back to the lobby, where they'll be shuttled to the exit survey
 	'endGame':function(gameId){
-		var asst;
 		calcBonuses(gameId);
-		Meteor.setTimeout(function(){
-			Meteor.call('updateGameInfo',gameId,{'state':'ended'},'set');
-			var exp = TurkServer.Instance.getInstance(gameId);
-			if(exp != null){
-				exp.teardown(returnToLobby = true);
-				console.log("ASSIGNER: Game successfully ended: " + gameId);
-			} else{
-				console.log("ASSIGNER: Game could not be ended! No instance for: " + gameId);
-			}
+		Meteor.call('updateGameInfo',gameId,{'state':'ended'},'set');
+		var exp = TurkServer.Instance.getInstance(gameId);
+		if(exp != null){
+			exp.teardown(returnToLobby = true);
+			console.log("ASSIGNER: Game successfully ended: " + gameId);
+		} else{
+			console.log("ASSIGNER: Game could not be ended! No instance for: " + gameId);
+		}
 
-		});
 	}
 });
 

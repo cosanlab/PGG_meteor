@@ -8,7 +8,9 @@ Template.progress.helpers({
 			var pDisp = "";
 			var mess = "";
 			var gOut = "";
+			var gameEnd = "";
 			var round = game.round;
+			var displayEnd = false;
 
 			switch(game.state){
 				case 'pChoose':
@@ -33,6 +35,15 @@ Template.progress.helpers({
 					gOut = 'active';
 					round = game.round -1;
 					break;
+				case 'playerRatings':
+					round = game.round -1;
+					displayEnd = true;
+					gameEnd = 'active';
+					break;
+				case 'finalOut':
+					round = game.round -1;
+					displayEnd = true;
+					gameEnd = 'active';
 				}
 			return {
 				state: game.state,
@@ -40,7 +51,9 @@ Template.progress.helpers({
 				pDisp: pDisp,
 				mess: mess,
 				gOut: gOut,
-				round: round
+				round: round,
+				displayEnd: displayEnd,
+				gameEnd: gameEnd
 			};
 		}
 	}

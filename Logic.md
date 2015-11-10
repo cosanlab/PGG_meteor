@@ -1,11 +1,15 @@
 # Experiment Logic
 
 ##Current todos
+
+- Do some console logs in calcBonuses to figure out why contributions fields is coming back undefined
+- player disconnect template, with logic based on game.round and option to reconnect
+    + add lobby timer style clock in there too
+- if < numRounds/2 rematch otherwise give bonus and submit
+    + If rematched add fixed rematching bonus
+
+
 - Use session variables about time on each page, that auto makes a meteor call for the player if they take too long
-- jquery bug about waiting players text
-- ask how likely to play with each player again
-- add total player earned amounts
--
 - Game states in db:
     + assignment (initially only)
     + pChoose (click then)
@@ -15,6 +19,8 @@
     + pSendMess2 (click then)
     + pReceiveMess2 (auto advance then)
     + gOut (auto advance, next round)
+    + playerRatings (if on last round)
+    + finalOut
 
 
 ###Assigner

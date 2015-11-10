@@ -2,6 +2,7 @@
 //Took some insipiration from Lili's code
 var Questions = new Mongo.Collection(null);
 var questions = [];
+var potSize = groupSize*40;
 questions[0] = {
 	text: '1) If you decide to contribute 50 points to the group account, how many points will be left in your private account?',
 	answer: ['fifty','50'],
@@ -9,14 +10,15 @@ questions[0] = {
 	answered: false
 };
 questions[1] = {
-	text: '2) If the total in the group account after the multiplier is applied is 200, how many points will each player receive?',
+	text: '2) If the total in the group account after the multiplier is applied is ' + potSize + ', and there are ' + groupSize + ' players, many points will each player receive?',
+	
 	answer: ['forty','40'],
 	correct: false,
 	answered: false
 };
 questions[2] = {
-	text: '3) If you contribute 50 points, and both players visible to you contribute 10 points each, and you receive 75 points at the end of the round, did the other two players contribute more or less than you did?',
-	answer: ['more'],
+	text: '3) If there are ' + groupSize + ' players, and each player contributes 50 points, what is the total in the group account after the multiplier (1.5x) is applied? (enter a number)',
+	answer: [String(50*groupSize*1.5)],
 	correct: false,
 	answered: false
 };
