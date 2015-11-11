@@ -6,15 +6,22 @@ Template.endSurvey.helpers({
 		var failedMatch = false;
 		var connectionError = false;
 		var completed = false;
+		var leftGame = false;
+		var notEligible = false;
 		switch (status){
 			case 'failedQuiz':
 				failedQuiz = true;
+				notEligible = true;
 				break;
-			case 'lobbyTimout':
+			case 'lobbyTimeout':
 				failedMatch = true;
 				break;
-			case 'userDisconnect':
+			case 'connectionLost':
 				connectionError = true;
+				break;
+			case 'leftGame':
+				leftGame = true;
+				notEligible = true;
 				break;
 			case 'finished':
 				completed = true;
@@ -24,7 +31,9 @@ Template.endSurvey.helpers({
 			failedQuiz: failedQuiz,
 			failedMatch: failedQuiz,
 			connectionError: connectionError,
-			completed: completed
+			completed: completed,
+			leftGame: leftGame,
+			notEligible: notEligible
 		};
 
 	},
@@ -36,6 +45,9 @@ Template.endSurvey.helpers({
 	},
 	disconnectPay: function(){
 		return disconnectPay;
+	},
+	disconnectTimeout: function(){
+		return disconnectTimeout;
 	},
 	bonus: function(){
 		var currentUser = Meteor.userId();

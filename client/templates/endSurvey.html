@@ -2,13 +2,21 @@
 	<div class="jumbotron container-fluid">
         <div class="row well well-xs">
             <div class="col-xs-10 col-xs-offset-1">
-                {{#if status.failedQuiz}}
+                {{#if status.notEligible}}
+                    {{#if status.failedQuiz}}
                     <h2 align="center">You are not eligible for this HIT</h2>
                     <br>
                     <br>
                     <p align="center">It appears that you did not pass our comprehension quiz and therefore cannot partcipate.</p>
+                    {{else}}{{#if status.leftGame}}
+                    <h2 align="center">This is no longer an active HIT</h2>
                     <br>
-                    <p align="center">Please return this HIT.</p>
+                    <br>
+                    <p align="center">This game ended due to a connection issue.</p>
+                    {{/if}}
+                    {{/if}}
+                    <br>
+                    <p align="center">Please return this HIT</p>
                 {{else}}
                 <h2 align="center">Thank you for participating!</h2>
                 <br>
@@ -18,7 +26,7 @@
                     <br>
                     <p align="center">You will be paid the full value of the HIT for waiting.</p>
                 {{else}} {{#if status.connectionError}}
-                    <p align="center">It appears that {{disconnectTimout}} minute(s) have passed and we could not reconnect you with the other players in the game.</p>
+                    <p align="center">It appears that {{disconnectTimeout}} minute(s) have passed and we could not reconnect you with the other players in the game.</p>
                     <br>
                     <p align="center">Please rest assured that you will still be paid the full value of this HIT including a bonus payment of ${{bonus}} </p>
                 {{else}} {{#if status.completed}}
@@ -27,7 +35,7 @@
                 {{/if}}  
                 {{/if}} 
                 {{/if}}
-                {{#unless status.failedQuiz}}
+                {{#unless status.notEligible}}
                     <h4 align = "center">Please provide your age and gender below</h4>
                     <p align = "center" style="font-size:14px"> <i>You do not have to provide any information you feel uncomfortable with</i></p>
                     <div align = "center">
