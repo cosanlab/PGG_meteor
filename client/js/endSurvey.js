@@ -29,7 +29,7 @@ Template.endSurvey.helpers({
 		}
 		return{
 			failedQuiz: failedQuiz,
-			failedMatch: failedQuiz,
+			failedMatch: failedMatch,
 			connectionError: connectionError,
 			completed: completed,
 			leftGame: leftGame,

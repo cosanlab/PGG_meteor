@@ -217,6 +217,7 @@ function calcBonuses(gameId){
 	var pot;
 	var bonus;
 	var roundNum;
+	//If game ended too early, give players who didn't leave a fixed bonus
 	if (game.round == 1 && (game.state == 'pChoose' || game.state == 'assignment')){
 		bonus = disconnectPay;
 		_.each(playerIds, function(player){
@@ -228,9 +229,11 @@ function calcBonuses(gameId){
 		});
 		return;
 	} else {
+		//If game ended normally give everyone a random round bonus
 		if(game.round > numRounds){
 			roundNum = _.random(0,game.round-2);
-		} else if(game.round >= 1 && game.round <= numRounds){
+		//If game ended early, but not too early, give everyone who didn't leave a random round bonus
+		} else if(game.round >= 1 || game.round <= numRounds){
 			roundNum = _.random(0,game.round-1);
 		} 
 		pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list) {return list[roundNum];}),function(a,b){return a+b;});
@@ -240,9 +243,11 @@ function calcBonuses(gameId){
 		_.each(playerIds,function(player){
 			contribution = game.players[player].contributions[roundNum];
 			bonus = (100 - contribution + potSplit) * bonusPaymentConversion/100;
-			asst = TurkServer.Assignment.getCurrentUserAssignment(player);
-			asst.addPayment(bonus);
-			Meteor.call('updatePlayerInfo',player,{'bonus':bonus},'set');
+			if(Players.findOne(player).status != 'leftGame'){
+				asst = TurkServer.Assignment.getCurrentUserAssignment(player);
+				asst.addPayment(bonus);
+				Meteor.call('updatePlayerInfo',player,{'bonus':bonus},'set');
+			}
 		});
 		return;
 	}

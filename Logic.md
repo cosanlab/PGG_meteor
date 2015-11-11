@@ -2,8 +2,6 @@
 
 ##Current todos
 
-- player disconnect template, with logic based on game.round and option to reconnect
-    + add lobby timer style clock in there too
 - if < numRounds/2 rematch otherwise give bonus and submit
     + If rematched add fixed rematching bonus
 
