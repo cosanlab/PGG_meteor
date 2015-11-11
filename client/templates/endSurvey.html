@@ -23,11 +23,9 @@
                 <br>
                  {{#if status.failedMatch}}
                     <p align="center">It appears that {{lobbyTimeout}} minute(s) have passed and we could not match you with enough players in that time.</p>
-                    <br>
                     <p align="center">You will be paid the full value of the HIT for waiting.</p>
                 {{else}} {{#if status.connectionError}}
                     <p align="center">It appears that {{disconnectTimeout}} minute(s) have passed and we could not reconnect you with the other players in the game.</p>
-                    <br>
                     <p align="center">Please rest assured that you will still be paid the full value of this HIT including a bonus payment of ${{bonus}} </p>
                 {{else}} {{#if status.completed}}
                      <p align="center" style = "font-size:18px">You earned a bonus of ${{bonus}}.</p>
