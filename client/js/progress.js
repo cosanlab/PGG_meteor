@@ -1,7 +1,7 @@
 Template.progress.helpers({
 	game: function(){
 		var game= Games.findOne();
-		if(!game){
+		if(!game || (game.state == 'assignment' || game.state == 'lostUser')){
 			return false;
 		} else{ 
 			var pChoose = "";

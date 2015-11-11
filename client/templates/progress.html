@@ -1,20 +1,18 @@
 <!-- uses code from http://leaddyno.github.io/bootstrap-nav-wizard.  We should be able to wrap in loop -->
 <template name="progress">
 	{{#if game}}
-		{{#if Cond game.state '!=' 'assignment'}}
-			<div>
-				<ul class="nav nav-wizard">
-					<li id = "roundCounter"><u>Current Round:</u> {{game.round}}</li>
-					<li class = "{{game.pChoose}}"><a>Your Contribution</a></li>
-					<li class = '{{game.pDisp}}'><a>Others' Contribution</a></li>
-					<li class = '{{game.mess}}'><a>Messaging</a></li>
-					<li class = '{{game.gOut}}'><a>Round Outcome</a></li>
-					{{#if game.displayEnd}}
-					<li class = '{{game.gameEnd}}'><a>Game End</a></li>
-					{{/if}}
+		<div>
+			<ul class="nav nav-wizard">
+				<li id = "roundCounter"><u>Current Round:</u> {{game.round}}</li>
+				<li class = "{{game.pChoose}}"><a>Your Contribution</a></li>
+				<li class = '{{game.pDisp}}'><a>Others' Contribution</a></li>
+				<li class = '{{game.mess}}'><a>Messaging</a></li>
+				<li class = '{{game.gOut}}'><a>Round Outcome</a></li>
+				{{#if game.displayEnd}}
+				<li class = '{{game.gameEnd}}'><a>Game End</a></li>
+				{{/if}}
 
-		    	</ul>
-			</div>
-		{{/if}}
+	    	</ul>
+		</div>
 	{{/if}}
 </template> 

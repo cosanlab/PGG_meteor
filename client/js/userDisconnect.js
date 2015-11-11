@@ -2,7 +2,7 @@
 Template.userDisconnect.helpers({
     gameTooEarly: function(){
         var game = Games.findOne();
-        if (game.round == 1 && game.state == 'pChoose'){
+        if (game.round == 1 && (game.state == 'pChoose' || game.state == 'assignment')){
             return true;
         } else {
             return false;

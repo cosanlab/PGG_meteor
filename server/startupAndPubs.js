@@ -10,7 +10,7 @@ Meteor.startup(function(){
   		Meteor.users.find({"admin": {$exists:false},"status.online":true}).observe({
   			added: function(usr){
   				if(_.has(usr,'group')){
-  					Meteor.call('connectionChange',usr._id,usr._group,'reconnect');
+  					Meteor.call('connectionChange',usr._id,usr.group,'reconnect');
   				}
   			},
   			removed: function(usr){

@@ -124,34 +124,40 @@ Meteor.methods({
 			}
 		},delay);
 	},
-	//Function updates all player status according to how a game ended. Also changes the game state appropriately and calculates bonuses. Tears down experiment and initiates exit survey after.
+	//Function updates all player status according to how a game ended. Also changes the game state appropriately and calculates bonuses. Tears down experiment and initiates exit survey after. Take an optional whoEnded argument that should be provided if premature is true
 	'endGame':function(gameId, premature){
 		var exp = TurkServer.Instance.getInstance(gameId);
 		var game = Games.findOne(gameId);
 		var state;
 		var log;
-		calcBonuses(gameId);
 		if(!premature){
 			_.each(_.keys(game.players), function(player){
 				Meteor.call('updatePlayerInfo',player,{'status':'finished'},'set');
 			});
 			state = 'ended';
-			log = "ASSIGNER: Game successfully ended: " + gameId;
+			log = "ASSIGNER: Game " + gameId + " successfully ended!";
 		} else {
 			state = 'connectionError';
-			log = "ASSIGNER: Game had connection issue: " +gameId;
-			//Clear any other timers if the game ended prematurely
+			log = "ASSIGNER: Game " + gameId + " went boom!";
+			//Clear any other bomb timers from others who might have disconnected. Change the player status differently depending on if player caused the game end (or left while waiting for reconnection), or if they were affected by it
 			var batchId = Experiments.findOne(exp.groupId).batchId;
 			var batch = TurkServer.Batch.getBatch(batchId);
-			if (_.has(batch.assigner.disconnectTimers,gameId)){
-				_.each(batch.assigner.disconnectTimers[gameId].players,function(p){
-						Meteor.clearTimeout(p.disconnectBomb);
-						Meteor.call('updatePlayerInfo',p,{'status':'userDisconnect'},'set');
-					});
-				//Remove the game from the assigner's timer list
-				batch.assigner.disconnectTimers = _.omit(batch.assigner.disconnectTimers,gameId); 
-			}
+			var bombPlayers = _.keys(batch.assigner.disconnectTimers[gameId].players);
+			var nonbombPlayers = _.difference(_.keys(game.players),bombPlayers);
+			_.each(bombPlayers,
+				function(player){
+					Meteor.clearTimeout(batch.assigner.disconnectTimers[gameId].players[player].disconnectBomb);
+					Meteor.call('updatePlayerInfo',player,{'status':'leftGame'},'set');
+				});
+			_.each(nonbombPlayers,
+				function(player){
+					Meteor.call('updatePlayerInfo',player,{'status':'connectionLost'},'set');
+				});
+			//Remove the game from the assigner's timer list
+			batch.assigner.disconnectTimers = _.omit(batch.assigner.disconnectTimers,gameId); 
+
 		}
+		calcBonuses(gameId);
 		Meteor.call('updateGameInfo',gameId,{'state':state},'set');
 		
 		if(exp != null){
@@ -178,11 +184,11 @@ Meteor.methods({
 			if(!_.has(batch.assigner.disconnectTimers, gameId)){
 				batch.assigner.disconnectTimers[gameId] = {state: prevState,players:{}};
 			}
-			batch.assigner.disconnectTimers[gameId]['players'][currentUser] = {'disconnectBomb': disconnectBomb};		
+			batch.assigner.disconnectTimers[gameId].players[currentUser] = {'disconnectBomb': disconnectBomb};		
 			console.log("ASSIGNER: User " + asst.workerId + 'disconnected! Game ' + gameId + ' state saved! Also set up the bomb!');
 		} else if(connection == 'reconnect'){
 			//Defuse bomb
-			Meteor.clearTimeout(batch.assigner.disconnectTimers[gameId]['players'][currentUser].disconnectBomb);
+			Meteor.clearTimeout(batch.assigner.disconnectTimers[gameId].players[currentUser].disconnectBomb);
 			var log = "ASSIGNER: User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb defused! ';
 			//If there are other users have disconnected from this game as well, remove the current user, but leave the others, otherwise revert to the old game state and remove the users
 			if (_.keys(batch.assigner.disconnectTimers[gameId].players).length == 1){
@@ -211,18 +217,20 @@ function calcBonuses(gameId){
 	var pot;
 	var bonus;
 	var roundNum;
-	if (game.round == 1){
+	if (game.round == 1 && (game.state == 'pChoose' || game.state == 'assignment')){
 		bonus = disconnectPay;
 		_.each(playerIds, function(player){
-		asst = TurkServer.Assignment.getCurrentUserAssignment(player);
-		asst.addPayment(bonus);
-		Meteor.call('updatePlayerInfo',player,{'bonus':bonus},'set');
+			if(Players.findOne(player).status != 'leftGame'){
+				asst = TurkServer.Assignment.getCurrentUserAssignment(player);
+				asst.addPayment(bonus);
+				Meteor.call('updatePlayerInfo',player,{'bonus':bonus},'set');
+			}
 		});
 		return;
 	} else {
 		if(game.round > numRounds){
 			roundNum = _.random(0,game.round-2);
-		} else if(game.round > 1 && game.round <= numRounds){
+		} else if(game.round >= 1 && game.round <= numRounds){
 			roundNum = _.random(0,game.round-1);
 		} 
 		pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list) {return list[roundNum];}),function(a,b){return a+b;});
