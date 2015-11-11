@@ -48,8 +48,10 @@ Router.route('/game',{
     var game = Games.findOne();
     if(game.state == 'assignment'){
       this.render('assignment');
+    } else if(game.state == 'lostUser'){
+      this.render('userDisconnect');
     } else{
-        this.render('game');
+      this.render('game');
       }
   }
 });
@@ -66,34 +68,3 @@ Router.route('/endSurvey',{
       this.render('endSurvey');
   }
 });
-
-/*
-//Disconnect template
-Router.route('/userDisconnect',{
-  name: 'userDisconnect',
-  template: 'userDisconnect',
-  waitOn: function(){
-    return Meteor.subscribe('Games');
-  },
-  action:function(){
-      this.render('userDisconnect');
-  }
-});
-
-//Payoffs template, make sure we can see the games db for rendering amounts
-Router.route('/payoffs',{
-  waitOn: function(){
-    return Meteor.subscribe('Games');
-  },
-  action: function(){
-    this.render('payoffs');
-  }
-});
-
-//If partner fails quiz
-Router.route('/failedQuiz',{
-  name: 'failedQuiz',
-  template: 'partnerfailedQuiz'
-});
-*/
-

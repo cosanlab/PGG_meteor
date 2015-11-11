@@ -19,7 +19,8 @@
     + pReceiveMess2 (auto advance then)
     + gOut (auto advance, next round)
     + playerRatings (if on last round)
-    + finalOut
+    + finalOut OR connectionError
+        * lostUser
 
 
 ###Assigner

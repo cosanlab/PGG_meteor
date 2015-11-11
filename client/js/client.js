@@ -8,11 +8,9 @@ Meteor.startup(function(){
                 Meteor.subscribe('lobby', batch && batch._id);
                 Router.go('lobby');
             }
-            //When a user is in an experiment, if their partner has disconnected show them the disconnection template and start a timer that will eventually end the experiment. Otherwise, clear any experiment-ending timers (e.g. if everyone reconnects) and show them the instructions template which has it's own logic about which state of the game they should see
             else if (TurkServer.inExperiment()){
                     Router.go('game');
             }
-            //If a user is in the exit survey clear any experiment-ending times and render the end survey template
             else if (TurkServer.inExitSurvey()){
                     Router.go('endSurvey');
             }

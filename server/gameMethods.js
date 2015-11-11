@@ -111,7 +111,7 @@ Meteor.methods({
 		var repeatCallID = Meteor.setInterval(function(){
 			//If we encounter the ended game auto state, end the game, otherwise if we encounter the round outcome autostate, updated the round counter and switch to that state, otherwise switch the autostate 
 			if(delayedStates[stateCounter] == 'ended'){
-				Meteor.call('endGame',gameId);
+				Meteor.call('endGame',gameId,false);
 				return Meteor.clearInterval(repeatCallID);
 			} else if(delayedStates[stateCounter] == 'gOut'){
 				Meteor.call('updateGameInfo',gameId,[{'state':delayedStates[stateCounter]},{'round':1}],'setinc');
@@ -124,41 +124,77 @@ Meteor.methods({
 			}
 		},delay);
 	},
-	'meow': function(gameId,immediateState,delayedStates,delay){
-		Meteor.call('updateGameInfo',gameId,{'state':immediateState},'set');
-		var stateCounter = 0;
-		var repeatCallID = Meteor.setInterval(function(){
-			//If we're at the last possible game state, increment the round counter, switch to that state, see if we need to end the game 
-			if(delayedStates[stateCounter] == 'gOut'){
-				Meteor.call('updateGameInfo',gameId,[{'state':delayedStates[stateCounter]},{'round':1}],'setinc');
-				var currentRound = Games.findOne(gameId).round;
-				if(currentRound > numRounds){
-					Meteor.setTimeout(function(){
-						Meteor.call('endGame',gameId,delay);						
-					},delay);
-					return Meteor.clearInterval(repeatCallID);
-				}
-			} else {
-				Meteor.call('updateGameInfo',gameId,{'state':delayedStates[stateCounter]},'set');
-			}
-			stateCounter ++;
-			if(stateCounter > delayedStates.length - 1){
-				Meteor.clearInterval(repeatCallID);
-			}
-		},delay);
-	},
-	//Function updates all player status to finished and ends a game, changing its state and tearing down the experiment instance thereby sending all players back to the lobby, where they'll be shuttled to the exit survey
-	'endGame':function(gameId){
-		calcBonuses(gameId);
-		Meteor.call('updateGameInfo',gameId,{'state':'ended'},'set');
+	//Function updates all player status according to how a game ended. Also changes the game state appropriately and calculates bonuses. Tears down experiment and initiates exit survey after.
+	'endGame':function(gameId, premature){
 		var exp = TurkServer.Instance.getInstance(gameId);
+		var game = Games.findOne(gameId);
+		var state;
+		var log;
+		calcBonuses(gameId);
+		if(!premature){
+			_.each(_.keys(game.players), function(player){
+				Meteor.call('updatePlayerInfo',player,{'status':'finished'},'set');
+			});
+			state = 'ended';
+			log = "ASSIGNER: Game successfully ended: " + gameId;
+		} else {
+			state = 'connectionError';
+			log = "ASSIGNER: Game had connection issue: " +gameId;
+			//Clear any other timers if the game ended prematurely
+			var batchId = Experiments.findOne(exp.groupId).batchId;
+			var batch = TurkServer.Batch.getBatch(batchId);
+			if (_.has(batch.assigner.disconnectTimers,gameId)){
+				_.each(batch.assigner.disconnectTimers[gameId].players,function(p){
+						Meteor.clearTimeout(p.disconnectBomb);
+						Meteor.call('updatePlayerInfo',p,{'status':'userDisconnect'},'set');
+					});
+				//Remove the game from the assigner's timer list
+				batch.assigner.disconnectTimers = _.omit(batch.assigner.disconnectTimers,gameId); 
+			}
+		}
+		Meteor.call('updateGameInfo',gameId,{'state':state},'set');
+		
 		if(exp != null){
 			exp.teardown(returnToLobby = true);
-			console.log("ASSIGNER: Game successfully ended: " + gameId);
+			console.log(log);
 		} else{
 			console.log("ASSIGNER: Game could not be ended! No instance for: " + gameId);
 		}
 
+	},
+	//Gets called reactively when a user in a game instance (i.e. has group id) disconnects from Meteor. Starts a game time bomb much like the lobby time bomb. Also stores previous game state
+	'connectionChange': function(currentUser, gameId, connection){
+		var asst = TurkServer.Assignment.getCurrentUserAssignment(currentUser);
+		var batch = TurkServer.Batch.getBatch(asst.batchId);
+		//Make a bomb
+		if(connection == 'disconnect'){
+			var prevState = Games.findOne(gameId).state;
+			if (prevState != 'lostUser'){
+				Meteor.call('updateGameInfo',gameId, {'state':'lostUser'},'set');
+			}
+			var disconnectBomb = Meteor.setTimeout(function(){
+				Meteor.call('endGame',gameId, true);
+			},disconnectTimeout*60*1000);
+			if(!_.has(batch.assigner.disconnectTimers, gameId)){
+				batch.assigner.disconnectTimers[gameId] = {state: prevState,players:{}};
+			}
+			batch.assigner.disconnectTimers[gameId]['players'][currentUser] = {'disconnectBomb': disconnectBomb};		
+			console.log("ASSIGNER: User " + asst.workerId + 'disconnected! Game ' + gameId + ' state saved! Also set up the bomb!');
+		} else if(connection == 'reconnect'){
+			//Defuse bomb
+			Meteor.clearTimeout(batch.assigner.disconnectTimers[gameId]['players'][currentUser].disconnectBomb);
+			var log = "ASSIGNER: User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb defused! ';
+			//If there are other users have disconnected from this game as well, remove the current user, but leave the others, otherwise revert to the old game state and remove the users
+			if (_.keys(batch.assigner.disconnectTimers[gameId].players).length == 1){
+				var revertState = batch.assigner.disconnectTimers[gameId].state;
+				Meteor.call('updateGameInfo',gameId,{'state':revertState},'set');
+				batch.assigner.disconnectTimers = _.omit(batch.assigner.disconnectTimers,gameId);	
+				console.log(log + 'Game resumed!');
+			} else {
+				batch.assigner.disconnectTimers[gameId].players = _.omit(batch.assigner.disconnectTimers[gameId].players,currentUser);	
+				console.log(log + 'Game NOT YET resumed');
+			}
+		}
 	}
 });
 
@@ -168,22 +204,38 @@ function makePQuery(currentUser,field,value){
 	pKey['players.' + currentUser + '.' + field] = value;
 	return pKey;
 }
-//Function to randomly choose a round, calculate the bonus, store it in the players db and add it to the assignment
+//Function to randomly choose a round, calculate the bonus, store it in the players db and add it to the assignment; uses fixed bonus if game ended prematurely
 function calcBonuses(gameId){
 	var game = Games.findOne(gameId);
-	var roundNum = _.random(0,numRounds-1);
 	var playerIds = _.keys(game.players);
-	var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list) {return list[roundNum];}),function(a,b){return a+b;});
-	var potSplit = Math.round((pot*1.5)/playerIds.length);
-	var asst;
+	var pot;
 	var bonus;
-	var contribution;
-	_.each(playerIds,function(player){
-		contribution = game.players[player].contributions[roundNum];
-		bonus = (100 - contribution + potSplit) * bonusPaymentConversion/100;
+	var roundNum;
+	if (game.round == 1){
+		bonus = disconnectPay;
+		_.each(playerIds, function(player){
 		asst = TurkServer.Assignment.getCurrentUserAssignment(player);
 		asst.addPayment(bonus);
-		Meteor.call('updatePlayerInfo',player,{'status':'finished','bonus':bonus},'set');
-	});
-	return;
+		Meteor.call('updatePlayerInfo',player,{'bonus':bonus},'set');
+		});
+		return;
+	} else {
+		if(game.round > numRounds){
+			roundNum = _.random(0,game.round-2);
+		} else if(game.round > 1 && game.round <= numRounds){
+			roundNum = _.random(0,game.round-1);
+		} 
+		pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list) {return list[roundNum];}),function(a,b){return a+b;});
+		var potSplit = Math.round((pot*1.5)/playerIds.length);
+		var asst;
+		var contribution;
+		_.each(playerIds,function(player){
+			contribution = game.players[player].contributions[roundNum];
+			bonus = (100 - contribution + potSplit) * bonusPaymentConversion/100;
+			asst = TurkServer.Assignment.getCurrentUserAssignment(player);
+			asst.addPayment(bonus);
+			Meteor.call('updatePlayerInfo',player,{'bonus':bonus},'set');
+		});
+		return;
+	}
 }
