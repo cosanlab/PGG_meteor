@@ -1,13 +1,35 @@
 //Display partner disconnect and bonus payment info
 Template.endSurvey.helpers({
-	playerStatus: function(){
-		return Players.findOne(Meteor.userId()).status;
+	status: function(){
+		var status =  Players.findOne(Meteor.userId()).status;
+		var failedQuiz = false;
+		var failedMatch = false;
+		var connectionError = false;
+		var completed = false;
+		switch (status){
+			case 'failedQuiz':
+				failedQuiz = true;
+				break;
+			case 'lobbyTimout':
+				failedMatch = true;
+				break;
+			case 'userDisconnect':
+				connectionError = true;
+				break;
+			case 'finished':
+				completed = true;
+				break;
+		}
+		return{
+			failedQuiz: failedQuiz,
+			failedMatch: failedQuiz,
+			connectionError: connectionError,
+			completed: completed
+		};
+
 	},
 	ineligibilityPay: function(){
 		return ineligibilityPay;
-	},
-	lobbyTimeoutPay: function(){
-		return lobbyTimeoutPay;
 	},
 	lobbyTimeout: function(){
 		return lobbyTimeout;

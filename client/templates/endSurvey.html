@@ -2,26 +2,32 @@
 	<div class="jumbotron container-fluid">
         <div class="row well well-xs">
             <div class="col-xs-10 col-xs-offset-1">
-                {{#if Cond playerStatus '==' 'failedQuiz'}}
+                {{#if status.failedQuiz}}
                     <h2 align="center">You are not eligible for this HIT</h2>
                     <br>
                     <br>
                     <p align="center">It appears that you did not pass our comprehension quiz and therefore cannot partcipate.</p>
                     <br>
-                    <p align="center">You will be paid ${{ineligibilityPay}} for your time.</p>
+                    <p align="center">Please return this HIT.</p>
                 {{else}}
                 <h2 align="center">Thank you for participating!</h2>
                 <br>
                 <br>
-                 {{#if Cond playerStatus '==' 'lobbyTimeout'}}
-                    <p align="center">It appears that {{lobbyTimeout}} minutes have passed and we could not match you with enough players in that time.</p>
+                 {{#if status.failedMatch}}
+                    <p align="center">It appears that {{lobbyTimeout}} minute(s) have passed and we could not match you with enough players in that time.</p>
                     <br>
-                    <p align="center">You will be paid ${{lobbyTimeoutPay}} for waiting.</p>
-                {{else}} {{#if Cond playerStatus '==' 'partnerDisconnected'}}
-                    <p align="center">It appears as though we could not reconnect you with the other players in the game.</p>
-                    <p align="center">Please rest assured that you will still be paid for accepting this HIT including a bonus payment of ${{disconnectPay}} </p>
-                {{else}} {{#if Cond playerStatus '==' 'finished'}}
+                    <p align="center">You will be paid the full value of the HIT for waiting.</p>
+                {{else}} {{#if status.connectionError}}
+                    <p align="center">It appears that {{disconnectTimout}} minute(s) have passed and we could not reconnect you with the other players in the game.</p>
+                    <br>
+                    <p align="center">Please rest assured that you will still be paid the full value of this HIT including a bonus payment of ${{bonus}} </p>
+                {{else}} {{#if status.completed}}
                      <p align="center" style = "font-size:18px">You earned a bonus of ${{bonus}}.</p>
+                {{/if}}
+                {{/if}}  
+                {{/if}} 
+                {{/if}}
+                {{#unless status.failedQuiz}}
                     <h4 align = "center">Please provide your age and gender below</h4>
                     <p align = "center" style="font-size:14px"> <i>You do not have to provide any information you feel uncomfortable with</i></p>
                     <div align = "center">
@@ -30,14 +36,12 @@
                         <label class = "exitSurvey"><input class = "exitSurveyInput" type="radio" id = "female" name="optradio">Female</label>
                     </div>                    
                     <label style= "display:block; text-align:center" for="feedback">Please enter any feedback, including problems you encountered in the box below </label>
-                    <textarea class= "form-control" id ="feedback" rows = "3" ></textarea>
-                {{/if}}  
-                {{/if}}	
-                {{/if}}  
-                {{/if}} 
+                    <textarea class= "form-control" id ="feedback" rows = "3" ></textarea>    
+                
                 <p align="center"> Click the button below to submit the HIT.</p>
                 <br>
                 <button type="button" class="btn btn-primary btn-lg" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block" id>Submit HIT</button>
+                {{/unless}}
             </div>
         </div>
     </div>

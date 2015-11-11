@@ -7,6 +7,18 @@ Meteor.startup(function(){
   		Batches.find().forEach(function(batch) {
 		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PGGAssigner(groupSize));
     		});
+  		Meteor.users.find({"admin": {$exists:false},"status.online":true}).observe({
+  			added: function(usr){
+  				if(_.has(usr,'group')){
+  					Meteor.call('connectionChange',usr._id,usr._group,'reconnect');
+  				}
+  			},
+  			removed: function(usr){
+				if(_.has(usr,'group')){
+					Meteor.call('connectionChange',usr._id,usr.group,'disconnect');				
+  				}
+  			}
+  		});
 	} 
 	catch(e){
 		console.log(e);
