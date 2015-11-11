@@ -77,7 +77,7 @@ Template.playerContribution.events({
 		var currentUser = Meteor.userId();
 		var nextState = 'pDisp';
 		var autoStates = ['pSendMess1'];
-		var delay = 7000;
+		var delay = 5000;
 		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoStates],delay);
 	}
 });
