@@ -33,11 +33,14 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
             results.push(_this.instance.addAssignment(asst));
             playerIds.push(asst.userId);
           }
+          //Clear the of the users that just joined a game to free memory
+          _this.lobbyTimers = _.omit(_this.lobbyTimers,_.pluck(lobbyUsers,'userId'));
           Meteor.call('createGame', _this.instance.groupId, playerIds, treatment);
-          console.log('ASSIGNER: Match the players! New game created: '+ _this.instance.groupId);
+          console.log('ASSIGNER: Match the players! New game created: '+ _this.instance.groupId +'\n');
           return results;
         } else {
-          console.log("ASSIGNER: Match the players! There aren't enough!");
+          var numPassedQuiz = Players.find({$and:[{'passedQuiz':true},{'status':'waiting'}]}).count();
+          console.log("ASSIGNER: Match the players! There are only " + numPassedQuiz + "/" + groupSize + " players!\n");
         }
       };
     })(this)); 
