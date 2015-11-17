@@ -2,9 +2,16 @@
 
 ##Current todos
 
-- if < numRounds/2 rematch otherwise give bonus and submit
-    + If rematched add fixed rematching bonus
-
+- send the user who disconnected to the lobby, and set their status to left game
+- take the other users to the player ratings survey and create a count for the number of players still left that need to make a rating of each other
+- set up event handler on this screen to take the specific user to the exit survey
+    + every time a user submits trigger a check for all the game user's TurkServer.inExitSurvey statuses (prob in assignment database) or if they've disconnected completely
+    + if so then end the game
+    + problem is they dont see final outcomes
+- ALTERNATIVE:
+    + push the game state to final outcomes and send everyone to exit survey
+    + Find a way to get their partner info in the exit survey (may need to look up gameID (store it in players db) and have it as part of the exit survey)
+        * problem is that they see outcomes before ratings
 
 - Use session variables about time on each page, that auto makes a meteor call for the player if they take too long
 - Game states in db:

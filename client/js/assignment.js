@@ -41,4 +41,5 @@ Template.matched.helpers({
 //Change role assignment ready button text
 Template.assignment.onRendered(function(){
 	$(".action-tutorial-finish").text("Ready!");
+	$.playSound('/bell');
 });
