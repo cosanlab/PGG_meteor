@@ -137,10 +137,10 @@ Meteor.methods({
 				Meteor.call('updatePlayerInfo',player,{'status':'finished'},'set');
 			});
 			state = 'ended';
-			log = "ASSIGNER: Game " + gameId + " successfully ended!\n";
+			log = "GAME: " + Date() + ": " + gameId + " successfully ended!\n";
 		} else {
 			state = 'connectionError';
-			log = "ASSIGNER: Game " + gameId + " went boom!\n";
+			log = "GAME: " + Date() + ": " + gameId + " went boom!\n";
 			//Clear any other bomb timers from others who might have disconnected. Change the player status differently depending on if player caused the game end (or left while waiting for reconnection), or if they were affected by it
 			var batchId = Experiments.findOne(exp.groupId).batchId;
 			var batch = TurkServer.Batch.getBatch(batchId);
@@ -164,7 +164,7 @@ Meteor.methods({
 			exp.teardown(returnToLobby = true);
 			console.log(log);
 		} else{
-			console.log("ASSIGNER: Game could not be ended! No instance for: " + gameId + '\n');
+			console.log("GAME: " + Date() + ": " + gameId + " could not be ended! No instance exists!\n");
 		}
 
 	},
@@ -185,10 +185,10 @@ Meteor.methods({
 				},disconnectTimeout*60*1000);
 				batch.assigner.disconnectTimers[gameId] = {disconnectBomb: disconnectBomb, state: prevState, players:[]};
 				batch.assigner.disconnectTimers[gameId].players.push(currentUser);
-				console.log("ASSIGNER: User " + asst.workerId + 'disconnected! Game ' + gameId + ' state saved! Also set up the bomb!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'disconnected! Game ' + gameId + ' state saved! Also set up the bomb!\n');
 			} else if(_.has(batch.assigner.disconnectTimers, gameId)){
 				batch.assigner.disconnectTimers[gameId].players.push(currentUser);
-				console.log("ASSIGNER: User " + asst.workerId + 'disconnected! Game ' + gameId + ' already has a bomb!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'disconnected! Game ' + gameId + ' already has a bomb!\n');
 			}		
 			
 		} else if(connection == 'reconnect'){
@@ -216,9 +216,9 @@ Meteor.methods({
 						Meteor.call('updateGameInfo',gameId,{'state':revertState},'set');
 				}				
 				batch.assigner.disconnectTimers = _.omit(batch.assigner.disconnectTimers,gameId);
-				console.log("ASSIGNER: User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb defused!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb defused!\n');
 			} else {
-				console.log("ASSIGNER: User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb NOT YET defused!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb NOT YET defused!\n');
 			}
 		}
 	}

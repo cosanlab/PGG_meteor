@@ -27,12 +27,12 @@ Meteor.methods({
 			},lobbyTimeout*60*1000);
         	batch.assigner.lobbyTimers[currentUser] = userLobbyBomb;
         	var emitter = batch.lobby.events;
-        	console.log('TURKER ' + Date() +': ' + workerId + ' passed Quiz! Told Assigner and set them up the bomb!\n');
+        	console.log('TURKER: ' + Date() +': ' + workerId + ' passed Quiz! Told Assigner and set them up the bomb!\n');
         	emitter.emit('match-players');
       	} else{
       		Meteor.call('updatePlayerInfo',currentUser,{'status':'failedQuiz'},'set');
       		asst.showExitSurvey();
-      		console.log('TURKER ' + Date() +': ' + workerId + ' failedQuiz!	Sent to exit survey!\n');
+      		console.log('TURKER: ' + Date() +': ' + workerId + ' failedQuiz!	Sent to exit survey!\n');
       	}	
 	},
 	//Remove a player document from the database
@@ -57,6 +57,6 @@ Meteor.methods({
 		Meteor.call('updatePlayerInfo',currentUser,{'status':'lobbyTimeout'}, 'set');
 		LobbyStatus.remove(currentUser);
 		asst.showExitSurvey();
-		console.log('TURKER: ' + workerId + ' went boom! Sent to exit survey!\n');
+		console.log('TURKER: '+ Date() + ': ' + workerId + ' went boom! Sent to exit survey!\n');
 	}
 });
