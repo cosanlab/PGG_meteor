@@ -100,9 +100,11 @@ Template.playerDisplay.helpers({
 			}
 		} else{
 			for (var p in game.players){
-				data.icon = game.players[p].icon;
-				data.amount = game.players[p].contributions[round];
-				contributions.push(data);
+				if (p!= currentUser){
+					data.icon = game.players[p].icon;
+					data.amount = game.players[p].contributions[round];
+					contributions.push(data);
+				}
 			}
 		}
 		return contributions;
