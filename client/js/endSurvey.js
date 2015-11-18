@@ -64,6 +64,7 @@ Template.endSurvey.events({
 		var player = Players.findOne(currentUser);
 		var feedback = $('#feedback').val();
 		var age = $('#age').val();
+		var belief = parseInt($('#belief').val());
 		var results;
 		//For the sake no blank fields fill NAs if client doesn't complete exit survey
 		if(!feedback){
@@ -86,7 +87,7 @@ Template.endSurvey.events({
 		} else{
 			gender = 'NA';
 		}
-		Meteor.call('updatePlayerInfo',currentUser,{'feedback':feedback},'set');
+		Meteor.call('updatePlayerInfo',currentUser,{'feedback':feedback,'age':age,'gender':gender,'belief':belief},'set');
 		//Meteor.call('addPlayerExitInfo...')
 		results = {Feedback: feedback};
 		TurkServer.submitExitSurvey(results);
