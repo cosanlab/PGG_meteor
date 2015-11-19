@@ -8,4 +8,4 @@ This paradigm uses the excellent [TurkServer](https://github.com/HarvardEconCS/t
 
 More details to follow.
 
-Author: [Eshin Jolly](eshinjolly.com)
+Author: [Eshin Jolly](http://eshinjolly.com)
