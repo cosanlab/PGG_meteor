@@ -1,6 +1,6 @@
 ### Public Goods Game
 
-This is a paradigm in which users from Amazon's mechanical turk are matched in groups of 5 to play a modified PGG. Several different experimental conditions exist providing varying levels of *information completeness*, and *gossip*.
+This is a paradigm in which users from Amazon's mechanical turk are matched in groups of arbitrary size to play a modified PGG. Several different experimental conditions exist.
 
 This paradigm is built using [Meteor.js](https://www.meteor.com/) a Javascript framework with fast easy-to-use client-server communication enabling effective realtime applications. This enables multi-user experimental design, aka real-time interactions over the internet.
 

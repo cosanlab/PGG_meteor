@@ -9,8 +9,16 @@ Template.lobby.helpers({
   },
 
   numWaiting: function(){
-    var currentUser = Meteor.userId();
-    return Players.find({$and:[{'passedQuiz':true},{'status':'waiting'}]}).count();
+    var connectedUsers = LobbyStatus.find().fetch();
+    var lobbyUsers = [];
+    var player;
+    _.each(connectedUsers, function(usr){
+      player = Players.findOne(usr._id);
+      if(player.passedQuiz && player.status=='waiting'){
+        lobbyUsers.push(usr);
+      }
+    });
+    return lobbyUsers.length;
   },
 
   clock: function(){

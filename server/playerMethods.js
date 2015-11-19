@@ -19,7 +19,7 @@ Meteor.methods({
 		var asstId = asst.asstId;
 		var batchId = asst.batchId;
 		var batch = TurkServer.Batch.getBatch(batchId);
-		LobbyStatus.update(currentUser,{$set:{'passedQuiz':passedQuiz}});
+		//LobbyStatus.update(currentUser,{$set:{'passedQuiz':passedQuiz}});
 		if(passedQuiz){
 			Meteor.call('updatePlayerInfo',currentUser,{'status':'waiting'},'set');
 			var userLobbyBomb = Meteor.setTimeout(function(){
@@ -58,5 +58,14 @@ Meteor.methods({
 		LobbyStatus.remove(currentUser);
 		asst.showExitSurvey();
 		console.log('TURKER: '+ Date() + ': ' + workerId + ' went boom! Sent to exit survey!\n');
+		var connectedUsers = LobbyStatus.find().fetch();
+    	var lobbyUsers = [];
+    	_.each(connectedUsers, function(usr){
+      		if(Players.findOne(usr._id).passedQuiz){
+        		lobbyUsers.push(usr);
+      		}
+    	});
+    	console.log("ASSIGNER: There are now only " + lobbyUsers.length + "/" + groupSize + " players!\n");
+
 	}
 });

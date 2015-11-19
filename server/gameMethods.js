@@ -185,10 +185,11 @@ Meteor.methods({
 				},disconnectTimeout*60*1000);
 				batch.assigner.disconnectTimers[gameId] = {disconnectBomb: disconnectBomb, state: prevState, players:[]};
 				batch.assigner.disconnectTimers[gameId].players.push(currentUser);
-				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'disconnected! Game ' + gameId + ' state saved! Also set up the bomb!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' disconnected! Game ' + gameId + ' state saved! Also set up the bomb!\n');
+				//console.log('Game was in state: ' + prevState);
 			} else if(_.has(batch.assigner.disconnectTimers, gameId)){
 				batch.assigner.disconnectTimers[gameId].players.push(currentUser);
-				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'disconnected! Game ' + gameId + ' already has a bomb!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' disconnected! Game ' + gameId + ' already has a bomb!\n');
 			}		
 			
 		} else if(connection == 'reconnect'){
@@ -209,16 +210,23 @@ Meteor.methods({
 						if(game.round < numRounds){
 							Meteor.call('autoAdvanceState',gameId,revertState,['gOut','pChoose'],5000);
 						} else {
-
-						} Meteor.call('autoAdvanceState',gameId,revertState,['gOut','playerRatings'],5000);
+						 Meteor.call('autoAdvanceState',gameId,revertState,['gOut','playerRatings'],5000);
+						}
+					break;
+					case 'gOut':
+						if(game.round <= numRounds){
+							Meteor.call('autoAdvanceState',gameId,revertState,['pChoose'],5000);
+						} else {
+						 Meteor.call('autoAdvanceState',gameId,revertState,['playerRatings'],5000);
+						}
 					break;
 					default:
 						Meteor.call('updateGameInfo',gameId,{'state':revertState},'set');
 				}				
 				batch.assigner.disconnectTimers = _.omit(batch.assigner.disconnectTimers,gameId);
-				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb defused!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' reconnected! Game ' + gameId + 'bomb defused!\n');
 			} else {
-				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + 'reconnected! Game ' + gameId + 'bomb NOT YET defused!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' reconnected! Game ' + gameId + 'bomb NOT YET defused!\n');
 			}
 		}
 	}
