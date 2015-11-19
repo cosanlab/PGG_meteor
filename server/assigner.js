@@ -19,7 +19,15 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
     //This event puts users into a game with other users who have passed the quiz and clears their lobby timebombs, otherwise it does nothing
     this.lobby.events.on("match-players", (function(_this){
       return function() {
-        var lobbyUsers = _this.lobby.getAssignments({'passedQuiz':true});
+        var connectedUsers = _this.lobby.getAssignments();
+        var lobbyUsers = [];
+        var player;
+        _.each(connectedUsers, function(usr){
+            player = Players.findOne(usr.userId);
+            if(player.passedQuiz && player.status == 'waiting'){
+              lobbyUsers.push(usr);
+            }
+          });
         if (lobbyUsers.length == _this.groupSize)  {
           var treatment = _.sample(_this.batch.getTreatments());
           _this.instance = _this.batch.createInstance([treatment]);
@@ -39,27 +47,56 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
           console.log('ASSIGNER: Match the players! New game created: '+ _this.instance.groupId +'\n');
           return results;
         } else {
-          var numPassedQuiz = Players.find({$and:[{'passedQuiz':true},{'status':'waiting'}]}).count();
-          console.log("ASSIGNER: Match the players! There are only " + numPassedQuiz + "/" + groupSize + " players!\n");
+          console.log("ASSIGNER: Match the players! There are only " + lobbyUsers.length + "/" + groupSize + " players!\n");
         }
       };
     })(this)); 
   };
 
   PGGAssigner.prototype.userJoined = function(asst){
-    //If a user has been in an experiment before check to see if they need to be rematched, if so leave them in the lobby otherwise take them to the exit survey
-    
-    var currentUser = asst.userId; //Same as Meteor.userId
-    var workerId = asst.workerId; //Mturk Id displayed in admin
+    /*Accounts for 3 possible ways a user ends up in the lobby
+    1) They've been part of an experiment instance before = send them to the exit survey
+    2) They've just accepted the HIT (they're not in the Players db) = add them to the players db and keep them in the lobby
+    3) They're reconnecting after accepting the HIT but have not started a game or have not passed the quiz = leave them in the lobby and console log the new wait count, or do nothing
+  */
+    var currentUser = Players.findOne(asst.userId);
     if(asst.getInstances().length > 0){
-      if(!Players.findOne(currentUser).needRematch){
-        this.lobby.pluckUsers([currentUser]);
+      if(!currentUser.needRematch){
+        this.lobby.pluckUsers([asst.userId]);
         return asst.showExitSurvey();
       }
-    } else if(!Players.findOne(currentUser)){
-        Meteor.call('addPlayer', currentUser, workerId);
-        
-    }
+    } 
+    else{
+        if(!currentUser){
+          Meteor.call('addPlayer', asst.userId, asst.workerId);  
+        } else if(currentUser.passedQuiz && currentUser.status == 'waiting'){
+            var connectedUsers = this.lobby.getAssignments();
+            var lobbyUsers = [];
+            var otherPlayer;
+           _.each(connectedUsers, function(usr){
+            otherPlayer = Players.findOne(usr.userId);
+              if(otherPlayer.passedQuiz && otherPlayer.status == 'waiting'){
+                lobbyUsers.push(usr);
+              }
+          });
+          console.log('TURKER: '+ Date() + ': ' + asst.workerId + ' rejoined the queue!\n');
+          console.log("ASSIGNER: Now there are " + lobbyUsers.length + "/" + groupSize + " players!\n");
+        } else{
+          //We'll only get here if they're reconnecting to the instructions
+        }
+    } 
+  };
+
+  PGGAssigner.prototype.userLeft = function(asst){
+    var connectedUsers = this.lobby.getAssignments();
+    var lobbyUsers = [];
+        _.each(connectedUsers, function(usr){
+            if(Players.findOne(usr.userId).passedQuiz){
+              lobbyUsers.push(usr);
+            }
+          });
+    console.log('TURKER: '+ Date() + ': ' + asst.workerId + ' left the queue!\n');
+    console.log("ASSIGNER: Now there are only " + lobbyUsers.length + "/" + groupSize + " players!\n");
   };
 
   return PGGAssigner;
