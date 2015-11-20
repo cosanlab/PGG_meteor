@@ -186,6 +186,7 @@ Meteor.methods({
 				batch.assigner.disconnectTimers[gameId] = {disconnectBomb: disconnectBomb, state: prevState, players:[]};
 				batch.assigner.disconnectTimers[gameId].players.push(currentUser);
 				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' disconnected! Game ' + gameId + ' state saved! Also set up the bomb!\n');
+				console.log("ASSIGNER: Game was in state: " + prevState + " round: " + game.round);
 				//console.log('Game was in state: ' + prevState);
 			} else if(_.has(batch.assigner.disconnectTimers, gameId)){
 				batch.assigner.disconnectTimers[gameId].players.push(currentUser);
@@ -224,9 +225,9 @@ Meteor.methods({
 						Meteor.call('updateGameInfo',gameId,{'state':revertState},'set');
 				}				
 				batch.assigner.disconnectTimers = _.omit(batch.assigner.disconnectTimers,gameId);
-				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' reconnected! Game ' + gameId + 'bomb defused!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' reconnected! Game ' + gameId + ' bomb defused!\n');
 			} else {
-				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' reconnected! Game ' + gameId + 'bomb NOT YET defused!\n');
+				console.log("ASSIGNER: " + Date() + " User " + asst.workerId + ' reconnected! Game ' + gameId + ' bomb NOT YET defused!\n');
 			}
 		}
 	}
