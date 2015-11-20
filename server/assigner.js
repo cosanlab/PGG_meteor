@@ -88,15 +88,18 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
   };
 
   PGGAssigner.prototype.userLeft = function(asst){
-    var connectedUsers = this.lobby.getAssignments();
-    var lobbyUsers = [];
-        _.each(connectedUsers, function(usr){
-            if(Players.findOne(usr.userId).passedQuiz){
-              lobbyUsers.push(usr);
-            }
-          });
-    console.log('TURKER: '+ Date() + ': ' + asst.workerId + ' left the queue!\n');
-    console.log("ASSIGNER: Now there are only " + lobbyUsers.length + "/" + groupSize + " players!\n");
+    var currentUser = Players.findOne(asst.userId);
+    if(currentUser.passedQuiz){
+      var connectedUsers = this.lobby.getAssignments();
+      var lobbyUsers = [];
+          _.each(connectedUsers, function(usr){
+              if(Players.findOne(usr.userId).passedQuiz){
+                lobbyUsers.push(usr);
+              }
+            });
+      console.log('TURKER: '+ Date() + ': ' + asst.workerId + ' left the queue!\n');
+      console.log("ASSIGNER: Now there are only " + lobbyUsers.length + "/" + groupSize + " players!\n");
+    }
   };
 
   return PGGAssigner;
