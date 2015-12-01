@@ -11,7 +11,11 @@ Template.game.helpers({
 				messagePrompt = 'How many points do you want to contribute to the group account?';
 				break;
 			case 'pDisp':
-				messagePrompt = 'Two other players contributed:';
+				if (game.condition == '2G'){
+					messagePrompt = 'Two other players contributed:';
+				} else if(game.condition == '6G'){
+					messagePrompt = 'Other players contributed:';
+				}
 				break;
 			case 'pSendMess1':
 				messaging = true;
@@ -98,13 +102,12 @@ Template.playerDisplay.helpers({
 				contributions.push(data);
 				data = {};
 			}
-		} else{
-			for (var p in game.players){
-				if (p!= currentUser){
-					data.icon = game.players[p].icon;
-					data.amount = game.players[p].contributions[round];
-					contributions.push(data);
-				}
+		} else if(game.condition == '6G'){
+			var otherPlayers = _.omit(game.players,currentUser);
+			for (var p in otherPlayers){
+				data.icon = otherPlayers[p].icon;
+				data.amount = otherPlayers[p].contributions[round];
+				contributions.push(data);
 			}
 		}
 		return contributions;

@@ -3,6 +3,8 @@ Meteor.methods({
 	'createGame': function(gameId, playerIds, condition){
 		var playersData = {};
 		var icons = _.shuffle(avatars);
+		var partner;
+		var neighbors;
 		for(var i=0, plen = playerIds.length; i<plen; i++) {
 			playersData[playerIds[i]] = {
 				name: letters[i],
@@ -14,15 +16,19 @@ Meteor.methods({
 				secondMessages: [],
 				playerRatings: {}
 			};
+			neighbors = [];
 			if(condition == '2G'){
-				var partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
-				var neighbors = [];
+				partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
 				for (var j = -1; j < 2; j+=2){
 					var nIdx = (i+j) < playerIds.length ? (i+j) : (i+j-playerIds.length);
 					neighbors.push(playerIds.slice(nIdx)[0]);
 				}
 				playersData[playerIds[i]].neighbors = neighbors;
 				playersData[playerIds[i]].partner = playerIds[partner];
+			}
+			else if(condition == '6G'){
+				partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
+				neighbors = _.difference(playerIds,[playerIds[i]]);
 			}
 		}
 		var data = {

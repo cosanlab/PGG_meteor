@@ -28,10 +28,12 @@
 <template name = "rounds">
 	<h3 align = "center">Structure of Each Round</h3>
 	<blockquote class = "instr">
-		Afer you decide how many points to contribute to the group account you will be able to see the contributions made by <b>two</b> other players. These players will be randomly selected from the {{otherPlayers}} other people you are playing with. Across every round of the game you will always see contributions from the <b>same</b> two players.
+		Afer you decide how many points to contribute to the group account you will be able to see the contributions made by
+		<b>{{otherPlayers}}</b> other players. These are all the other players in the game. Across every round of the game you will always see contributions from <b>all</b> the players.
 	</blockquote>
 	<blockquote class = "instr">
-		Next, you will be able to communicate with <b>one</b> other player. This player will be different from the two players' whose contributions you can see. In order to communicate, you will be able to send and receive two messages (140 characters max) to this other player. Upon sending your first message you will be shown their first message sent to you. Following this you will be able to second a second message and likewise see their second message sent to you.
+		Next, you will be able to communicate with <b>one</b> other player.
+ 	 	In order to communicate, you will be able to send and receive two messages (140 characters max) to this other player. Upon sending your first message you will be shown their first message sent to you. Following this you will be able to second a second message and likewise see their second message sent to you.
 	</blockquote>
 	<blockquote class = "instr">
 		After communication ends, the group account multiplier of (1.5x) will be applied and the group account will be divided evenly. Finally the round will end and you will be shown the points you earned.
@@ -44,41 +46,30 @@
 		To illustrate the game lets look at an example round:<br><br>
 		<ul>
 		<li>First you will be given 100 points and will choose how many of these to contribute to the group account; let's say you choose to contribute 50 points</li>
-		<li>Following this you will be able to see the contributions made by two other players; let's say you see a contribution of 75 and a contribution of 25 points</li>
+		<li>Following this you will be able to see the contributions made by all the players; lets say you see contributions of: 100, 0, 50, 50, and 50 points</li>
 		<li>Next you will be able to send and receive two messages with another player</li>
 		<li>Finally you will see the results of the splitting of the group account; let's say you receive 75 points at the end of the round bringing your total earned for that round to 125 points (50 you didn't contribute + 75 you earned)</li>
 		</ul>
 	</blockquote>
-	{{#if Cond numPlayers '==' '6'}}
 	<blockquote class = "instr">
-		Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 150 points:
+		Based on this round you can see that all the other players contributed a total of 250 points, bringing the the total earnings for the group to 450 points, with each player earning 75 points each: 
 	</blockquote>
 	<p align = "center" style= 'font-size: 14px'>
-		75 (your earning) * {{numPlayers}} (total players) = 450 / 1.5 (multiplier) = 
+		100 + 0 + 50 + 50 + 50 = 
 		<br>
-		<b>300 (sum of total contributions)</b>
+		<b>250 (sum of other players' contributions)</b>
 	</p>
 	<br>
 	<p align = "center" style= 'font-size: 14px'>
-		300 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
-		<b>150 (sum of players you can't see)</b>
-	</p>
-	{{else}}{{#if Cond numPlayers '==' '4'}}
-	<blockquote class = "instr">
-		Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 50 points:
-	</blockquote>
-	<p align = "center" style= 'font-size: 14px'>
-		75 (your earning) * {{numPlayers}} (total players) = 300 / 1.5 (multiplier) = 
+		50 (your contribution) + 250 = 300 * 1.5 (multiplier) = 
 		<br>
-		<b>200 (sum of total contributions)</b>
+		<b>450 (sum of group account)</b>
 	</p>
 	<br>
 	<p align = "center" style= 'font-size: 14px'>
-		200 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
-		<b>50 (sum of players you can't see)</b>
+		450 / 6 = <br>
+		<b>75 (each player's earnings for the round)</b>
 	</p>
-	{{/if}}
-	{{/if}}
 </template>
 
 <template name = "recap">
@@ -88,14 +79,14 @@
 	<ol>
 		<li>Each player will receive a starting balance of 100 points</li>
 		<li>Each player will decide how many of their points to contribute to the group account</li>
-		<li>Each player will be able to see the contributions made by <b><i>two</i></b> other randomly selected players*</li>
-		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> different randomly selected player**</li>
+		<li>Each player will be able to see the contributions made by<b><i> five </i></b> other players
+		 </li>
+		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> randomly selected player*</li>
 		<li>Each player will see how much they earned after the group account multiplier is applied and redistributed</li>
 	</ol>
 	</blockquote>
 	<br>
-	<p><i>*Players will always see contributions from the <b>same</b> two players during the entire game</i></p>
-	<p><i>**Player will always be communicating with the <b>same</b> player during the entire game</i></p>
+	<p><i>*Player will always be communicating with the <b>same</b> player during the entire game</i></p>
 </template>
 
 <template name = "timing">

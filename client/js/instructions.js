@@ -64,12 +64,6 @@ Template.overview.helpers({
 	},
 	numRounds: function(){
 		return String(numRounds);
-	},
-	game: function(){
-		var game = Games.findOne();
-		return{
-			condition: game.condition,
-		};
 	}
 });
 Template.rounds.inheritsHelpersFrom('overview');
