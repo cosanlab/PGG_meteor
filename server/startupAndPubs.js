@@ -2,8 +2,8 @@ Meteor.startup(function(){
 	try{
 		//Create a test batch for now and give it an assigner
 		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
-		TurkServer.ensureTreatmentExists({name: '2G'});
-		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: '2G'}});
+		TurkServer.ensureTreatmentExists({name: '6G'});
+		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: '6G'}});
   		Batches.find().forEach(function(batch) {
 		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PGGAssigner(groupSize));
     		});
