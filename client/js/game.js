@@ -108,6 +108,7 @@ Template.playerDisplay.helpers({
 				data.icon = otherPlayers[p].icon;
 				data.amount = otherPlayers[p].contributions[round];
 				contributions.push(data);
+				data = {};
 			}
 		}
 		return contributions;
