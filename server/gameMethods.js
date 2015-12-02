@@ -23,13 +23,13 @@ Meteor.methods({
 					var nIdx = (i+j) < playerIds.length ? (i+j) : (i+j-playerIds.length);
 					neighbors.push(playerIds.slice(nIdx)[0]);
 				}
-				playersData[playerIds[i]].neighbors = neighbors;
-				playersData[playerIds[i]].partner = playerIds[partner];
 			}
 			else if(condition == '6G'){
 				partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
 				neighbors = _.difference(playerIds,[playerIds[i]]);
 			}
+			playersData[playerIds[i]].neighbors = neighbors;
+			playersData[playerIds[i]].partner = playerIds[partner];
 		}
 		var data = {
 			_id: gameId,
