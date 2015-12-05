@@ -221,6 +221,9 @@ Meteor.methods({
 						 Meteor.call('autoAdvanceState',gameId,revertState,['playerRatings'],5000);
 						}
 					break;
+					case 'finalOut':
+						Meteor.call('autoAdvanceState',gameId,revertState,['ended'],7000);
+					break;
 					default:
 						Meteor.call('updateGameInfo',gameId,{'state':revertState},'set');
 				}				
