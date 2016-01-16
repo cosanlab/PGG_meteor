@@ -11,12 +11,18 @@
 	<ol>
 		<li>Each player will receive a starting balance of 100 points</li>
 		<li>Each player will decide how many of their points to contribute to the group account</li>
-		<li>Each player will be able to see the contributions made by <b><i>all</i></b> the other players</li>
-		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> different randomly selected player*</li>
-		<li>Each player will see how much they earned after the group account multiplier is applied and redistributed</li>
+		<li>Each player will be able to see the contributions made by 
+		<b><i> {{#if batchCond.fullInfo}} all {{else}} two {{/if}} </i></b> of the other players
+		 </li>
+		 {{#if batchCond.messaging}}
+		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> randomly selected player*</li>
+		{{/if}}
+		<li>Each player will see how much they earned after the group account multiplier is applied and group account is redistributed</li>
 	</ol>
 	</blockquote>
 	<br>
+	{{#if batchCond.messaging}}
 	<p><i>*Players will always be communicating with the <b>same</b> player during the entire game</i></p>
+	{{/if}}
 	<p align = "center" style = "font-size:16px"> Click Finish below if you aready to begin. The game will start when every player is ready.</p>
 </template>

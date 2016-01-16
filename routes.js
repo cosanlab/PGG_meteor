@@ -17,7 +17,7 @@ Router.route('/lobby',{
   name: 'lobby',
   template: 'lobby',
   waitOn: function(){
-    return Meteor.subscribe('Players');
+    return [Meteor.subscribe('Batches'), Meteor.subscribe('Players')];
   },
   action: function(){
     var player = Players.findOne(Meteor.userId());
@@ -38,7 +38,7 @@ Router.route('/lobby',{
 }); 
 
 
-//Core game logic, maybe better to have templating logic in game template instead?
+//When users get matched they should enter the game. If the game hasn't started yet this should be a refresher template (assignment). If it has started it should be the game template (which has the core logic). If a user disconnects it should respond reactively (userDisconnect template).
 Router.route('/game',{
   name: 'game',
   waitOn: function(){

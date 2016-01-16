@@ -28,6 +28,7 @@ Tracker.autorun(function(){
     Meteor.subscribe('Players');
     Meteor.subscribe('Games',group);
     Meteor.subscribe('userStatus');
+    Meteor.subscribe('Batches');
 });
 
 
@@ -53,6 +54,7 @@ Template.registerHelper('Cond', function (v1, operator, v2) {
     }
 });
 
+//Jquery play sound function extension
 (function($){
 
   $.extend({

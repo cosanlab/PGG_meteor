@@ -9,7 +9,6 @@ Template.instructionsInteractive.onRendered(function(){
 		});
 
 }); */
-
 var assignmentSteps = [
 	{
 		template: "matched"
@@ -35,6 +34,33 @@ Template.matched.helpers({
 	},
 	numRounds: function(){
 		return numRounds;
+	},
+	batchCond: function(){
+		var batchCond = Batches.findOne().treatments[0];
+		var messaging;
+		var fullInfo;
+		switch (batchCond) {
+			case '2G':
+				messaging = true;
+				fullInfo = false;
+				break;
+			case '2NG':
+				messaging = false;
+				fullInfo = false;
+				break;
+			case '6G':
+				messaging = true;
+				fullInfo = true;
+				break;
+			case '6NG':
+				messaging = false;
+				fullInfo = false;
+				break;
+		}
+		return {
+			messaging: messaging,
+			fullInfo: fullInfo
+		};
 	}
 });
 

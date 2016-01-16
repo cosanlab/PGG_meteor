@@ -3,7 +3,7 @@ Meteor.startup(function(){
 		//Create an experiment batch
 		Batches.upsert({name: 'allConds'}, {name: 'allConds', active: true});
 		//Add all treatments from globals.js
-		for (t = 0, len = CONDS.length; i < len; i++) {
+		for (i = 0, len = CONDS.length; i < len; i++) {
 			TurkServer.ensureTreatmentExists({name: CONDS[i]});
 		}
 		//Treatments should be added from the admin menu as the app will not initialize with any treatments!
@@ -37,6 +37,11 @@ Meteor.publish('Players', function(){
 //Games DB
 Meteor.publish('Games', function(){
    return Games.find();
+});
+
+//Batch info for condition before getting matched 
+Meteor.publish('Batches', function(){
+	return Batches.find();
 });
 
 //Users for disconnection
