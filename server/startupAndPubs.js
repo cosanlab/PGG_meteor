@@ -1,9 +1,12 @@
 Meteor.startup(function(){
 	try{
-		//Create a test batch for now and give it an assigner
-		Batches.upsert({name: 'Test_1'}, {name: 'Test_1', active: true});
-		TurkServer.ensureTreatmentExists({name: '6G'});
-		Batches.update({name: 'Test_1'}, {$addToSet: {treatments: '6G'}});
+		//Create an experiment batch
+		Batches.upsert({name: 'allConds'}, {name: 'allConds', active: true});
+		//Add all treatments from globals.js
+		for (t = 0, len = CONDS.length; i < len; i++) {
+			TurkServer.ensureTreatmentExists({name: CONDS[i]});
+		}
+		//Treatments should be added from the admin menu as the app will not initialize with any treatments!
   		Batches.find().forEach(function(batch) {
 		 	TurkServer.Batch.getBatch(batch._id).setAssigner(new TurkServer.Assigners.PGGAssigner(groupSize));
     		});

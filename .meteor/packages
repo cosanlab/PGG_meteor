@@ -28,6 +28,5 @@ random
 ejson
 spacebars
 check
-mizzao:turkserver
-mizzao:partitioner@=0.5.6
 erasaur:meteor-lodash
+mizzao:turkserver
