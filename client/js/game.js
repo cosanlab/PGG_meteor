@@ -77,12 +77,25 @@ Template.playerContribution.events({
 		event.preventDefault();
 		$('#contributionSubmit').text("Waiting for other players... ").removeClass('btn-primary').addClass('btn-warning').prop('disabled',true);
 		var contribution = parseInt($('#contributionSlider').val());
-		var gameId = Games.findOne()._id;
+		var game = Games.findOne();
 		var currentUser = Meteor.userId();
 		var nextState = 'pDisp';
-		var autoStates = ['pSendMess1'];
-		var delay = 5000;
-		Meteor.call('addPlayerRoundData',gameId,currentUser,['contributions',contribution,nextState,autoStates],delay);
+		var delay = 7000;
+		var autoStates;
+		//Determine whether we're going ot the messaging screen or the outcome screen
+		if (game.condition == '2G' || game.condition == '6G'){
+			autoStates = ['pSendMess1'];
+		}
+		//If there's no messaging we need to determine the autostate after the outcome screen to either end the game or start a new round
+		else{
+			if(game.round < numRounds){
+				autoStates = ['gOut','pChoose'];
+			} 
+			else{
+				autoStates = ['gOut','playerRatings'];
+			}
+		}		
+		Meteor.call('addPlayerRoundData',game._id,currentUser,['contributions',contribution,nextState,autoStates],delay);
 	}
 });
 
@@ -94,7 +107,15 @@ Template.playerDisplay.helpers({
 		var round = game.round - 1;
 		var contributions = [];
 		var data = {};
-		if(game.condition == '2G'){		
+		//Should work across all conditions
+		var neighbors = game.players[currentUser].neighbors;	
+		for (var n=0, nLen = neighbors.length; n<nLen; n++){
+			data.icon = game.players[neighbors[n]].icon;
+			data.amount = game.players[neighbors[n]].contributions[round];
+			contributions.push(data);
+			data = {};
+		}
+		/*if(game.condition == '2G'){		
 			var neighbors = game.players[currentUser].neighbors;	
 			for (var n=0, nLen = neighbors.length; n<nLen; n++){
 				data.icon = game.players[neighbors[n]].icon;
@@ -110,7 +131,7 @@ Template.playerDisplay.helpers({
 				contributions.push(data);
 				data = {};
 			}
-		}
+		}*/
 		return contributions;
 	}
 
@@ -155,7 +176,7 @@ Template.messageForm.events({
 		        	$('#messagePrompt').html('Waiting for other players... <br><span style = "visibility:hidden">placeholder</span>');
 		        	var currentUser = Meteor.userId();
 		        	var game = Games.findOne();
-		        	var delay = 5000;
+		        	var delay = 7000;
 		        	var nextState;
 		        	var autoStates;
 		        	var messageField;
@@ -200,10 +221,6 @@ Template.playerEarnings.helpers({
 		var totalEarnings;
 		//Underscore js map reduce magic
 		var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list){return list[round];}),function(a,b){return a+b;});
-		//var pot = 0;
-		//_.forEach(game.players,function(c){
-		//	pot += c.contributions[round];
-		//});
 		roundEarnings = Math.round((pot * 1.5)/groupSize);
 		totalEarnings = 100 - game.players[currentUser].contributions[round] + roundEarnings;
 		return {
@@ -253,7 +270,7 @@ Template.playerRatings.events({
 		console.log(ratings);
 		var nextState = 'finalOut';
 		var autoStates = ['ended'];
-		var delay = 7000;
+		var delay = 10000;
 		Meteor.call('addPlayerStaticData',game._id,currentUser,['playerRatings',ratings,nextState,autoStates],delay);
 	}
 });

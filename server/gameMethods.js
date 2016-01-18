@@ -16,15 +16,16 @@ Meteor.methods({
 				secondMessages: [],
 				playerRatings: {}
 			};
+			//Neighbors are based on condition visibility
 			neighbors = [];
-			if(condition == '2G'){
+			if(condition == '2G' || condition == '2NG'){
 				partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
 				for (var j = -1; j < 2; j+=2){
 					var nIdx = (i+j) < playerIds.length ? (i+j) : (i+j-playerIds.length);
 					neighbors.push(playerIds.slice(nIdx)[0]);
 				}
 			}
-			else if(condition == '6G'){
+			else if(condition == '6G' || condition == '6NG'){
 				partner = (i+(groupSize/2)) < groupSize ? (i+(groupSize/2)) : (i+(groupSize/2)-groupSize);
 				neighbors = _.difference(playerIds,[playerIds[i]]);
 			}
