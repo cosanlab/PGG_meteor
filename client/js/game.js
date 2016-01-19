@@ -213,7 +213,7 @@ Template.messageForm.events({
 
 //Player/Group earnings template
 Template.playerEarnings.helpers({
-	earnings: function(){
+	/*earnings: function(){
 		var game = Games.findOne();
 		var currentUser = Meteor.userId();
 		var round = game.round-2; //Executes after round counter is updated so -2 
@@ -226,6 +226,30 @@ Template.playerEarnings.helpers({
 		return {
 			round: roundEarnings,
 			total: totalEarnings
+		};
+	},*/
+	earnings: function(){
+		var currentUser = Meteor.userId();
+		var game = Games.findOne();
+		var round = game.round - 2;
+		var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list){return list[round];}),function(a,b){return a+b;});
+		var roundEarnings = Math.round((pot * 1.5)/groupSize);
+		var totalEarnings = 100 - game.players[currentUser].contributions[round] + roundEarnings;
+
+		var othersEarnings = [];
+		var data = {};
+		//Should work across all conditions
+		var neighbors = game.players[currentUser].neighbors;	
+		for (var n=0, nLen = neighbors.length; n<nLen; n++){
+			data.icon = game.players[neighbors[n]].icon;
+			data.amount = 100 - game.players[neighbors[n]].contributions[round] + roundEarnings;
+			othersEarnings.push(data);
+			data = {};
+		}
+		return {
+			othersEarnings: othersEarnings,
+			roundEarnings: roundEarnings,
+			playerTotal: totalEarnings
 		};
 	}
 

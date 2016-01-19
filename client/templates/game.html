@@ -27,6 +27,7 @@
 	</div>
 </div>	
 </template>
+
 <!-- template for player contribution -->
 <template name = "playerContribution">
 		<div class = "row" id = "contributionSliderRow">
@@ -46,6 +47,7 @@
     		<button type="button" class="btn btn-primary btn-lg" id = "contributionSubmit" aria-label="Left Align" style="margin-left:auto; margin-right:auto; display:block">Submit</button>
 		</div>		
 </template>
+
 <!-- template for other player contributions -->
 <template name = "playerDisplay">
 	<div class = "col-xs-12">
@@ -56,6 +58,7 @@
 		</ul>
 	</div>
 </template>
+
 <!-- template for messaging -->
 <template name="messageForm">
 
@@ -203,13 +206,22 @@
 		{{/if}}
 		{{/if}}
 </template>
+
 <!-- template for player/group earnings -->
 <template name = "playerEarnings">
 	<div class = "col-xs-12" align = "center">
-		<p class = "earnings"> Points earned this round: {{earnings.round}}</p>
-		<p class = "earnings"> Total earnings this round: {{earnings.total}}</p>
+		<p class = "earnings"> Points earned from group account this round: {{earnings.roundEarnings}}</p>
+		<p class = "earnings"> Your total earnings this round: {{earnings.playerTotal}}</p>
+	</div>
+	<div class = "col-xs-12">
+		<ul class = "neighborContributions" align = "center">
+			{{#each earnings.otherEarnings}}
+				<li class = "neighborContributionsText"> <img class = "avatar" src = "{{icon}}"> total earnings this round: {{amount}}</li>
+			{{/each}}
+		</ul>
 	</div>
 </template>
+
 <!-- template for player ratings -->
 <template name = "playerRatings">
 	<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
