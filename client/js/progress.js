@@ -11,6 +11,10 @@ Template.progress.helpers({
 			var gameEnd = "";
 			var round = game.round;
 			var displayEnd = false;
+			var messaging = false;
+			if (game.condition == '2G' || game.condition == '6G'){
+				messaging = true;
+			}
 
 			switch(game.state){
 				case 'pChoose':
@@ -47,6 +51,7 @@ Template.progress.helpers({
 				}
 			return {
 				state: game.state,
+				messaging: messaging,
 				pChoose: pChoose,
 				pDisp: pDisp,
 				mess: mess,

@@ -6,7 +6,9 @@
 				<li id = "roundCounter"><u>Current Round:</u> {{game.round}}</li>
 				<li class = "{{game.pChoose}}"><a>Your Contribution</a></li>
 				<li class = '{{game.pDisp}}'><a>Others' Contribution</a></li>
+				{{#if game.messaging}}
 				<li class = '{{game.mess}}'><a>Messaging</a></li>
+				{{/if}}
 				<li class = '{{game.gOut}}'><a>Round Outcome</a></li>
 				{{#if game.displayEnd}}
 				<li class = '{{game.gameEnd}}'><a>Game End</a></li>
