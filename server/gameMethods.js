@@ -209,27 +209,36 @@ Meteor.methods({
 				var revertState = batch.assigner.disconnectTimers[gameId].state;
 				switch(revertState){
 					case 'pDisp':
-						Meteor.call('autoAdvanceState',gameId,revertState,['pSendMess1'],5000);
+						if (game.condition == '2NG' || game.condition == '6NG'){
+								if(game.round < numRounds){
+									Meteor.call('autoAdvanceState',gameId,revertState,['gOut','pChoose'],7000);
+								} else {
+							 		Meteor.call('autoAdvanceState',gameId,revertState,['gOut','playerRatings'],7000);
+								}
+							}
+						else{
+							Meteor.call('autoAdvanceState',gameId,revertState,['pSendMess1'],7000);
+						}
 					break;
 					case 'pReceiveMess1':
-						Meteor.call('autoAdvanceState',gameId,revertState,['pSendMess2'],5000);
+						Meteor.call('autoAdvanceState',gameId,revertState,['pSendMess2'],7000);
 					break;
 					case 'pReceiveMess2':
 						if(game.round < numRounds){
-							Meteor.call('autoAdvanceState',gameId,revertState,['gOut','pChoose'],5000);
+							Meteor.call('autoAdvanceState',gameId,revertState,['gOut','pChoose'],7000);
 						} else {
-						 Meteor.call('autoAdvanceState',gameId,revertState,['gOut','playerRatings'],5000);
+						 Meteor.call('autoAdvanceState',gameId,revertState,['gOut','playerRatings'],7000);
 						}
 					break;
 					case 'gOut':
 						if(game.round <= numRounds){
-							Meteor.call('autoAdvanceState',gameId,revertState,['pChoose'],5000);
+							Meteor.call('autoAdvanceState',gameId,revertState,['pChoose'],7000);
 						} else {
-						 Meteor.call('autoAdvanceState',gameId,revertState,['playerRatings'],5000);
+						 Meteor.call('autoAdvanceState',gameId,revertState,['playerRatings'],7000);
 						}
 					break;
 					case 'finalOut':
-						Meteor.call('autoAdvanceState',gameId,revertState,['ended'],7000);
+						Meteor.call('autoAdvanceState',gameId,revertState,['ended'],10000);
 					break;
 					default:
 						Meteor.call('updateGameInfo',gameId,{'state':revertState},'set');

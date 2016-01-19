@@ -11,9 +11,9 @@ Template.game.helpers({
 				messagePrompt = 'How many points do you want to contribute to the group account?';
 				break;
 			case 'pDisp':
-				if (game.condition == '2G'){
+				if (game.condition == '2G' || game.condition == '2NG'){
 					messagePrompt = 'Two other players contributed:';
-				} else if(game.condition == '6G'){
+				} else{
 					messagePrompt = 'Other players contributed:';
 				}
 				break;
