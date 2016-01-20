@@ -15,7 +15,7 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
   PGGAssigner.prototype.initialize = function(){
     //Call the parent's initialize method first
     PGGAssigner.__super__.initialize.apply(this, arguments);
-    //Player matching occurs by a lobby event triggered by a client after they pass the comprehension quiz
+    //Player matching occurs by a lobby event triggered by a client after they pass the comprehension quiz (or rejoin the lobby after passing the quiz, disconnecting and reconnecting)
     //This event puts users into a game with other users who have passed the quiz and clears their lobby timebombs, otherwise it does nothing
     this.lobby.events.on("match-players", (function(_this){
       return function() {
@@ -70,17 +70,10 @@ TurkServer.Assigners.PGGAssigner = (function(superClass) {
         if(!currentUser){
           Meteor.call('addPlayer', asst.userId, asst.workerId);  
         } else if(currentUser.passedQuiz && currentUser.status == 'waiting'){
-            var connectedUsers = this.lobby.getAssignments();
-            var lobbyUsers = [];
-            var otherPlayer;
-           _.each(connectedUsers, function(usr){
-            otherPlayer = Players.findOne(usr.userId);
-              if(otherPlayer.passedQuiz && otherPlayer.status == 'waiting'){
-                lobbyUsers.push(usr);
-              }
-          });
-          console.log('TURKER: '+ Date() + ': ' + asst.workerId + ' rejoined the queue!\n');
-          console.log("ASSIGNER: Now there are " + lobbyUsers.length + "/" + groupSize + " players!\n");
+            console.log('TURKER: '+ Date() + ': ' + asst.workerId + ' rejoined the queue!\n');
+            var batch = TurkServer.Batch.getBatch(this.lobby.batchId);
+            var emitter = batch.lobby.events;
+            emitter.emit('match-players');
         } else{
           //We'll only get here if they're reconnecting to the instructions
         }

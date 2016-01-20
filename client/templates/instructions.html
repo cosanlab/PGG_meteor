@@ -21,7 +21,7 @@
 	In this game you will be making a series of decisions about how to allocate points with <b>{{otherPlayers}} other players in real-time</b> over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <b>1 point = 2 cents</b>.
 	</blockquote>
 	<blockquote class = "instr">
-	In the beginning of every round of you will decide <b>how many of your own points you would like to contribute to the group account.</b> At the end of every round, the group account will be multiplied by 1.5 and points will be evenly redistributed to all players.
+	In the beginning of every round of you will decide <b>how many of your own points you would like to contribute to the group account.</b> At the end of every round, the group account will be multiplied by 1.5 and points will be <b>evenly</b> redistributed to all players.
 	</blockquote>
 </template>
 
@@ -103,7 +103,7 @@
 	{{#if batchCond.messaging}} 4 {{else}} 3 {{/if}}parts:<br><br>
 	<ol>
 		<li>Each player will receive 100 points and decide how many of their points to contribute to the group account</li>
-		<li>Each player will be able to see the contributions made by {{#if batchCond.fullInfo}}<b><i>all</i></b>{{else}} <b><i>two</i></b>* {{/if}} of the other players
+		<li>Each player will be able to see the contributions made by {{#if batchCond.fullInfo}}<b><i>all</i></b>{{else}} <b><i>two</i></b>* {{/if}} of the other {{otherPlayers}} players
 		</li>
 		 {{#if batchCond.messaging}}
 		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> randomly selected player*</li>

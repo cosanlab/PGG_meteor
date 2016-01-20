@@ -14,8 +14,11 @@ Template.lobby.helpers({
     var player;
     _.each(connectedUsers, function(usr){
       player = Players.findOne(usr._id);
-      if(player.passedQuiz && player.status=='waiting'){
-        lobbyUsers.push(usr);
+      // Guard against empty queries
+      if (player){ 
+        if(player.passedQuiz && player.status=='waiting'){
+          lobbyUsers.push(usr);
+        }
       }
     });
     return lobbyUsers.length;
