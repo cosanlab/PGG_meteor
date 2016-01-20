@@ -1,11 +1,10 @@
 //Get the batch condition outside a template helper to determine quiz questions
-var batchCond = Batches.findOne().treatments[0];
 //Pretty cool quiz solution based on local meteor collections
 //Took some insipiration from Lili's code
 var Questions = new Mongo.Collection(null);
-
 var questions = [];
 var potSize = groupSize*40;
+
 questions[0] = {
 	text: '1) If you decide to contribute 50 points to the group account, how many points will be left in your private account?',
 	answer: ['fifty','50'],
@@ -25,28 +24,33 @@ questions[2] = {
 	correct: false,
 	answered: false
 };
-if (batchCond == '2G' || batchCond == '6G'){
-	questions[3] = {
-		text: '4) How many other players will you be communicating with during the game?',
-		answer: ['one','1'],
-		correct: false,
-		answered: false
-	};
-	questions[4] = {
-		text: '5) How many messages will you be able to send and receive during communication?',
-		answer: ['two','2'],
-		correct: false,
-		answered: false
-	};
-}
+questions[3] = {
+	text: '4) How many other players will you be communicating with during the game?',
+	answer: ['one','1'],
+	correct: false,
+	answered: false
+};
+questions[4] = {
+	text: '5) How many messages will you be able to send and receive during communication?',
+	answer: ['two','2'],
+	correct: false,
+	answered: false
+};
 
-for(var q = 0; q<questions.length; q++){
+
+//Initially just setup the core game questions
+for(var q = 0; q<questions.length-2; q++){
 	Questions.insert(questions[q]);
 }
 
-
 Template.quiz.helpers({
 	questions: function(){
+		var batchCond = Batches.findOne().treatments[0];
+		if (batchCond == '2G' || batchCond == '6G'){
+			for(var q = 3; q<questions.length; q++){
+				Questions.insert(questions[q]);
+			}
+		}
 		return Questions.find();
 	},
 	quizAttempts: function(){

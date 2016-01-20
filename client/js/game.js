@@ -40,15 +40,19 @@ Template.game.helpers({
 				messageSubPromptDisplay = 'visibility:hidden';
 				break;
 			case 'gOut':
-				messagePrompt = 'Your earnings:';
+				var round = game.round-2; //Because the counter has been updated already
+				var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list){return list[round];}),function(a,b){return a+b;});
+				var roundEarnings = Math.round((pot * 1.5)/groupSize);
+				messagePrompt = 'Group account divided for all ' + String(groupSize) + ' players this round: ' + String(roundEarnings) + ' points each';
+				messageSubPrompt = '(Your earnings are highlighted)';
 				break;
 			case 'playerRatings':
-				messagePrompt = 'How much would you want to player with each player again?';
+				messagePrompt = 'How much would you want to play with each player again?';
 				messageSubPrompt = 'Rate using the sliders below:';
 				messageSubPrompt2 = 'Left = "Never"    Right = "Definitely"';
 				break;
 			case 'finalOut':
-				messagePrompt = 'Final Earnings:';
+				messagePrompt = 'Total Ranked Game Earnings:';
 				messageSubPrompt = '(Your earnings are highlighted)';
 		}
 
@@ -115,23 +119,6 @@ Template.playerDisplay.helpers({
 			contributions.push(data);
 			data = {};
 		}
-		/*if(game.condition == '2G'){		
-			var neighbors = game.players[currentUser].neighbors;	
-			for (var n=0, nLen = neighbors.length; n<nLen; n++){
-				data.icon = game.players[neighbors[n]].icon;
-				data.amount = game.players[neighbors[n]].contributions[round];
-				contributions.push(data);
-				data = {};
-			}
-		} else if(game.condition == '6G'){
-			var otherPlayers = _.omit(game.players,currentUser);
-			for (var p in otherPlayers){
-				data.icon = otherPlayers[p].icon;
-				data.amount = otherPlayers[p].contributions[round];
-				contributions.push(data);
-				data = {};
-			}
-		}*/
 		return contributions;
 	}
 
@@ -212,45 +199,32 @@ Template.messageForm.events({
 });
 
 //Player/Group earnings template
+Template.playerEarnings.inheritsHelpersFrom('game');
 Template.playerEarnings.helpers({
-	/*earnings: function(){
-		var game = Games.findOne();
-		var currentUser = Meteor.userId();
-		var round = game.round-2; //Executes after round counter is updated so -2 
-		var roundEarnings;
-		var totalEarnings;
-		//Underscore js map reduce magic
-		var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list){return list[round];}),function(a,b){return a+b;});
-		roundEarnings = Math.round((pot * 1.5)/groupSize);
-		totalEarnings = 100 - game.players[currentUser].contributions[round] + roundEarnings;
-		return {
-			round: roundEarnings,
-			total: totalEarnings
-		};
-	},*/
 	earnings: function(){
 		var currentUser = Meteor.userId();
 		var game = Games.findOne();
 		var round = game.round - 2;
 		var pot = _.reduce(_.map(_.pluck(game.players,'contributions'),function(list){return list[round];}),function(a,b){return a+b;});
 		var roundEarnings = Math.round((pot * 1.5)/groupSize);
-		var totalEarnings = 100 - game.players[currentUser].contributions[round] + roundEarnings;
-
-		var othersEarnings = [];
+		var totals = [];
 		var data = {};
-		//Should work across all conditions
+		//First add User's data
+		data.icon = game.players[currentUser].icon;
+		data.amount = 100 - game.players[currentUser].contributions[round] + roundEarnings;
+		data.isplayer = true;
+		totals.push(data);
+		data = {};
+		//Then add neighbors
 		var neighbors = game.players[currentUser].neighbors;	
 		for (var n=0, nLen = neighbors.length; n<nLen; n++){
 			data.icon = game.players[neighbors[n]].icon;
 			data.amount = 100 - game.players[neighbors[n]].contributions[round] + roundEarnings;
-			othersEarnings.push(data);
+			data.isplayer = false;
+			totals.push(data);
 			data = {};
 		}
-		return {
-			othersEarnings: othersEarnings,
-			roundEarnings: roundEarnings,
-			playerTotal: totalEarnings
-		};
+		return totals;
 	}
 
 });

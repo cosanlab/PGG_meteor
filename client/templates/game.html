@@ -209,17 +209,28 @@
 
 <!-- template for player/group earnings -->
 <template name = "playerEarnings">
-	<div class = "col-xs-12" align = "center">
-		<p class = "earnings"> Points earned from group account this round: {{earnings.roundEarnings}}</p>
-		<p class = "earnings"> Your total earnings this round: {{earnings.playerTotal}}</p>
+	<div class="col-xs-12" style = "{{game.messageSubPromptDisplay}}">
+		<p id = "messagePrompt"><span>{{game.messageSubPrompt}}</span></p>
 	</div>
-	<div class = "col-xs-12">
+	<div class = "col-xs-6 col-xs-offset-3">
 		<ul class = "neighborContributions" align = "center">
-			{{#each earnings.otherEarnings}}
-				<li class = "neighborContributionsText"> <img class = "avatar" src = "{{icon}}"> total earnings this round: {{amount}}</li>
+			{{#each earnings}}			
+				<li class = "neighborContributionsText">
+				<img class = "avatar" src = "{{icon}}"><span id = "{{#if isplayer}}playerLabel{{/if}}">Total earned this round: {{amount}} points</span></li>			
 			{{/each}}
 		</ul>
 	</div>
+</template>
+
+<template name = "playerEarningsOLD">
+	<div class = "col-xs-12" align = "center">
+		<p class = "earnings"> Your total earnings this round: {{earnings.playerTotal}}</p>
+	</div>
+		<ul class = "neighborContributions" align = "center">
+			{{#each earnings.othersEarnings}}
+				<li class = "neighborContributionsText"> <img class = "avatar" src = "{{icon}}"> total earnings this round: {{amount}}</li>
+			{{/each}}
+		</ul>
 </template>
 
 <!-- template for player ratings -->
@@ -247,13 +258,8 @@
 	</div>
 	<div class = "col-xs-6 col-xs-offset-3">
 		<ul class = "finalEarnings" align = "center">
-			{{#each totals}}
-				
-				<li class = "finalEarningsText"> <img class = "avatar" src = "{{icon}}"><span id = "{{#if isplayer}}playerLabel{{/if}}">earned a total of: {{total}} points</span></li>
-				<!---
-				<li class = "finalEarningsText"> <img class = "avatar" src = "{{icon}}">{{#if isplayer}} (You) {{/if}} earned a total of: {{total}} points</li>
-				-->
-				
+			{{#each totals}}			
+				<li class = "finalEarningsText"> <img class = "avatar" src = "{{icon}}"><span id = "{{#if isplayer}}playerLabel{{/if}}">earned a total of: {{total}} points</span></li>			
 			{{/each}}
 		</ul>
 	</div>

@@ -87,7 +87,7 @@ Meteor.methods({
 			if(delay > 0){
 				Meteor.call('autoAdvanceState',game._id,data[2],data[3],delay);
 			} else{
-				Meteor.call('updateGameInfo',game._id,data[2],'set');
+				Meteor.call('updateGameInfo',game._id,{'state':data[2]},'set');
 			}
 			
 		}
@@ -105,7 +105,7 @@ Meteor.methods({
 			if(delay > 0){
 				Meteor.call('autoAdvanceState',game._id,data[2],data[3],delay);
 			} else{
-				Meteor.call('updateGameInfo',game._id,data[2],'set');
+				Meteor.call('updateGameInfo',game._id,{'state':data[2]},'set');
 			}
 
 		}
@@ -236,7 +236,7 @@ Meteor.methods({
 						} else {
 						 Meteor.call('autoAdvanceState',gameId,revertState,['playerRatings'],7000);
 						}
-					break;
+					break; 
 					case 'finalOut':
 						Meteor.call('autoAdvanceState',gameId,revertState,['ended'],10000);
 					break;
