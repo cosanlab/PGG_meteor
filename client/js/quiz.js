@@ -1,7 +1,6 @@
-//Get the batch condition outside a template helper to determine quiz questions
-//Pretty cool quiz solution based on local meteor collections
-//Took some insipiration from Lili's code
+//This is kind of janky since quiz is based on Batch condition, but the look up needs to be in the template helper; returning subsets of questions doesn't work with validation, there's probably a better solution...
 var Questions = new Mongo.Collection(null);
+var QuestionsM = new Mongo.Collection(null);
 var questions = [];
 var potSize = groupSize*40;
 
@@ -24,6 +23,7 @@ questions[2] = {
 	correct: false,
 	answered: false
 };
+
 questions[3] = {
 	text: '4) How many other players will you be communicating with during the game?',
 	answer: ['one','1'],
@@ -37,21 +37,22 @@ questions[4] = {
 	answered: false
 };
 
-
-//Initially just setup the core game questions
 for(var q = 0; q<questions.length-2; q++){
 	Questions.insert(questions[q]);
+	QuestionsM.insert(questions[q]);
+}
+for(var q = 3; q<questions.length; q++){
+	QuestionsM.insert(questions[q]);
 }
 
 Template.quiz.helpers({
 	questions: function(){
 		var batchCond = Batches.findOne().treatments[0];
-		if (batchCond == '2G' || batchCond == '6G'){
-			for(var q = 3; q<questions.length; q++){
-				Questions.insert(questions[q]);
-			}
+		if (batchCond == '2NG' || batchCond == '6NG'){
+			return Questions.find();
+		} else{
+			return QuestionsM.find();
 		}
-		return Questions.find();
 	},
 	quizAttempts: function(){
 		return Players.findOne(Meteor.userId()).quizAttempts;
@@ -75,12 +76,23 @@ Template.quiz.events({
 		var currentUser = Meteor.userId();
 		var quizAttempts = Players.findOne(currentUser).quizAttempts;
 		var form = event.target;
-		Questions.find().forEach(function(q){
-			var answer = $.trim(form[q._id].value.toLowerCase());
-			var correct = $.inArray(answer,q.answer) >= 0 ? true: false;
-			Questions.update({_id: q._id}, {$set: {correct: correct, answered: true}});
-		});
-		var result = Questions.find({correct:true}).count() == Questions.find().count();
+		var result;
+		var batchCond = Batches.findOne().treatments[0];
+		if (batchCond == '2NG' || batchCond == '6NG'){
+			Questions.find().forEach(function(q){
+				var answer = $.trim(form[q._id].value.toLowerCase());
+				var correct = $.inArray(answer,q.answer) >= 0 ? true: false;
+				Questions.update({_id: q._id}, {$set: {correct: correct, answered: true}});
+			});
+			result = Questions.find({correct:true}).count() == Questions.find().count();
+		} else{
+			QuestionsM.find().forEach(function(q){
+				var answer = $.trim(form[q._id].value.toLowerCase());
+				var correct = $.inArray(answer,q.answer) >= 0 ? true: false;
+				QuestionsM.update({_id: q._id}, {$set: {correct: correct, answered: true}});
+			});
+			result = QuestionsM.find({correct:true}).count() == QuestionsM.find().count();
+		}
 		if(!result){
 			Meteor.call('updatePlayerInfo',currentUser,{'quizAttempts':1},'inc');
 			if(quizAttempts == 1){

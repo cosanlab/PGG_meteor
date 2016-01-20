@@ -18,7 +18,7 @@
 <template name="overview">
 	<h3 align="center">Game Overview</h3>
 	<blockquote class = "instr">
-	In this game you will be making a series of decisions about how to allocate points with {{otherPlayers}} other players in real-time over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <b>1 point = 2 cents</b>.
+	In this game you will be making a series of decisions about how to allocate points with <b>{{otherPlayers}} other players in real-time</b> over the course of {{numRounds}} rounds. Each player will be given their own private account and a separate group account will be shared by all players. At the end of the game we will randomly select one of the rounds and pay you a bonus based on the number of points earned in that round at the rate of: <b>1 point = 2 cents</b>.
 	</blockquote>
 	<blockquote class = "instr">
 	In the beginning of every round of you will decide <b>how many of your own points you would like to contribute to the group account.</b> At the end of every round, the group account will be multiplied by 1.5 and points will be evenly redistributed to all players.
@@ -30,9 +30,9 @@
 	<blockquote class = "instr">
 		{{#if batchCond.fullInfo}}
 			Afer you decide how many points to contribute to the group account you will be able to see the contributions made by
-			<b>{{otherPlayers}}</b> other players. These are all the other players in the game. Across every round of the game you will always see contributions from <b>all</b> the players.
+			<b>all</b> the other players. These are all {{otherPlayers}} other people you are playing with. Across every round of the game you will always see contributions from <b>all</b> the players.
 		{{else}}
-			Afer you decide how many points to contribute to the group account you will be able to see the contributions made by <b>two</b> other players. These players will be randomly selected from the {{otherPlayers}} other people you are playing with. Across every round of the game you will always see contributions from the <b>same</b> two players.
+			Afer you decide how many points to contribute to the group account you will be able to see the contributions made by <b>two</b> other players. These players will be randomly selected from the {{otherPlayers}} other people you are playing with. Across every round of the game you will always see contributions from the <b>same two</b> players.
 		{{/if}}
 	</blockquote>
 	{{#if batchCond.messaging}}
@@ -40,59 +40,57 @@
 			Next, you will be able to communicate with <b>one</b> other player.
 	 	 	In order to communicate, you will be able to send and receive two messages (140 characters max) to this other player. Upon sending your first message you will be shown their first message sent to you. Following this you will be able to second a second message and likewise see their second message sent to you.
 		</blockquote>
-		<blockquote class = "instr">
-			After communication ends, the group account multiplier of (1.5x) will be applied and the group account will be divided evenly. Finally the round will end and you will be shown the points you earned.
-		</blockquote>
-	{{else}}
-		<blockquote class = "instr">
-			After seeing these contributions, the group account multiplier of (1.5x) will be applied and the group account will be divided evenly. Finally the round will end and you will be shown the points you earned.
-		</blockquote>
 	{{/if}}
+		<blockquote class = "instr">
+			Following this, the group account multiplier (1.5x) will be applied and the group account will be divided evenly amongst all {{numPlayers}} players (You + {{otherPlayers}} players). Finally the round will end and you will be see how much each player received from the group account and
+			{{#if batchCond.fullInfo}} <b>all</b>{{else}}the <b>same two</b>{{/if}}
+			 players' total earnings that round.
+		</blockquote>
 </template>
 
 <template name = "exampleRound">
 	<h3 align = "center">Example Round</h3>
-	<blockquote class = "instr">
-		To illustrate the game lets look at an example round:<br><br>
-		<ul>
-		<li>First you will be given 100 points and will choose how many of these to contribute to the group account; let's say you choose to contribute 50 points</li>
+	<p align = "center" style = 'font-size: 16px'>To illustrate the game let's look at an example round:</p>
+
+		<ol class = "exampleRound">
+		<li class = "exampleRound">You will receive 100 points and choose how many to contribute to the group account; let's say you choose to contribute 50 points</li>
 		{{#if batchCond.fullInfo}}
-		<li>Following this you will be able to see the contributions made by all the other players; lets say you see contributions of: 100, 0, 50, 50, and 50 points</li>
+		<li class = "exampleRound">You will be able to see the contributions made by all the other players; let's say you see contributions of: 100, 0, 50, 50, and 50 points</li>
 		{{else}}
-		<li>Following this you will be able to see the contributions made by two other players; let's say you see a contribution of 75 and a contribution of 25 points</li>
+		<li class = "exampleRound">You will be able to see the contributions made by two other players; let's say you see contributions of: 75 and 25 points</li>
 		{{/if}}
 		{{#if batchCond.messaging}}
-		<li>Next you will be able to send and receive two messages with another player</li>
+		<li class = "exampleRound">You will be able to send and receive two messages with another player</li>
 		{{/if}}
-		<li>Finally you will see the results of the splitting of the group account; let's say you receive 75 points at the end of the round bringing your total earned for that round to 125 points (50 you didn't contribute + 75 you earned)</li>
-		</ul>
-	</blockquote>
+		<li class = "exampleRound">You will receive the outcome of splitting the group account after the multiplier (1.5x) is applied; let's say you receive 75 points at the end of the round; your total earned for that round would be <b>125 points</b> (50 you didn't contribute + 75 you earned)</li>
+		</ol>
+
 	{{#if batchCond.fullInfo}}
 		<blockquote class = "instr">
-			Based on this round you can see that all the other players contributed a total of 250 points, bringing the the total earnings for the group to 450 points, with each player earning 75 points each: 
+			Based on this you can deduce that the group earned a total of 450 points: 
 		</blockquote>
-		<p align = "center" style= 'font-size: 14px'>
-			50 (your contribution) + 100 + 0 + 50 + 50 + 50 = 300 * 1.5 (multiplier) = 
+		<p align = "center" style= 'font-size: 14px; margin-top: -2%'>
+			75 (each player's earning) * {{numPlayers}} (total number of players) = 
 			<br>
-			<b>450 (sum of group account)</b>
+			<b>450 (total of group account after multiplier)</b>
 		</p>
-		<br>
 		<p align = "center" style= 'font-size: 14px'>
-			450 / 6 = <br>
-			<b>75 (each player's earnings for the round)</b>
+			450 / 1.5 (group multiplier) = 50 (your contribution) + 100 + 0 + 50 + 50 + 50 = 
+			<br>
+			<b>300 (sum of all contributions)</b>
 		</p>
 	{{else}}
 		<blockquote class = "instr">
-			Based on this round you can deduce that the players, whose contributions you can't see, must have contributed a total of 150 points:
+			Based on this you can deduce that the group earned a total of 450 points and the players whose contributions you can't see must have contributed a total of 150 points:
 		</blockquote>
 		<p align = "center" style= 'font-size: 14px'>
-			75 (your earning) * {{numPlayers}} (total players) = 450 / 1.5 (multiplier) = 
+			75 (each player's earning) * {{numPlayers}} (total number of players) = 
 			<br>
-			<b>300 (sum of total contributions)</b>
+			<b>450 (total of group account)</b>
 		</p>
-		<br>
 		<p align = "center" style= 'font-size: 14px'>
-			300 - 50 (your contribution) - 100 (sum of two players you can see) = <br>
+		450 / 1.5 (group multiplier) = 300 - 50 (your contribution) - 75 - 25 = 
+			<br>
 			<b>150 (sum of players you can't see)</b>
 		</p>
 	{{/if}}
@@ -101,13 +99,12 @@
 <template name = "recap">
 	<h3 align="center">Recap</h3>
 	<blockquote class = "instr">
-	To review, you will play a game with {{otherPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise 5 parts:<br><br>
+	To review, you will play a game with {{otherPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise
+	{{#if batchCond.messaging}} 4 {{else}} 3 {{/if}}parts:<br><br>
 	<ol>
-		<li>Each player will receive a starting balance of 100 points</li>
-		<li>Each player will decide how many of their points to contribute to the group account</li>
-		<li>Each player will be able to see the contributions made by 
-		<b><i> {{#if batchCond.fullInfo}} all {{else}} two {{/if}} </i></b> of the other players
-		 </li>
+		<li>Each player will receive 100 points and decide how many of their points to contribute to the group account</li>
+		<li>Each player will be able to see the contributions made by {{#if batchCond.fullInfo}}<b><i>all</i></b>{{else}} <b><i>two</i></b>* {{/if}} of the other players
+		</li>
 		 {{#if batchCond.messaging}}
 		<li>Each player will be able to send and receive two messages to <b><i>one</i></b> randomly selected player*</li>
 		{{/if}}
@@ -116,14 +113,17 @@
 	</blockquote>
 	<br>
 	{{#if batchCond.messaging}}
-	<p><i>*Players will always be communicating with the <b>same</b> player during the entire game</i></p>
+	<p><i>*Players will always be communicating with the <b>same</b> player on every round</i></p>
 	{{/if}}
+	{{#unless batchCond.fullInfo}}
+	<p><i>*Players will always see the contributions/earnings of the <b>same</b> two players on every round</i></p>
+	{{/unless}}
 </template>
 
 <template name = "timing">
 	<h3 align="center">Connection and Timing Considerations</h3>
 	<blockquote class = "instr">
-		Because you are interacting in real time with {{otherPlayers}} other players, it is <b>extremely important</b> that you make your decisions and complete your communication within a timely manner.<br><br>
+		Because you are interacting in <b>real time</b> with {{otherPlayers}} other players, it is <b>extremely important</b> that you make your decisions and complete your communication within a timely manner.<br><br>
 		If you idle for too long during the game you will <b>forfeit</b> any bonuses you could have earned during this HIT.<br><br>
 		If your game partners have connection issues you will still be paid for completing the HIT including any bonuses earned.
 	</blockquote>
@@ -132,7 +132,7 @@
 <template name = "preQuiz">
 	<h3 align="center">Please be sure you have understood these instructions before proceeding</h3>
 	<blockquote class = "instr">
-		On the next page we will ask you some questions to ensure your understanding. If you fail to answer these questions correctly you will not be eligible to play and complete this HIT.<br>
+		On the next page we will ask you some questions to ensure your understanding. If you fail to answer these questions correctly you will not be eligible to play and complete this HIT.<br><br>
 		You may move backwards and forwards through these instructions screens as much as you like before and during the quiz.
 	</blockquote>
 </template>

@@ -9,11 +9,22 @@ img.avatar{
   margin-right: 2%;
 }
 
+/* Instructions example round */
+.exampleRound {
+  font-size: 15px;
+  margin-left: -2%;
+  margin-bottom: 0%;
+}
+li.exampleRound{
+  margin-bottom: 2%;
+}
 
-/*Quiz styling */
 blockquote.instr {
   font-size: 16px;
+  margin-bottom: 2%;
 }
+
+/*Instructions styling */
 button#submitQuiz #invisible{
   visibility: hidden;
 }

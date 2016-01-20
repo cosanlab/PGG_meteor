@@ -46,13 +46,15 @@ Router.route('/game',{
   },
   action: function(){
     var game = Games.findOne();
-    if(game.state == 'assignment'){
-      this.render('assignment');
-    } else if(game.state == 'lostUser'){
-      this.render('userDisconnect');
-    } else{
-      this.render('game');
-      }
+    if (game){
+      if(game.state == 'assignment'){
+        this.render('assignment');
+      } else if(game.state == 'lostUser'){
+        this.render('userDisconnect');
+      } else{
+        this.render('game');
+        }
+    }
   }
 });
 
