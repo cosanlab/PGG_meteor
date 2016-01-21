@@ -42,10 +42,9 @@
                         <label class = "exitSurvey"><input class = "exitSurveyInput" type="radio" id = "female" name="optradio">Female</label>
                     </div>
                     {{#unless status.failedMatch}}
-                    <div class = "form-group" align="center">
-                    <label for = "belief" class = "exitSurvey">How convinced were you that you were playing with real people?</label> <br>
-                    Not at all<input id = "belief" type="range" value="50" min="0" max="100" class = "beliefRating">Completely
-                    </div>   
+                    <div align = "center">
+                       <label class = "exitSurvey">How convinced were you that you were playing with real people? <br> (enter a number from 0 (not at all) to 100 (completely): <input type="text" class = "exitSurveyInput" id ="belief" name="optradio" size = "6"></label>
+                   </div>
                     {{/unless}}                 
                     <label style= "display:block; text-align:center" for="feedback">Please enter any feedback, including problems you encountered in the box below </label>
                     <textarea class= "form-control" id ="feedback" rows = "3" ></textarea>    

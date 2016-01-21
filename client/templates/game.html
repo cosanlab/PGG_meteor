@@ -216,11 +216,13 @@
 		<ul class = "neighborContributions" align = "center">
 			{{#each earnings}}			
 				<li class = "neighborContributionsText">
-				<img class = "avatar" src = "{{icon}}"><span id = "{{#if isplayer}}playerLabel{{/if}}">Total points this round: {{amount}} points</span></li>			
+				<img class = "avatar" src = "{{icon}}"><span id = "{{#if isplayer}}playerLabel{{/if}}">Total this round: {{amount}} points</span></li>			
 			{{/each}}
 		</ul>
 	</div>
 </template>
+
+
 
 <!-- template for player ratings -->
 <template name = "playerRatings">

@@ -29,8 +29,8 @@ Template.assignment.helpers({
 });
 
 Template.matched.helpers({
-	numPlayers: function(){
-		return groupSize;
+	otherPlayers: function(){
+		return groupSize-1;
 	},
 	numRounds: function(){
 		return numRounds;

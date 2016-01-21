@@ -64,7 +64,7 @@ Template.endSurvey.events({
 		var player = Players.findOne(currentUser);
 		var feedback = $('#feedback').val();
 		var age = $('#age').val();
-		var belief = parseInt($('#belief').val());
+		var belief = $('#belief').val();
 		var results;
 		//For the sake no blank fields fill NAs if client doesn't complete exit survey
 		if(!feedback){
@@ -78,6 +78,9 @@ Template.endSurvey.events({
 		}
 		if (!age){
 			age = 'NA';
+		}
+		if (!belief){
+			belief = 'NA';
 		}
 		var gender;
 		if($('#male').is(':checked')){
