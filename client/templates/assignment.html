@@ -7,7 +7,7 @@
 <template name="matched">
 	<h3 align="center">You have been successfully matched with a group of players!</h3>
 	<blockquote class = "instr">
-	As a quick reminder, you are playing a game with {{numPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise {{#if batcCond.messaging}} 4 {{else}} 3 {{/if}}parts:<br><br>
+	As a quick reminder, you are playing a game with {{numPlayers}} other players consisting of {{numRounds}} rounds. Each round will comprise {{#if batchCond.messaging}} 4 {{else}} 3 {{/if}}parts:<br><br>
 	<ol>
 		<li>Each player will receive 100 points and decide how many of their points to contribute to the group account</li>
 		<li>Each player will be able to see the contributions made by {{#if batchCond.fullInfo}}<b><i>all</i></b>{{else}} <b><i>two</i></b>* {{/if}} of the other players
@@ -19,11 +19,11 @@
 	</ol>
 	</blockquote>
 	<br>
-	{{#if batchCond.messaging}}
-	<p><i>*Players will always be communicating with the <b>same</b> player during the entire game</i></p>
-	{{/if}}
 	{{#unless batchCond.fullInfo}}
 	<p><i>*Players will always see the contributions/earnings of the <b>same</b> two players on every round</i></p>
 	{{/unless}}
+	{{#if batchCond.messaging}}
+	<p><i>*Players will always be communicating with the <b>same</b> player during the entire game</i></p>
+	{{/if}}
 	<p align = "center" style = "font-size:16px"> Click Finish below if you aready to begin. The game will start when every player is ready.</p>
 </template>

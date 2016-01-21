@@ -216,21 +216,10 @@
 		<ul class = "neighborContributions" align = "center">
 			{{#each earnings}}			
 				<li class = "neighborContributionsText">
-				<img class = "avatar" src = "{{icon}}"><span id = "{{#if isplayer}}playerLabel{{/if}}">Total earned this round: {{amount}} points</span></li>			
+				<img class = "avatar" src = "{{icon}}"><span id = "{{#if isplayer}}playerLabel{{/if}}">Total points this round: {{amount}} points</span></li>			
 			{{/each}}
 		</ul>
 	</div>
-</template>
-
-<template name = "playerEarningsOLD">
-	<div class = "col-xs-12" align = "center">
-		<p class = "earnings"> Your total earnings this round: {{earnings.playerTotal}}</p>
-	</div>
-		<ul class = "neighborContributions" align = "center">
-			{{#each earnings.othersEarnings}}
-				<li class = "neighborContributionsText"> <img class = "avatar" src = "{{icon}}"> total earnings this round: {{amount}}</li>
-			{{/each}}
-		</ul>
 </template>
 
 <!-- template for player ratings -->

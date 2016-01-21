@@ -112,12 +112,12 @@
 	</ol>
 	</blockquote>
 	<br>
-	{{#if batchCond.messaging}}
-	<p><i>*Players will always be communicating with the <b>same</b> player on every round</i></p>
-	{{/if}}
 	{{#unless batchCond.fullInfo}}
 	<p><i>*Players will always see the contributions/earnings of the <b>same</b> two players on every round</i></p>
 	{{/unless}}
+	{{#if batchCond.messaging}}
+	<p><i>*Players will always be communicating with the <b>same</b> player on every round</i></p>
+	{{/if}}
 </template>
 
 <template name = "timing">

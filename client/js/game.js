@@ -52,7 +52,7 @@ Template.game.helpers({
 				messageSubPrompt2 = 'Left = "Never"    Right = "Definitely"';
 				break;
 			case 'finalOut':
-				messagePrompt = 'Total Ranked Game Earnings:';
+				messagePrompt = 'Total Ranked Game Earnings';
 				messageSubPrompt = '(Your earnings are highlighted)';
 		}
 
@@ -84,7 +84,7 @@ Template.playerContribution.events({
 		var game = Games.findOne();
 		var currentUser = Meteor.userId();
 		var nextState = 'pDisp';
-		var delay = 7000;
+		var delay = 8000;
 		var autoStates;
 		//Determine whether we're going ot the messaging screen or the outcome screen
 		if (game.condition == '2G' || game.condition == '6G'){
@@ -163,7 +163,7 @@ Template.messageForm.events({
 		        	$('#messagePrompt').html('Waiting for other players... <br><span style = "visibility:hidden">placeholder</span>');
 		        	var currentUser = Meteor.userId();
 		        	var game = Games.findOne();
-		        	var delay = 7000;
+		        	var delay;
 		        	var nextState;
 		        	var autoStates;
 		        	var messageField;
@@ -171,10 +171,12 @@ Template.messageForm.events({
 		        		nextState = 'pReceiveMess1';
 		        		autoStates = ['pSendMess2'];
 		        		messageField = 'firstMessages';
+		        		delay = 5000;
 		        	}
 		        	else if(game.state == 'pSendMess2'){
 		        		nextState = 'pReceiveMess2';
 		        		messageField = 'secondMessages';
+		        		delay = 8000;
 		        		if(game.round < numRounds){
 		        			autoStates = ['gOut','pChoose'];
 		        		}
@@ -265,7 +267,6 @@ Template.playerRatings.events({
 		for (var p in otherPlayers){
 			ratings[p] = form[p].value;
 		}
-		console.log(ratings);
 		var nextState = 'finalOut';
 		var autoStates = ['ended'];
 		var delay = 10000;

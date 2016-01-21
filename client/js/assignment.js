@@ -54,7 +54,7 @@ Template.matched.helpers({
 				break;
 			case '6NG':
 				messaging = false;
-				fullInfo = false;
+				fullInfo = true;
 				break;
 		}
 		return {
