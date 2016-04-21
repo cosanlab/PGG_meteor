@@ -2,3 +2,6 @@
 ssl.pem
 #AWS credentials
 settings.json
+.meteor
+Logic.md
+.DS_Store
